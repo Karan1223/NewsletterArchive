@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Construction Technology Today - e-Newsletter & Industry Hub</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #f36f21;
+      --primary-hover: #dc5b10;
+      --primary-soft: #fff7ed;
+      --dark: #0f172a;
+      --dark-card: #1e293b;
+      --slate-50: #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-200: #e2e8f0;
+      --slate-400: #94a3b8;
+      --slate-600: #475569;
+      --slate-800: #1e293b;
+      --slate-900: #0f172a;
+      --card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+      --card-shadow-hover: 0 12px 28px -4px rgba(15, 23, 42, 0.1), 0 4px 10px -2px rgba(15, 23, 42, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', 'Fira Sans', Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f6f8fb;
+      color: var(--slate-800);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    /* --- TOP NAVBAR --- */
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--slate-200);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+    }
+
+    .header-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .brand-logo img {
+      height: 38px;
+      width: auto;
+      display: block;
+    }
+
+    .portal-tag {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: var(--primary-soft);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(243, 111, 33, 0.2);
+    }
+
+    /* NAV CONTROLS */
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-home {
+      background: var(--slate-100);
+      color: var(--slate-800);
+      border: 1px solid var(--slate-200);
+      padding: 9px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-home:hover {
+      background: #e2e8f0;
+      color: #000000;
+    }
+
+    .select-box {
+      position: relative;
+    }
+
+    .select-box select {
+      appearance: none;
+      -webkit-appearance: none;
+      background: #ffffff;
+      border: 1.5px solid var(--slate-200);
+      border-radius: 8px;
+      padding: 9px 34px 9px 13px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slate-800);
+      cursor: pointer;
+      outline: none;
+      min-width: 135px;
+      transition: all 0.2s ease;
+    }
+
+    .select-box select:focus,
+    .select-box select:hover {
+      border-color: var(--primary);
+    }
+
+    .select-box i {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      font-size: 10px;
+      color: var(--slate-400);
+    }
+
+    .btn-subscribe {
+      background: var(--primary);
+      color: #ffffff;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-subscribe:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-fullscreen {
+      background: var(--dark);
+      color: #ffffff;
+      padding: 9px 13px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-fullscreen:hover {
+      background: #1e293b;
+    }
+
+    /* --- LAYOUT GRID --- */
+    .portal-layout {
+      max-width: 1400px;
+      width: 100%;
+      margin: 24px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 28px;
+      flex: 1;
+    }
+
+    /* LEFT / CENTER WORKSPACE */
+    .main-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .view-header {
+      width: 100%;
+      max-width: 740px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      font-size: 13px;
+      color: var(--slate-600);
+    }
+
+    .view-header strong {
+      color: var(--slate-900);
+    }
+
+    /* DEFAULT DASHBOARD CONTAINER */
+    .dashboard-container {
+      width: 100%;
+      max-width: 740px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    /* HERO CARD */
+    .portal-hero {
+      background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+      color: #ffffff;
+      border-radius: 14px;
+      padding: 26px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+    }
+
+    .portal-hero::after {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 160px;
+      height: 160px;
+      background: rgba(243, 111, 33, 0.12);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .portal-hero h1 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+
+    .portal-hero p {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 20px;
+      max-width: 580px;
+    }
+
+    .hero-stats-strip {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 12px;
+    }
+
+    .stat-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #e2e8f0;
+    }
+
+    .stat-badge i {
+      color: var(--primary);
+    }
+
+    /* INSTRUCTION SELECTOR BANNER */
+    .selector-prompt {
+      background: #ffffff;
+      border: 1px solid #fed7aa;
+      border-left: 4px solid var(--primary);
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      box-shadow: 0 2px 6px rgba(243, 111, 33, 0.05);
+    }
+
+    .selector-prompt-text {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slate-800);
+    }
+
+    .selector-prompt-text i {
+      font-size: 20px;
+      color: var(--primary);
+    }
+
+    /* DIGITAL MAGAZINE SHOWCASE */
+    .magazine-spotlight {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      gap: 20px;
+      box-shadow: var(--card-shadow);
+      transition: all 0.2s ease;
+    }
+
+    .magazine-spotlight:hover {
+      box-shadow: var(--card-shadow-hover);
+      border-color: #cbd5e1;
+    }
+
+    .spotlight-cover {
+      width: 145px;
+      height: 195px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--slate-200);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      flex-shrink: 0;
+    }
+
+    .spotlight-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .spotlight-tag {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 4px;
+    }
+
+    .spotlight-info h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--slate-900);
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+
+    .spotlight-info p {
+      font-size: 12px;
+      color: var(--slate-600);
+      line-height: 19px;
+      margin-bottom: 14px;
+    }
+
+    .spotlight-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-digital-copy {
+      background: var(--primary);
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s;
+    }
+
+    .btn-digital-copy:hover {
+      background: var(--primary-hover);
+      color: #ffffff;
+    }
+
+    .btn-read-online {
+      background: var(--slate-100);
+      color: var(--slate-800);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid var(--slate-200);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-read-online:hover {
+      background: #e2e8f0;
+    }
+
+    /* SECTION TITLES */
+    .section-heading {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--slate-900);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--slate-200);
+      padding-bottom: 8px;
+      margin-top: 4px;
+    }
+
+    .section-heading a {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* TECHNICAL ARTICLES GRID */
+    .tech-articles-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .tech-card {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--card-shadow);
+      transition: all 0.2s ease;
+    }
+
+    .tech-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--card-shadow-hover);
+      transform: translateY(-2px);
+    }
+
+    .tech-topic {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--primary);
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .tech-card h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--slate-900);
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .tech-card p {
+      font-size: 12px;
+      color: var(--slate-600);
+      line-height: 18px;
+      margin-bottom: 14px;
+    }
+
+    .card-footer-link {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* VERTICAL PILLS */
+    .vertical-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .v-pill {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: 20px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--slate-700);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .v-pill:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    /* MAILER FRAME CONTAINER */
+    .viewer-card {
+      width: 100%;
+      max-width: 740px;
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1px solid var(--slate-200);
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      display: none;
+    }
+
+    iframe#mailer-frame {
+      width: 100%;
+      height: 90vh;
+      border: none;
+      display: block;
+    }
+
+    /* --- SIDEBAR --- */
+    .sidebar-column {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .sidebar-box {
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid var(--slate-200);
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+    }
+
+    .sidebar-header {
+      padding: 13px 18px;
+      background: var(--slate-50);
+      border-bottom: 1px solid var(--slate-200);
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--slate-900);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-header i {
+      color: var(--primary);
+      font-size: 14px;
+    }
+
+    .sidebar-body {
+      padding: 16px 18px;
+    }
+
+    /* EVENTS LIST */
+    .event-item-block {
+      display: flex;
+      gap: 14px;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+      border-bottom: 1px dashed var(--slate-200);
+      transition: transform 0.15s;
+    }
+
+    .event-item-block:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+
+    .event-item-block:hover {
+      transform: translateX(3px);
+    }
+
+    .event-calendar-badge {
+      min-width: 50px;
+      text-align: center;
+      background: var(--primary-soft);
+      border: 1px solid rgba(243, 111, 33, 0.2);
+      color: var(--primary);
+      border-radius: 8px;
+      padding: 8px 4px;
+      height: fit-content;
+    }
+
+    .event-calendar-badge .cal-day {
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .event-calendar-badge .cal-month {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .event-details h5 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--slate-900);
+      line-height: 1.35;
+      margin-bottom: 3px;
+    }
+
+    .event-details p {
+      font-size: 11px;
+      color: var(--slate-600);
+      margin-bottom: 4px;
+    }
+
+    .event-link-text {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    /* SPONSOR ADS */
+    .ad-card {
+      text-align: center;
+    }
+
+    .ad-card img {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--slate-200);
+      display: block;
+      transition: transform 0.2s;
+    }
+
+    .ad-card img:hover {
+      transform: scale(1.015);
+    }
+
+    .ad-label {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--slate-400);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: block;
+      letter-spacing: 0.5px;
+    }
+
+    /* PUBLISHER INFO */
+    .contact-list {
+      list-style: none;
+      font-size: 12px;
+      line-height: 22px;
+      color: var(--slate-600);
+    }
+
+    .contact-list li {
+      margin-bottom: 6px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .contact-list i {
+      color: var(--primary);
+      width: 14px;
+      margin-top: 4px;
+    }
+
+    footer {
+      background: #ffffff;
+      border-top: 1px solid var(--slate-200);
+      padding: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--slate-600);
+      margin-top: auto;
+    }
+
+    @media (max-width: 1080px) {
+      .portal-layout {
+        grid-template-columns: 1fr;
+      }
+      .tech-articles-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-container">
+      
+      <div class="brand-group">
+        <div class="brand-logo" onclick="resetToHomeView()" title="Return to Portal Dashboard">
+          <img src="https://www.constructiontechnology.in/nl_images/logo.png" alt="Construction Technology Today" />
+        </div>
+        <span class="portal-tag">e-Newsletter Archive</span>
+      </div>
+
+      <!-- Quick Action Controls -->
+      <div class="nav-actions">
+        
+        <!-- Dedicated Home Page Button -->
+        <button class="btn-home" onclick="resetToHomeView()" title="Return to Main Portal Home">
+          <i class="fa-solid fa-house"></i> Home
+        </button>
+
+        <div class="select-box">
+          <select id="yearSelect" aria-label="Select Year">
+            <option value="">Select Year</option>
+          </select>
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+
+        <div class="select-box">
+          <select id="monthSelect" aria-label="Select Month" disabled>
+            <option value="">Select Month</option>
+          </select>
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+
+        <a id="openNewTabBtn" href="#" target="_blank" class="btn-fullscreen" title="Open Mailer In New Tab">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Full Screen
+        </a>
+
+        <a href="https://www.constructiontechnology.in/subscriptions" target="_blank" class="btn-subscribe">
+          <i class="fa-solid fa-envelope-open-text"></i> Subscribe
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN WORKSPACE -->
+  <div class="portal-layout">
+
+    <!-- LEFT COLUMN: CONTENT HUB / VIEWER -->
+    <main class="main-column">
+      
+      <div class="view-header">
+        <span id="statusIndicator">Status: <strong>Portal Hub</strong></span>
+        <span>Construction Technology Today</span>
+      </div>
+
+      <!-- VIEW A: DEFAULT EDITORIAL HOME (Visible by default) -->
+      <div id="defaultHomeView" class="dashboard-container">
+        
+        <!-- Hero Card -->
+        <section class="portal-hero">
+          <h1>Equipment & Infrastructure Intelligence</h1>
+          <p>The official digital archive for Construction Technology Today. Access technical features, machinery developments, and sector reports across India's construction economy.</p>
+          
+          <div class="hero-stats-strip">
+            <div class="stat-badge"><i class="fa-solid fa-layer-group"></i> 60+ Issues Archived</div>
+            <div class="stat-badge"><i class="fa-solid fa-industry"></i> 12 Equipment Verticals</div>
+            <div class="stat-badge"><i class="fa-solid fa-calendar"></i> Monthly Editions</div>
+          </div>
+        </section>
+
+        <!-- Dynamic Issue Selector Prompt -->
+        <div class="selector-prompt">
+          <div class="selector-prompt-text">
+            <i class="fa-solid fa-folder-open"></i>
+            <span>Looking for an edition? Select a <strong>Year</strong> and <strong>Month</strong> above to view that newsletter.</span>
+          </div>
+          <button class="btn-digital-copy" onclick="triggerQuickLoad(2026, '09')">
+            Latest Issue <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <!-- Latest Print & Digital Edition Preview -->
+        <div class="magazine-spotlight">
+          <a href="https://www.constructiontechnology.in/epaper" target="_blank">
+            <img class="spotlight-cover" src="https://www.constructiontechnology.in/upload/current_issue/IMG_20260905_173114_06f052b9.jpg" alt="Construction Technology Magazine" />
+          </a>
+          <div class="spotlight-info">
+            <div>
+              <span class="spotlight-tag">Digital Edition</span>
+              <h3>CT Today Monthly e-Magazine</h3>
+              <p>In-depth coverage on high-capacity crushing & screening circuits, heavy earthmoving powertrains, road building automation, and precast infrastructure technologies.</p>
+            </div>
+            <div class="spotlight-btn-group">
+              <a href="https://www.constructiontechnology.in/epaper" target="_blank" class="btn-digital-copy">
+                <i class="fa-solid fa-book-open"></i> Read Full Magazine
+              </a>
+              <button class="btn-read-online" onclick="triggerQuickLoad(2026, '09')">
+                <i class="fa-solid fa-envelope"></i> Open Mailer View
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TECHNICAL MACHINERY ARTICLES -->
+        <div class="section-heading">
+          <span><i class="fa-solid fa-gear"></i> Technical Insights & Reports</span>
+          <a href="https://www.constructiontechnology.in/articles" target="_blank">Browse Archive <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+
+        <div class="tech-articles-grid">
+          
+          <!-- Article 1 -->
+          <article class="tech-card">
+            <div>
+              <div class="tech-topic">Crushing & Screening</div>
+              <h4>Optimizing Aggregate Circuits & Secondary Reduction</h4>
+              <p>Examining closed-circuit cone crushers, cavity design adjustments, and automated chamber clearing systems that reduce wear costs per ton in hard-rock quarries.</p>
+            </div>
+            <a href="https://www.constructiontechnology.in/machinery_equipments/Crushing_Screening_Washing_MSand" target="_blank" class="card-footer-link">
+              Explore Technology <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </article>
+
+          <!-- Article 2 -->
+          <article class="tech-card">
+            <div>
+              <div class="tech-topic">Earthmoving & Heavy Plant</div>
+              <h4>Next-Generation Hydraulic Load-Sensing Systems</h4>
+              <p>How electro-hydraulic positive flow controls and smart pump displacement improve fuel efficiency and duty-cycle precision in 30–50 ton excavators.</p>
+            </div>
+            <a href="https://www.constructiontechnology.in/machinery_equipments/Earthmoving_Equipment" target="_blank" class="card-footer-link">
+              Explore Technology <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </article>
+
+          <!-- Article 3 -->
+          <article class="tech-card">
+            <div>
+              <div class="tech-topic">Concrete & Precast</div>
+              <h4>Automated Batching Plants & Wet-Cast Paver Robotics</h4>
+              <p>Analysis of high-shear planetary mixers, multi-aggregate dosing accuracy, and automated de-molding systems improving structural precast yields.</p>
+            </div>
+            <a href="https://www.constructiontechnology.in/machinery_equipments/Concrete_Equipment" target="_blank" class="card-footer-link">
+              Explore Technology <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </article>
+
+          <!-- Article 4 -->
+          <article class="tech-card">
+            <div>
+              <div class="tech-topic">Road Construction</div>
+              <h4>Intelligent Compaction & Continuous Asphalt Paving</h4>
+              <p>Real-time stiffness mapping, GPS-linked pass counting, and thermal imaging cameras that ensure uniform density and eliminate compaction cold spots.</p>
+            </div>
+            <a href="https://www.constructiontechnology.in/machinery_equipments/Road_Construction_Equipment" target="_blank" class="card-footer-link">
+              Explore Technology <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </article>
+
+        </div>
+
+        <!-- MACHINERY VERTICALS -->
+        <div class="section-heading">
+          <span><i class="fa-solid fa-cubes"></i> Industry Sectors</span>
+        </div>
+        <div class="vertical-tags">
+          <a class="v-pill" href="https://www.constructiontechnology.in/machinery_equipments/Earthmoving_Equipment" target="_blank"><i class="fa-solid fa-truck-monster"></i> Earthmoving</a>
+          <a class="v-pill" href="https://www.constructiontechnology.in/machinery_equipments/Crushing_Screening_Washing_MSand" target="_blank"><i class="fa-solid fa-mountain"></i> Crushing & Screening</a>
+          <a class="v-pill" href="https://www.constructiontechnology.in/machinery_equipments/Concrete_Equipment" target="_blank"><i class="fa-solid fa-cubes"></i> Concrete Equipment</a>
+          <a class="v-pill" href="https://www.constructiontechnology.in/machinery_equipments/Road_Construction_Equipment" target="_blank"><i class="fa-solid fa-road"></i> Road Machinery</a>
+          <a class="v-pill" href="https://www.constructiontechnology.in/machinery_equipments/Tyre" target="_blank"><i class="fa-solid fa-circle-notch"></i> OTR Tyres</a>
+          <a class="v-pill" href="https://www.constructiontechnology.in/contact" target="_blank"><i class="fa-solid fa-bullhorn"></i> Advertise With Us</a>
+        </div>
+
+      </div>
+
+      <!-- VIEW B: NEWSLETTER VIEWER (Swapped in when year & month are chosen) -->
+      <div id="viewerView" class="viewer-card">
+        <iframe id="mailer-frame" src="about:blank" title="Newsletter Viewer"></iframe>
+      </div>
+
+    </main>
+
+    <!-- RIGHT COLUMN: SIDEBAR WIDGETS -->
+    <aside class="sidebar-column">
+
+      <!-- ADVERTISEMENT 1 -->
+      <div class="sidebar-box ad-card">
+        <div class="sidebar-body" style="padding: 12px;">
+          <span class="ad-label">Partner Showcase</span>
+          <a href="https://speedcrafts.com/" target="_blank" rel="noopener">
+            <img src="issues/2026-09/public/image/IME.png" alt="Speedcrafts Construction Equipment" onerror="this.src='https://www.constructiontechnology.in/nl_images/logo.png'" />
+          </a>
+        </div>
+      </div>
+
+      <!-- UPCOMING INDUSTRY EVENTS -->
+      <div class="sidebar-box">
+        <div class="sidebar-header">
+          <i class="fa-solid fa-calendar-days"></i> Upcoming Trade Shows
+        </div>
+        <div class="sidebar-body">
+          
+          <!-- Event 1 -->
+          <div class="event-item-block">
+            <div class="event-calendar-badge">
+              <div class="cal-day">15</div>
+              <div class="cal-month">Sep</div>
+            </div>
+            <div class="event-details">
+              <h5>bauma CONEXPO INDIA 2026</h5>
+              <p>15–18 Sep 2026 • India Expo Centre, Greater Noida</p>
+              <a href="https://bcindia.com/" target="_blank" rel="noopener" class="event-link-text">
+                Event Website <i class="fa-solid fa-chevron-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Event 2 -->
+          <div class="event-item-block">
+            <div class="event-calendar-badge">
+              <div class="cal-day">17</div>
+              <div class="cal-month">Sep</div>
+            </div>
+            <div class="event-details">
+              <h5>D-arc BUILD Delhi 2026</h5>
+              <p>17–20 Sep 2026 • Okhla NSIC, New Delhi</p>
+              <a href="https://darcbuild.com/" target="_blank" rel="noopener" class="event-link-text">
+                Event Website <i class="fa-solid fa-chevron-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Event 3 -->
+          <div class="event-item-block">
+            <div class="event-calendar-badge">
+              <div class="cal-day">26</div>
+              <div class="cal-month">Nov</div>
+            </div>
+            <div class="event-details">
+              <h5>IGBC Green Building Congress</h5>
+              <p>26–28 Nov 2026 • Jio World Centre, Mumbai</p>
+              <a href="https://igbc.in/" target="_blank" rel="noopener" class="event-link-text">
+                Event Website <i class="fa-solid fa-chevron-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Event 4 -->
+          <div class="event-item-block">
+            <div class="event-calendar-badge">
+              <div class="cal-day">20</div>
+              <div class="cal-month">Oct</div>
+            </div>
+            <div class="event-details">
+              <h5>World of Concrete India 2027</h5>
+              <p>20–22 Oct 2027 • BEC, Mumbai</p>
+              <a href="https://www.woc-india.com/" target="_blank" rel="noopener" class="event-link-text">
+                Event Website <i class="fa-solid fa-chevron-right"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ADVERTISEMENT 2 -->
+      <div class="sidebar-box ad-card">
+        <div class="sidebar-body" style="padding: 12px;">
+          <span class="ad-label">Equipment Solutions</span>
+          <a href="https://www.constructiontechnology.in/contact" target="_blank">
+            <img src="issues/2026-09/public/image/noah.png" alt="Noah Infrastructure" onerror="this.src='https://www.constructiontechnology.in/nl_images/logo.png'" />
+          </a>
+        </div>
+      </div>
+
+      <!-- PUBLISHER INFORMATION -->
+      <div class="sidebar-box">
+        <div class="sidebar-header">
+          <i class="fa-solid fa-building"></i> Media Office
+        </div>
+        <div class="sidebar-body">
+          <ul class="contact-list">
+            <li><strong>Karan Communications</strong></li>
+            <li><i class="fa-solid fa-location-dot"></i> Dinubhai Estate, Vatva GIDC, Ahmedabad, Gujarat</li>
+            <li><i class="fa-solid fa-phone"></i> <a href="tel:+918511992500">+91 85119 92500</a></li>
+            <li><i class="fa-solid fa-envelope"></i> <a href="mailto:info@constructiontechnology.in">info@constructiontechnology.in</a></li>
+            <li><i class="fa-solid fa-globe"></i> <a href="https://www.constructiontechnology.in" target="_blank">www.constructiontechnology.in</a></li>
+          </ul>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <footer>
+    <p>© 2026 Construction Technology Today. Published by Karan Communications. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    /**
+     * NEWSLETTER REGISTRY
+     * Points each month to its folder: issues/YYYY-MM/index.html
+     */
+    const newsletterData = [
+         {
+        year: 2024,
+        month: "05",
+        monthName: "May",
+        title: "e-Magazine May 2024",
+        folder: "issues/2024/May_24_Mailer"
+      },
+         {
+        year: 2024,
+        month: "06",
+        monthName: "June",
+        title: "e-Magazine June 2024",
+        folder: "issues/2024/June_24_Mailer"
+      },
+         
+      {
+        year: 2024,
+        month: "07",
+        monthName: "July",
+        title: "e-Magazine July 2024",
+        folder: "issues/2024/July_24_Mailer"
+      },
+        {
+         year: 2024,
+         month: "08",
+        monthName: "August",
+        title: "e-Magazine August 2024",
+        folder: "issues/2024/August_24_Mailer"
+      },
+      {
+        year: 2024,
+        month: "09",
+        monthName: "September",
+        title: "e-Magazine September 2024",
+        folder: "issues/2024/Sept_24_Mailer"
+      },
+       {
+        year: 2024,
+        month: "10",
+        monthName: "October",
+        title: "e-Magazine October 2024",
+        folder: "issues/2024/Oct_24_Mailer"
+      },
+      {
+        year: 2026,
+        month: "09",
+        monthName: "September",
+        title: "e-Magazine September 2026",
+        folder: "issues/2026/Sept_26_Mailer"
+      }
+    
+    ];
+
+    const yearSelect = document.getElementById("yearSelect");
+    const monthSelect = document.getElementById("monthSelect");
+    const defaultHomeView = document.getElementById("defaultHomeView");
+    const viewerView = document.getElementById("viewerView");
+    const mailerFrame = document.getElementById("mailer-frame");
+    const statusIndicator = document.getElementById("statusIndicator");
+    const openNewTabBtn = document.getElementById("openNewTabBtn");
+
+    function initYears() {
+      const years = [...new Set(newsletterData.map(item => item.year))].sort((a,b) => b - a);
+      yearSelect.innerHTML = `<option value="">Select Year</option>` + 
+        years.map(y => `<option value="${y}">${y}</option>`).join("");
+      
+      monthSelect.innerHTML = `<option value="">Select Month</option>`;
+      monthSelect.disabled = true;
+    }
+
+    function handleYearChange(selectedYear) {
+      if (!selectedYear) {
+        monthSelect.innerHTML = `<option value="">Select Month</option>`;
+        monthSelect.disabled = true;
+        resetToHomeView();
+        return;
+      }
+
+      const availableIssues = newsletterData.filter(item => item.year === parseInt(selectedYear, 10));
+      monthSelect.innerHTML = `<option value="">Select Month</option>` + 
+        availableIssues.map(item => `<option value="${item.month}">${item.monthName}</option>`).join("");
+      monthSelect.disabled = false;
+    }
+
+    function displayNewsletter(year, month) {
+      const issue = newsletterData.find(item => item.year === parseInt(year, 10) && item.month === month);
+      
+      if (issue) {
+        const targetPath = `${issue.folder}/index.html`;
+        mailerFrame.src = targetPath;
+        openNewTabBtn.href = targetPath;
+        openNewTabBtn.style.display = "inline-flex";
+
+        statusIndicator.innerHTML = `Showing: <strong>${issue.title}</strong>`;
+
+        defaultHomeView.style.display = "none";
+        viewerView.style.display = "block";
+
+        const newUrl = new URL(window.location);
+        newUrl.searchParams.set("year", year);
+        newUrl.searchParams.set("month", month);
+        window.history.replaceState({}, "", newUrl);
+      } else {
+        resetToHomeView();
+      }
+    }
+
+    function resetToHomeView() {
+      mailerFrame.src = "about:blank";
+      openNewTabBtn.style.display = "none";
+      
+      yearSelect.value = "";
+      monthSelect.innerHTML = `<option value="">Select Month</option>`;
+      monthSelect.disabled = true;
+
+      statusIndicator.innerHTML = `Status: <strong>Portal Hub</strong>`;
+      defaultHomeView.style.display = "flex";
+      viewerView.style.display = "none";
+
+      const newUrl = new URL(window.location);
+      newUrl.searchParams.delete("year");
+      newUrl.searchParams.delete("month");
+      window.history.replaceState({}, "", newUrl);
+    }
+
+    function triggerQuickLoad(year, month) {
+      yearSelect.value = year;
+      handleYearChange(year);
+      monthSelect.value = month;
+      displayNewsletter(year, month);
+    }
+
+    yearSelect.addEventListener("change", (e) => {
+      handleYearChange(e.target.value);
+    });
+
+    monthSelect.addEventListener("change", (e) => {
+      if (e.target.value) {
+        displayNewsletter(yearSelect.value, e.target.value);
+      } else {
+        resetToHomeView();
+      }
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      initYears();
+      const params = new URLSearchParams(window.location.search);
+      const qYear = params.get("year");
+      const qMonth = params.get("month");
+
+      if (qYear && qMonth) {
+        yearSelect.value = qYear;
+        handleYearChange(qYear);
+        monthSelect.value = qMonth;
+        displayNewsletter(qYear, qMonth);
+      }
+    });
+  </script>
+</body>
+</html>
