@@ -19,5 +19,341 @@
     "monthName": "October e Magazine",
     "title": "Magazine October",
     "folder": "issues/2026/October_Magazine"
+  },
+  {
+    "year": 2026,
+    "month": "09-magazine",
+    "monthName": "September (e-Magazine)",
+    "title": "e-Magazine September 2026",
+    "folder": "issues/2026/Sept_26_Mailer"
+  },
+  {
+    "year": 2026,
+    "month": "08-magazine",
+    "monthName": "August (e-Magazine)",
+    "title": "e-Magazine August 2026",
+    "folder": "issues/2026/Aug_26_Mailer"
+  },
+  {
+    "year": 2026,
+    "month": "07-27-news",
+    "monthName": "July 27 (Weekly News)",
+    "title": "Weekly Newsletter - 27 Jul 2026",
+    "folder": "issues/2026/July_27_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "07-20-news",
+    "monthName": "July 20 (Weekly News)",
+    "title": "Weekly Newsletter - 20 Jul 2026",
+    "folder": "issues/2026/July_20_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "07-06-news",
+    "monthName": "July 06 (Weekly News)",
+    "title": "Weekly Newsletter - 06 Jul 2026",
+    "folder": "issues/2026/July_06_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "07-magazine",
+    "monthName": "July (e-Magazine)",
+    "title": "e-Magazine July 2026",
+    "folder": "issues/2026/July_26_Mailer"
+  },
+  {
+    "year": 2026,
+    "month": "06-29-news",
+    "monthName": "June 29 (Weekly News)",
+    "title": "Weekly Newsletter - 29 Jun 2026",
+    "folder": "issues/2026/June_29_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "06-22-news",
+    "monthName": "June 22 (Weekly News)",
+    "title": "Weekly Newsletter - 22 Jun 2026",
+    "folder": "issues/2026/June_22_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "06-15-news",
+    "monthName": "June 15 (Weekly News)",
+    "title": "Weekly Newsletter - 15 Jun 2026",
+    "folder": "issues/2026/June_15_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "06-magazine",
+    "monthName": "June (e-Magazine)",
+    "title": "e-Magazine June 2026",
+    "folder": "issues/2026/June_26_Mailer"
+  },
+  {
+    "year": 2026,
+    "month": "05-18-news",
+    "monthName": "May 18 (Weekly News)",
+    "title": "Weekly Newsletter - 18 May 2026",
+    "folder": "issues/2026/May_18_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "05-11-news",
+    "monthName": "May 11 (Weekly News)",
+    "title": "Weekly Newsletter - 11 May 2026",
+    "folder": "issues/2026/May_11_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "05-04-news",
+    "monthName": "May 04 (Weekly News)",
+    "title": "Weekly Newsletter - 04 May 2026",
+    "folder": "issues/2026/May_04_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "05-magazine",
+    "monthName": "May (e-Magazine)",
+    "title": "e-Magazine May 2026",
+    "folder": "issues/2026/May_26_Mailer"
+  },
+  {
+    "year": 2026,
+    "month": "04-27-news",
+    "monthName": "April 27 (Weekly News)",
+    "title": "Weekly Newsletter - 27 Apr 2026",
+    "folder": "issues/2026/April_27_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "04-13-news",
+    "monthName": "April 13 (Weekly News)",
+    "title": "Weekly Newsletter - 13 Apr 2026",
+    "folder": "issues/2026/April_13_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "04-06-news",
+    "monthName": "April 06 (Weekly News)",
+    "title": "Weekly Newsletter - 06 Apr 2026",
+    "folder": "issues/2026/April_06_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "04-magazine",
+    "monthName": "April (e-Magazine)",
+    "title": "e-Magazine April 2026",
+    "folder": "issues/2026/April_26_Mailer"
+  },
+  {
+    "year": 2026,
+    "month": "03-23-news",
+    "monthName": "March 23 (Weekly News)",
+    "title": "Weekly Newsletter - 23 Mar 2026",
+    "folder": "issues/2026/March_23_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "03-16-news",
+    "monthName": "March 16 (Weekly News)",
+    "title": "Weekly Newsletter - 16 Mar 2026",
+    "folder": "issues/2026/March_16_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "03-09-news",
+    "monthName": "March 09 (Weekly News)",
+    "title": "Weekly Newsletter - 09 Mar 2026",
+    "folder": "issues/2026/March_09_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "03-magazine",
+    "monthName": "March (e-Magazine)",
+    "title": "e-Magazine March 2026",
+    "folder": "issues/2026/March_26_Mailer"
+  },
+  {
+    "year": 2026,
+    "month": "02-23-news",
+    "monthName": "February 23 (Weekly News)",
+    "title": "Weekly Newsletter - 23 Feb 2026",
+    "folder": "issues/2026/Feb_23_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "02-16-news",
+    "monthName": "February 16 (Weekly News)",
+    "title": "Weekly Newsletter - 16 Feb 2026",
+    "folder": "issues/2026/Feb_16_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "02-02-news",
+    "monthName": "February 02 (Weekly News)",
+    "title": "Weekly Newsletter - 02 Feb 2026",
+    "folder": "issues/2026/Feb_02_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "02-magazine",
+    "monthName": "February (e-Magazine)",
+    "title": "e-Magazine February 2026",
+    "folder": "issues/2026/Feb_26_Mailer"
+  },
+  {
+    "year": 2026,
+    "month": "01-12-news",
+    "monthName": "January 12 (Weekly News)",
+    "title": "Weekly Newsletter - 12 Jan 2026",
+    "folder": "issues/2026/Jan_26_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "01-magazine",
+    "monthName": "January (e-Magazine)",
+    "title": "e-Magazine January 2026",
+    "folder": "issues/2026/Jan_26_Mailer"
+  },
+  {
+    "year": 2025,
+    "month": "12-magazine",
+    "monthName": "December (e-Magazine)",
+    "title": "e-Magazine December 2025",
+    "folder": "issues/2025/Dec_25_Mailer"
+  },
+  {
+    "year": 2024,
+    "month": "10",
+    "monthName": "October",
+    "title": "e-Magazine October 2024",
+    "folder": "issues/2024/Oct_24_Mailer"
+  },
+  {
+    "year": 2024,
+    "month": "09",
+    "monthName": "September",
+    "title": "e-Magazine September 2024",
+    "folder": "issues/2024/Sept_24_Mailer"
+  },
+  {
+    "year": 2024,
+    "month": "08",
+    "monthName": "August",
+    "title": "e-Magazine August 2024",
+    "folder": "issues/2024/August_24_Mailer"
+  },
+  {
+    "year": 2024,
+    "month": "07",
+    "monthName": "July",
+    "title": "e-Magazine July 2024",
+    "folder": "issues/2024/July_24_Mailer"
+  },
+  {
+    "year": 2024,
+    "month": "06",
+    "monthName": "June",
+    "title": "e-Magazine June 2024",
+    "folder": "issues/2024/June_24_Mailer"
+  },
+  {
+    "year": 2024,
+    "month": "05",
+    "monthName": "May",
+    "title": "e-Magazine May 2024",
+    "folder": "issues/2024/May_24_Mailer"
+  },
+  {
+    "year": 2024,
+    "month": "03-vol3",
+    "monthName": "March (Special Focus)",
+    "title": "e-Magazine March 2024 (Special Focus)",
+    "folder": "issues/2024/March_2_24_Mailer"
+  },
+  {
+    "year": 2024,
+    "month": "03-vol2",
+    "monthName": "March (Edition 2)",
+    "title": "e-Magazine March 2024 (Vol. 2)",
+    "folder": "issues/2024/March_1_24_Mailer"
+  },
+  {
+    "year": 2024,
+    "month": "03-vol1",
+    "monthName": "March (Edition 1)",
+    "title": "e-Magazine March 2024 (Vol. 1)",
+    "folder": "issues/2024/March_24_Mailer"
+  },
+  {
+    "year": 2024,
+    "month": "02-vol3",
+    "monthName": "February (Special Issue)",
+    "title": "e-Magazine February 2024 (Special Issue)",
+    "folder": "issues/2024/Feb_2_24_Mailer"
+  },
+  {
+    "year": 2024,
+    "month": "02-vol2",
+    "monthName": "February (Edition 2)",
+    "title": "e-Magazine February 2024 (Vol. 2)",
+    "folder": "issues/2024/Feb_1_24_Mailer"
+  },
+  {
+    "year": 2024,
+    "month": "02-vol1",
+    "monthName": "February (Edition 1)",
+    "title": "e-Magazine February 2024 (Vol. 1)",
+    "folder": "issues/2024/Feb_24_Mailer"
+  },
+  {
+    "year": 2024,
+    "month": "01-vol2",
+    "monthName": "January (Edition 2)",
+    "title": "e-Magazine January 2024 (Vol. 2)",
+    "folder": "issues/2024/Jan_1_24_Mailer"
+  },
+  {
+    "year": 2024,
+    "month": "01-vol1",
+    "monthName": "January (Edition 1)",
+    "title": "e-Magazine January 2024 (Vol. 1)",
+    "folder": "issues/2024/Jan_24_Mailer"
+  },
+  {
+    "year": 2023,
+    "month": "12-vol2",
+    "monthName": "December (Edition 2)",
+    "title": "e-Magazine December 2023 (Vol. 2)",
+    "folder": "issues/2023/Dec_1_23_Mailer"
+  },
+  {
+    "year": 2023,
+    "month": "12-vol1",
+    "monthName": "December (Edition 1)",
+    "title": "e-Magazine December 2023 (Vol. 1)",
+    "folder": "issues/2023/Dec_23_Mailer"
+  },
+  {
+    "year": 2023,
+    "month": "11",
+    "monthName": "November",
+    "title": "e-Magazine November 2023",
+    "folder": "issues/2023/Nov_23_Mailer"
+  },
+  {
+    "year": 2023,
+    "month": "10",
+    "monthName": "October",
+    "title": "e-Magazine October 2023",
+    "folder": "issues/2023/Oct_23_Mailer"
+  },
+  {
+    "year": 2023,
+    "month": "09",
+    "monthName": "September",
+    "title": "e-Magazine September 2023",
+    "folder": "issues/2023/Sept_23_Mailer"
   }
 ]
