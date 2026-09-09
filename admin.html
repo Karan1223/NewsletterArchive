@@ -6,6 +6,20 @@
   <title>CT Today - Admin Portal</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script>
+    // Set your admin password key here
+    const ADMIN_PASSWORD = "ct_admin_2026"; 
+
+    if (sessionStorage.getItem("ct_authenticated") !== "true") {
+      const pwd = prompt("Enter Admin Access Password:");
+      if (pwd === ADMIN_PASSWORD) {
+        sessionStorage.setItem("ct_authenticated", "true");
+      } else {
+        alert("Incorrect password. Access denied.");
+        window.location.href = "index.html";
+      }
+    }
+  </script>
 
   <style>
     :root {
@@ -40,7 +54,13 @@
     input:focus, textarea:focus, select:focus { border-color: var(--primary); }
     textarea { resize: vertical; min-height: 60px; }
 
-    .story-entry { background: #ffffff; border: 1px solid var(--border); padding: 12px; border-radius: 6px; margin-bottom: 12px; }
+    .image-input-group { display: flex; gap: 6px; align-items: center; margin-bottom: 12px; }
+    .image-input-group input[type="text"] { margin-bottom: 0; flex: 1; }
+    .image-input-group input[type="file"] { display: none; }
+    .file-upload-btn { background: #e2e8f0; color: #1e293b; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; border: 1.5px solid var(--border); }
+    .file-upload-btn:hover { background: #cbd5e1; }
+
+    .story-entry, .ad-entry { background: #ffffff; border: 1px solid var(--border); padding: 12px; border-radius: 6px; margin-bottom: 12px; }
     .btn { padding: 10px 18px; border-radius: 6px; font-size: 13px; font-weight: 700; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s; }
     .btn-secondary { background: #e2e8f0; color: #1e293b; }
     .btn-secondary:hover { background: #cbd5e1; }
@@ -59,8 +79,9 @@
       <img src="https://www.constructiontechnology.in/nl_images/logo.png" height="32" alt="Logo" />
       <span>Easy Mailer Publisher</span>
     </div>
-    <div>
+    <div style="display: flex; gap: 10px;">
       <a href="index.html" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> View Live Archive</a>
+      <a href="edit-home.html" class="btn btn-secondary" style="background: #fff7ed; border-color: #fed7aa; color: #c2410c;"><i class="fa-solid fa-pen-to-square"></i> Edit Portal Hub</a>
     </div>
   </header>
 
@@ -96,17 +117,30 @@
         <input type="text" id="issueMonthName" placeholder="e.g. March 16 (Weekly News)" required />
         <label>Issue Headline <span class="req">*</span></label>
         <input type="text" id="issueHeadline" placeholder="e.g. Weekly Newsletter - 16 Mar 2026" required />
-        <label>Left Cover Image URL <span class="req">*</span></label>
-        <input type="text" id="coverImgUrl" value="https://www.constructiontechnology.in/upload/current_issue/IMG_20260905_173114_06f052b9.jpg" required />
+        
+        <label>Left Cover Image URL or Device File <span class="req">*</span></label>
+        <div class="image-input-group">
+          <input type="text" id="coverImgUrl" value="https://www.constructiontechnology.in/upload/current_issue/IMG_20260905_173114_06f052b9.jpg" required />
+          <label for="coverImgFile" class="file-upload-btn"><i class="fa-solid fa-upload"></i> Upload</label>
+          <input type="file" id="coverImgFile" accept="image/*" />
+        </div>
       </div>
 
-      <!-- 3. LEAD STORY -->
+      <!-- 3. LEAD COVER STORY -->
       <div class="section-box">
         <div class="section-title"><i class="fa-solid fa-star"></i> 3. Lead Cover Story</div>
         <label>Headline <span class="req">*</span></label>
         <input type="text" id="leadTitle" value="Next-Gen Electric Compactors & Automated Paving Solutions" required />
         <label>Article Link <span class="req">*</span></label>
         <input type="text" id="leadLink" value="https://www.constructiontechnology.in/news/Road_Construction_Equipments" required />
+        
+        <label>Right Banner / Event Image URL or Device File <span class="req">*</span></label>
+        <div class="image-input-group">
+          <input type="text" id="leadBannerImg" value="public/image/image4.png" required />
+          <label for="leadBannerFile" class="file-upload-btn"><i class="fa-solid fa-upload"></i> Upload</label>
+          <input type="file" id="leadBannerFile" accept="image/*" />
+        </div>
+
         <label>Summary Description <span class="req">*</span></label>
         <textarea id="leadDesc" required>Evaluating high-torque electric powertrain efficiency, zero-emission urban asphalt paving, and AI-enabled compaction telemetry across major expressways.</textarea>
       </div>
@@ -114,14 +148,18 @@
       <!-- 4. NEWS STORIES -->
       <div class="section-box">
         <div class="section-title"><i class="fa-solid fa-list"></i> 4. News Stories</div>
+        <p style="font-size: 11px; color: #666; margin-bottom: 10px;">Stories are structured strictly as 2 stories $\rightarrow$ 1 ad banner $\rightarrow$ 2 stories $\rightarrow$ 1 ad banner.</p>
         <div id="storiesContainer">
           <div class="story-entry">
             <label>Story 1 Title <span class="req">*</span></label>
             <input type="text" class="story-title-input" value="L&T Construction Commissions Smart Expressway Package" required />
             <label>Story 1 Link <span class="req">*</span></label>
             <input type="text" class="story-link-input" value="https://www.constructiontechnology.in/news/Road_Highways_Bridges_Flyover" required />
-            <label>Image URL</label>
-            <input type="text" class="story-img-input" value="https://www.constructiontechnology.in/nl_images/lt_showcases.png" />
+            <label>Image URL or Device File</label>
+            <div class="image-input-group">
+              <input type="text" class="story-img-input" value="https://www.constructiontechnology.in/nl_images/lt_showcases.png" />
+              <label class="file-upload-btn"><i class="fa-solid fa-upload"></i> Upload<input type="file" class="story-file-input" accept="image/*" style="display:none;" /></label>
+            </div>
             <label>Summary</label>
             <textarea class="story-desc-input">Advanced sensor arrays and automated precast girder placement accelerate regional infrastructure delivery.</textarea>
           </div>
@@ -130,13 +168,33 @@
             <input type="text" class="story-title-input" value="Ammann India Launches Compact Walk-Behind Rollers" required />
             <label>Story 2 Link <span class="req">*</span></label>
             <input type="text" class="story-link-input" value="https://www.constructiontechnology.in/machinery_equipments/Road_Construction_Equipments" required />
-            <label>Image URL</label>
-            <input type="text" class="story-img-input" value="https://www.constructiontechnology.in/nl_images/ammann_india.png" />
+            <label>Image URL or Device File</label>
+            <div class="image-input-group">
+              <input type="text" class="story-img-input" value="https://www.constructiontechnology.in/nl_images/ammann_india.png" />
+              <label class="file-upload-btn"><i class="fa-solid fa-upload"></i> Upload<input type="file" class="story-file-input" accept="image/*" style="display:none;" /></label>
+            </div>
             <label>Summary</label>
             <textarea class="story-desc-input">Precision hydrostatic steering and high-frequency drum vibration engineered at the Mehsana manufacturing plant.</textarea>
           </div>
         </div>
         <button type="button" class="btn btn-secondary" id="addStoryBtn"><i class="fa-solid fa-plus"></i> Add Another Story</button>
+      </div>
+
+      <!-- 4B. BANNER ADS SECTION -->
+      <div class="section-box">
+        <div class="section-title"><i class="fa-solid fa-rectangle-ad"></i> Banner Advertisements</div>
+        <div id="adsContainer">
+          <div class="ad-entry">
+            <label>Ad Destination Link</label>
+            <input type="text" class="ad-link-input" value="https://speedcrafts.com/" />
+            <label>Ad Banner Image URL or Device File</label>
+            <div class="image-input-group">
+              <input type="text" class="ad-img-input" value="issues/2026/Sept_26_Mailer/public/image/IME.png" />
+              <label class="file-upload-btn"><i class="fa-solid fa-upload"></i> Upload<input type="file" class="ad-file-input" accept="image/*" style="display:none;" /></label>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary" id="addAdBtn"><i class="fa-solid fa-plus"></i> Add Another Ad Banner</button>
       </div>
 
       <!-- PUBLISH BUTTON -->

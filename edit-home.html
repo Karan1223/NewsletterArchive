@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CT Today - Portal Homepage Editor</title>
+
+  <!-- PASSWORD PROTECTION SCRIPT -->
+  <script>
+    const ADMIN_PASSWORD = "ct_admin_2026"; 
+
+    if (sessionStorage.getItem("ct_authenticated") !== "true") {
+      const pwd = prompt("Enter Admin Access Password:");
+      if (pwd === ADMIN_PASSWORD) {
+        sessionStorage.setItem("ct_authenticated", "true");
+      } else {
+        alert("Incorrect password. Access denied.");
+        window.location.href = "index.html";
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #f36f21;
+      --primary-dark: #dc5b10;
+      --slate-800: #1e293b;
+      --border: #e2e8f0;
+      --bg: #f8fafc;
+      --danger: #dc2626;
+      --danger-hover: #b91c1c;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background: var(--bg); color: var(--slate-800); min-height: 100vh; display: flex; flex-direction: column; }
+    
+    header { background: #ffffff; border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 16px; }
+    .brand span { color: var(--primary); }
+
+    .main-container { max-width: 900px; width: 100%; margin: 24px auto; padding: 0 20px; flex: 1; display: flex; flex-direction: column; gap: 20px; }
+    .form-panel { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 28px; display: flex; flex-direction: column; gap: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+
+    .section-box { border: 1px solid var(--border); border-radius: 8px; padding: 18px; background: #fafafa; }
+    .section-title { font-size: 13px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+
+    label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; color: #475569; }
+    label .req { color: var(--danger); }
+    input, textarea { width: 100%; padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 13px; outline: none; margin-bottom: 12px; background: #ffffff; }
+    input:focus, textarea:focus { border-color: var(--primary); }
+    textarea { resize: vertical; min-height: 70px; }
+
+    .image-input-group { display: flex; gap: 6px; align-items: center; margin-bottom: 12px; }
+    .image-input-group input[type="text"] { margin-bottom: 0; flex: 1; }
+    .image-input-group input[type="file"] { display: none; }
+    .file-upload-btn { background: #e2e8f0; color: #1e293b; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; border: 1.5px solid var(--border); }
+    .file-upload-btn:hover { background: #cbd5e1; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .entry-card { background: #ffffff; border: 1px solid var(--border); padding: 12px; border-radius: 6px; margin-bottom: 12px; }
+
+    .btn { padding: 12px 20px; border-radius: 6px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; }
+    .btn-secondary { background: #e2e8f0; color: #1e293b; }
+    .btn-secondary:hover { background: #cbd5e1; }
+    .btn-success { background: #16a34a; color: #fff; width: 100%; }
+    .btn-success:hover { background: #15803d; }
+
+    #publishLog { font-size: 13px; font-weight: 700; text-align: center; margin-top: 6px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <img src="https://www.constructiontechnology.in/nl_images/logo.png" height="32" alt="Logo" />
+      <span>Portal Homepage Customizer</span>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <a href="admin.html" class="btn btn-secondary" style="padding: 8px 14px; font-size: 12px;"><i class="fa-solid fa-envelope"></i> Issue Publisher</a>
+      <a href="index.html" class="btn btn-secondary" style="padding: 8px 14px; font-size: 12px;"><i class="fa-solid fa-arrow-left"></i> View Live Portal</a>
+    </div>
+  </header>
+
+  <div class="main-container">
+    <div class="form-panel">
+      
+      <!-- AUTHENTICATION -->
+      <div class="section-box" style="background: #fff8f3; border-color: #ffd8bf;">
+        <div class="section-title"><i class="fa-solid fa-key"></i> 1. Authentication</div>
+        <div class="grid-2">
+          <div>
+            <label>GitHub Username <span class="req">*</span></label>
+            <input type="text" id="ghUsername" value="karan1223" required />
+          </div>
+          <div>
+            <label>Repository Name <span class="req">*</span></label>
+            <input type="text" id="ghRepo" value="NewsletterArchive" required />
+          </div>
+        </div>
+        <label>GitHub Personal Token <span class="req">*</span></label>
+        <input type="password" id="ghToken" placeholder="Paste ghp_... token" autocomplete="off" required />
+        <p style="font-size: 11px; color: #666;">Token is cleared from screen immediately after pushing updates.</p>
+      </div>
+
+      <!-- SPOTLIGHT MAGAZINE -->
+      <div class="section-box">
+        <div class="section-title"><i class="fa-solid fa-book-open"></i> 2. Digital Magazine Spotlight</div>
+        <label>Magazine Cover Image URL or Device File</label>
+        <div class="image-input-group">
+          <input type="text" id="spotlightImg" value="https://www.constructiontechnology.in/upload/current_issue/IMG_20260905_173114_06f052b9.jpg" />
+          <label for="spotlightImgFile" class="file-upload-btn"><i class="fa-solid fa-upload"></i> Upload</label>
+          <input type="file" id="spotlightImgFile" accept="image/*" />
+        </div>
+        <label>Magazine Destination Link (Read Full Magazine)</label>
+        <input type="text" id="spotlightLink" value="https://www.constructiontechnology.in/epaper" />
+        <label>Magazine Spotlight Description</label>
+        <textarea id="spotlightDesc">Covering high-output crushing & screening circuits, next-generation electric excavators, automated slipform road paving, and precast infrastructure technologies.</textarea>
+      </div>
+
+      <!-- TECHNICAL INSIGHT CARDS -->
+      <div class="section-box">
+        <div class="section-title"><i class="fa-solid fa-gear"></i> 3. Technical Insight Cards (4 Cards)</div>
+        <div id="cardsContainer">
+          <div class="entry-card">
+            <div class="grid-2">
+              <div><label>Card 1 Topic</label><input type="text" class="card-topic" value="Alternative Power & Heavy Plant" /></div>
+              <div><label>Card 1 Link URL</label><input type="text" class="card-link" value="https://www.constructiontechnology.in/machinery_equipments/Earthmoving_Equipment" /></div>
+            </div>
+            <label>Card 1 Title</label>
+            <input type="text" class="card-title" value="Battery-Electric Powertrains & Hybrid Excavators" />
+            <label>Card 1 Summary</label>
+            <textarea class="card-desc">Analyzing duty cycles, high-voltage battery storage, and zero-emission operations in high-tonnage quarry excavators and urban earthmoving equipment.</textarea>
+          </div>
+          <div class="entry-card">
+            <div class="grid-2">
+              <div><label>Card 2 Topic</label><input type="text" class="card-topic" value="Crushing, Screening & Washing" /></div>
+              <div><label>Card 2 Link URL</label><input type="text" class="card-link" value="https://www.constructiontechnology.in/machinery_equipments/Crushing_Screening_Washing_MSand" /></div>
+            </div>
+            <label>Card 2 Title</label>
+            <input type="text" class="card-title" value="Advanced M-Sand Classification & High-Recovery Washing" />
+            <label>Card 2 Summary</label>
+            <textarea class="card-desc">How hydrocyclone sand recovery systems and dual-frequency screens produce concrete-grade manufactured sand while reclaiming up to 90% of process water.</textarea>
+          </div>
+          <div class="entry-card">
+            <div class="grid-2">
+              <div><label>Card 3 Topic</label><input type="text" class="card-topic" value="Concrete & Precast" /></div>
+              <div><label>Card 3 Link URL</label><input type="text" class="card-link" value="https://www.constructiontechnology.in/machinery_equipments/Concrete_Equipment" /></div>
+            </div>
+            <label>Card 3 Title</label>
+            <input type="text" class="card-title" value="Automated Batching Plants & Smart Precast Molds" />
+            <label>Card 3 Summary</label>
+            <textarea class="card-desc">High-efficiency planetary mixing systems, moisture probe automation, and hydraulic self-compacting concrete formwork for bridges and metro viaducts.</textarea>
+          </div>
+          <div class="entry-card">
+            <div class="grid-2">
+              <div><label>Card 4 Topic</label><input type="text" class="card-topic" value="IoT & Telematics" /></div>
+              <div><label>Card 4 Link URL</label><input type="text" class="card-link" value="https://www.constructiontechnology.in/machinery_equipments/Automation__Components__Gears__Motors__Pump__Spares__Bearings__Electrical__Electronics" /></div>
+            </div>
+            <label>Card 4 Title</label>
+            <input type="text" class="card-title" value="AI-Driven Predictive Maintenance & Fleet Diagnostics" />
+            <label>Card 4 Summary</label>
+            <textarea class="card-desc">Leveraging sensorized hydraulic pumps, engine health telemetry, and cloud asset tracking to maximize uptime and prevent catastrophic component failures.</textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- UPCOMING TRADE SHOWS -->
+      <div class="section-box">
+        <div class="section-title"><i class="fa-solid fa-calendar-days"></i> 4. Upcoming Trade Shows (Sidebar)</div>
+        <div id="eventsContainer">
+          <div class="entry-card">
+            <div class="grid-2">
+              <div><label>Day</label><input type="text" class="ev-day" value="15" /></div>
+              <div><label>Month</label><input type="text" class="ev-month" value="Sep" /></div>
+            </div>
+            <label>Event Name</label>
+            <input type="text" class="ev-name" value="bauma CONEXPO INDIA 2026" />
+            <label>Dates & Venue</label>
+            <input type="text" class="ev-meta" value="15–18 Sep 2026 • India Expo Centre, Greater Noida" />
+            <label>Event / Contact Link URL</label>
+            <input type="text" class="ev-link" value="https://www.constructiontechnology.in/contact" />
+          </div>
+          <div class="entry-card">
+            <div class="grid-2">
+              <div><label>Day</label><input type="text" class="ev-day" value="17" /></div>
+              <div><label>Month</label><input type="text" class="ev-month" value="Sep" /></div>
+            </div>
+            <label>Event Name</label>
+            <input type="text" class="ev-name" value="D-arc BUILD Delhi 2026" />
+            <label>Dates & Venue</label>
+            <input type="text" class="ev-meta" value="17–20 Sep 2026 • Okhla NSIC, New Delhi" />
+            <label>Event / Contact Link URL</label>
+            <input type="text" class="ev-link" value="https://www.constructiontechnology.in/contact" />
+          </div>
+          <div class="entry-card">
+            <div class="grid-2">
+              <div><label>Day</label><input type="text" class="ev-day" value="26" /></div>
+              <div><label>Month</label><input type="text" class="ev-month" value="Nov" /></div>
+            </div>
+            <label>Event Name</label>
+            <input type="text" class="ev-name" value="IGBC Green Building Congress" />
+            <label>Dates & Venue</label>
+            <input type="text" class="ev-meta" value="26–28 Nov 2026 • Jio World Centre, Mumbai" />
+            <label>Event / Contact Link URL</label>
+            <input type="text" class="ev-link" value="https://www.constructiontechnology.in/contact" />
+          </div>
+          <div class="entry-card">
+            <div class="grid-2">
+              <div><label>Day</label><input type="text" class="ev-day" value="20" /></div>
+              <div><label>Month</label><input type="text" class="ev-month" value="Oct" /></div>
+            </div>
+            <label>Event Name</label>
+            <input type="text" class="ev-name" value="World of Concrete India 2027" />
+            <label>Dates & Venue</label>
+            <input type="text" class="ev-meta" value="20–22 Oct 2027 • BEC, Mumbai" />
+            <label>Event / Contact Link URL</label>
+            <input type="text" class="ev-link" value="https://www.constructiontechnology.in/contact" />
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR BANNER ADS -->
+      <div class="section-box">
+        <div class="section-title"><i class="fa-solid fa-rectangle-ad"></i> 5. Sidebar Banner Ads</div>
+        <div class="entry-card">
+          <label>Top Partner Ad Banner Image URL or Device File</label>
+          <div class="image-input-group">
+            <input type="text" id="adImg1" value="issues/2026/Sept_26_Mailer/public/image/IME.png" />
+            <label for="adImg1File" class="file-upload-btn"><i class="fa-solid fa-upload"></i> Upload</label>
+            <input type="file" id="adImg1File" accept="image/*" />
+          </div>
+          <label>Top Partner Ad Destination Link</label>
+          <input type="text" id="adLink1" value="https://speedcrafts.com/" />
+        </div>
+        <div class="entry-card">
+          <label>Bottom Equipment Ad Banner Image URL or Device File</label>
+          <div class="image-input-group">
+            <input type="text" id="adImg2" value="issues/2026/Sept_26_Mailer/public/image/noah.png" />
+            <label for="adImg2File" class="file-upload-btn"><i class="fa-solid fa-upload"></i> Upload</label>
+            <input type="file" id="adImg2File" accept="image/*" />
+          </div>
+          <label>Bottom Equipment Ad Destination Link</label>
+          <input type="text" id="adLink2" value="https://www.constructiontechnology.in/contact" />
+        </div>
+      </div>
+
+      <button class="btn btn-success" id="publishHomeBtn">
+        <i class="fa-solid fa-cloud-arrow-up"></i> Save & Publish Homepage Updates to GitHub
+      </button>
+      <div id="publishLog"></div>
+
+    </div>
+  </div>
+
+  <script src="edit-home.js"></script>
+</body>
+</html>

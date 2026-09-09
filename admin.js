@@ -6,82 +6,155 @@ function renderPreview() {
   const coverImg = document.getElementById("coverImgUrl").value;
   const leadTitle = document.getElementById("leadTitle").value;
   const leadLink = document.getElementById("leadLink").value;
-  const leadDesc = document.getElementById("leadDesc").value;
+  const leadBannerImg = document.getElementById("leadBannerImg").value;
 
   const titles = Array.from(document.querySelectorAll(".story-title-input")).map(el => el.value);
   const links = Array.from(document.querySelectorAll(".story-link-input")).map(el => el.value);
   const images = Array.from(document.querySelectorAll(".story-img-input")).map(el => el.value);
   const descs = Array.from(document.querySelectorAll(".story-desc-input")).map(el => el.value);
 
-  let storiesRows = "";
-  for (let i = 0; i < titles.length; i += 2) {
-    const leftImg = images[i] || "https://www.constructiontechnology.in/nl_images/logo.png";
-    const rightImg = images[i + 1] || "https://www.constructiontechnology.in/nl_images/logo.png";
+  const adLinks = Array.from(document.querySelectorAll(".ad-link-input")).map(el => el.value);
+  const adImages = Array.from(document.querySelectorAll(".ad-img-input")).map(el => el.value);
 
+  function buildStoryRow(i) {
+    if (i >= titles.length) return "";
+    
+    const leftImg = images[i] || "https://www.constructiontechnology.in/nl_images/logo.png";
     let rightCol = "";
-    if (titles[i + 1]) {
+
+    if (i + 1 < titles.length && titles[i + 1]) {
+      const rightImg = images[i + 1] || "https://www.constructiontechnology.in/nl_images/logo.png";
       rightCol = 
-        '<a href="' + links[i + 1] + '" target="_blank" style="text-decoration:none;color:inherit;">' +
-          '<img src="' + rightImg + '" width="100%" style="border-radius:6px;margin-bottom:8px;display:block;">' +
-          '<strong style="font-size:13px;color:#111;line-height:1.4;display:block;">' + titles[i + 1] + '</strong>' +
-          '<p style="font-size:12px;color:#666;line-height:1.4;margin-top:6px;">' + descs[i + 1] + '</p>' +
+        '<a href="' + links[i + 1] + '" target="_blank" style="text-decoration:none;">' +
+          '<img src="' + rightImg + '" width="100%" alt="Story Image" style="width:100%;height:220px;object-fit:cover;border-radius:6px;display:block;margin-bottom:10px;" />' +
+          '<div style="font-size:13px;line-height:18px;font-weight:bold;color:#111111;">' + titles[i + 1] + '</div>' +
+          '<div style="font-size:12px;line-height:18px;color:#555555;margin-top:8px;">' + descs[i + 1] + '<br /><br /><span style="color:#f36f21;font-weight:bold;">Discover the Full Story</span></div>' +
         '</a>';
     }
 
-    storiesRows += 
-      '<tr>' +
-        '<td width="48%" valign="top" style="background:#fafafa;border-radius:8px;border:1px solid #e1e1e1;padding:12px;">' +
-          '<a href="' + links[i] + '" target="_blank" style="text-decoration:none;color:inherit;">' +
-            '<img src="' + leftImg + '" width="100%" style="border-radius:6px;margin-bottom:8px;display:block;">' +
-            '<strong style="font-size:13px;color:#111;line-height:1.4;display:block;">' + titles[i] + '</strong>' +
-            '<p style="font-size:12px;color:#666;line-height:1.4;margin-top:6px;">' + descs[i] + '</p>' +
-          '</a>' +
-        '</td>' +
-        '<td width="4%"></td>' +
-        '<td width="48%" valign="top" style="background:#fafafa;border-radius:8px;border:1px solid #e1e1e1;padding:12px;">' +
-          rightCol +
-        '</td>' +
-      '</tr>' +
-      '<tr><td colspan="3" height="12"></td></tr>';
+    return '<tr>' +
+      '<td width="48%" valign="top" style="background:#fafafa;border:1px solid #e1e1e1;border-radius:8px;padding:12px;">' +
+        '<a href="' + links[i] + '" target="_blank" style="text-decoration:none;">' +
+          '<img src="' + leftImg + '" width="100%" alt="Story Image" style="width:100%;height:220px;object-fit:cover;border-radius:6px;display:block;margin-bottom:10px;" />' +
+          '<div style="font-size:13px;line-height:18px;font-weight:bold;color:#111111;">' + titles[i] + '</div>' +
+          '<div style="font-size:12px;line-height:18px;color:#555555;margin-top:8px;">' + descs[i] + '<br /><br /><span style="color:#f36f21;font-weight:bold;">Learn More about this.</span></div>' +
+        '</a>' +
+      '</td>' +
+      '<td width="4%"></td>' +
+      '<td width="48%" valign="top" style="background:#fafafa;border:1px solid #e1e1e1;border-radius:8px;padding:12px;">' +
+        rightCol +
+      '</td>' +
+    '</tr>' +
+    '<tr><td colspan="3" height="12"></td></tr>';
+  }
+
+  function buildAdRow(j) {
+    if (j >= adImages.length) return "";
+    const aImg = adImages[j] || "https://www.constructiontechnology.in/nl_images/logo.png";
+    const aLnk = adLinks[j] || "https://www.constructiontechnology.in";
+    return '<tr><td align="center" style="padding:14px 26px 14px;">' +
+      '<a href="' + aLnk + '" target="_blank">' +
+        '<img src="' + aImg + '" width="100%" alt="Ad Banner" style="width:100%;display:block;border:1px solid #e1e1e1;border-radius:8px;" />' +
+      '</a>' +
+    '</td></tr>';
+  }
+
+  let assembledLayout = "";
+  let storyIndex = 0;
+  let adIndex = 0;
+  let sectionHeadingAdded = false;
+
+  while (storyIndex < titles.length || adIndex < adImages.length) {
+    let storyBatchHtml = "";
+    if (storyIndex < titles.length) {
+      if (!sectionHeadingAdded) {
+        assembledLayout += '<tr><td style="padding:0 26px 14px;"><div style="font-size:20px;font-weight:bold;border-left:5px solid #f36f21;padding-left:14px;line-height:24px;">The Inside Story</div></td></tr>';
+        sectionHeadingAdded = true;
+      }
+      
+      storyBatchHtml += '<tr><td style="padding:0 26px 12px;"><table width="100%" cellpadding="0" cellspacing="0" border="0">';
+      storyBatchHtml += buildStoryRow(storyIndex);
+      storyIndex += 2;
+      storyBatchHtml += '</table></td></tr>';
+      assembledLayout += storyBatchHtml;
+    }
+
+    if (adIndex < adImages.length) {
+      assembledLayout += buildAdRow(adIndex);
+      adIndex++;
+    }
   }
 
   const fullHtml = 
     '<!DOCTYPE html>' +
     '<html>' +
     '<head><meta charset="utf-8"><title>' + headline + '</title></head>' +
-    '<body style="margin:0;padding:0;background:#f4f5f7;font-family:Arial,Helvetica,sans-serif;">' +
-      '<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#f4f5f7">' +
-        '<tr><td align="center" style="padding:20px 10px;">' +
-          '<table width="600" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="border-radius:10px;overflow:hidden;border:1px solid #e1e1e1;margin:0 auto;">' +
+    '<body style="margin:0;padding:0;background:#f4f5f7;font-family:Arial,Helvetica,sans-serif;color:#222;">' +
+      '<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f4f5f7">' +
+        '<tr><td align="center" style="padding:30px 10px;">' +
+          '<table width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:600px;max-width:600px;border-radius:10px;overflow:hidden;margin:0 auto;">' +
+            
             '<tr>' +
               '<td style="background:#1f1f1f;padding:14px 22px;color:#ffffff;">' +
-                '<table width="100%"><tr><td style="font-size:12px;color:#bbbbbb;">' + headline + '</td>' +
-                '<td align="right" style="font-size:12px;color:#bbbbbb;">Construction Technology Today</td></tr></table>' +
-              '</td>' +
-            '</tr>' +
-            '<tr><td align="center" style="padding:20px;"><img src="https://www.constructiontechnology.in/nl_images/logo.png" width="220" style="display:block;"></td></tr>' +
-            '<tr>' +
-              '<td style="padding:0 24px 24px;">' +
-                '<table width="100%" cellpadding="0" cellspacing="0"><tr>' +
-                  '<td width="48%" valign="top"><img src="' + coverImg + '" width="100%" style="border-radius:8px;border:1px solid #ddd;display:block;"></td>' +
-                  '<td width="4%"></td>' +
-                  '<td width="48%" valign="top">' +
-                    '<div style="background:#f36f21;color:#fff;font-size:11px;font-weight:bold;padding:4px 10px;border-radius:14px;display:inline-block;margin-bottom:8px;">Lead Story</div>' +
-                    '<h3 style="font-size:15px;margin:0 0 8px 0;line-height:1.4;"><a href="' + leadLink + '" target="_blank" style="color:#111;text-decoration:none;">' + leadTitle + '</a></h3>' +
-                    '<p style="font-size:12px;color:#555;line-height:1.4;margin:0;">' + leadDesc + '</p>' +
-                    '<a href="' + leadLink + '" target="_blank" style="color:#f36f21;font-weight:bold;font-size:12px;text-decoration:none;display:inline-block;margin-top:8px;">Read Full Article &rarr;</a>' +
-                  '</td>' +
+                '<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' +
+                  '<td style="font-size:12px;color:#bbbbbb;font-family:Arial,Helvetica,sans-serif;">' + headline + '</td>' +
+                  '<td align="right" style="font-size:12px;color:#bbbbbb;font-family:Arial,Helvetica,sans-serif;">Construction Technology Today</td>' +
                 '</tr></table>' +
               '</td>' +
             '</tr>' +
-            '<tr><td style="padding:0 24px 12px;"><div style="font-size:18px;font-weight:bold;border-left:5px solid #f36f21;padding-left:12px;">The Inside Story</div></td></tr>' +
-            '<tr><td style="padding:0 24px 24px;"><table width="100%" cellpadding="0" cellspacing="0">' + storiesRows + '</table></td></tr>' +
-            '<tr>' +
-              '<td align="center" style="background:#f36f21;padding:24px;color:#fff;">' +
-                '<div style="font-size:16px;font-weight:bold;margin-bottom:8px;">Stay Ahead in Construction Technology</div>' +
-                '<a href="https://www.constructiontechnology.in/subscriptions" target="_blank" style="background:#fff;color:#f36f21;padding:8px 20px;border-radius:20px;font-weight:bold;text-decoration:none;display:inline-block;font-size:12px;">Subscribe Now</a>' +
-              '</td>' +
-            '</tr>' +
+
+            '<tr><td align="center" style="padding:26px;">' +
+              '<a href="https://www.constructiontechnology.in/" target="_blank">' +
+                '<img src="https://www.constructiontechnology.in/nl_images/logo.png" width="220" alt="Logo" style="display:block;margin:auto;" />' +
+              '</a>' +
+            '</td></tr>' +
+
+            '<tr><td style="padding:0 26px 26px;">' +
+              '<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' +
+                '<td width="48%" valign="top">' +
+                  '<a href="' + leadLink + '" target="_blank" style="text-decoration:none;">' +
+                    '<div style="display:inline-block;background:#f36f21;color:#ffffff;font-size:11px;font-weight:bold;line-height:1;padding:6px 12px;border-radius:20px;margin-bottom:10px;">' + headline + '</div>' +
+                    '<img src="' + coverImg + '" width="100%" alt="Cover Issue" style="width:100%;border-radius:8px;border:1px solid #dddddd;display:block;" />' +
+                  '</a>' +
+                '</td>' +
+                '<td width="4%"></td>' +
+                '<td width="48%" valign="top">' +
+                  '<div style="display:inline-block;background:#111111;color:#ffffff;font-size:11px;font-weight:bold;line-height:1;padding:6px 12px;border-radius:20px;margin-bottom:10px;">Visit Booth</div>' +
+                  '<a href="https://www.constructiontechnology.in/contact" target="_blank">' +
+                    '<img src="' + leadBannerImg + '" width="100%" alt="Visit Booth" style="width:100%;height:350px;object-fit:contain;border-radius:8px;display:block;" />' +
+                  '</a>' +
+                '</td>' +
+              '</tr></table>' +
+            '</td></tr>' +
+
+            assembledLayout +
+
+            '<tr><td style="padding:17px 26px 26px;border-top:2px solid #666666;">' +
+              '<table cellpadding="0" cellspacing="0" border="0"><tr>' +
+                '<td style="background-color:#f7941d;color:#ffffff;font-size:9px;line-height:1;font-weight:bold;padding:5px 8px;white-space:nowrap;">NEXT ISSUE FOCUS</td>' +
+              '</tr></table>' +
+              '<p style="margin:10px 0 8px;padding:0;font-size:12px;line-height:1.35;font-weight:bold;color:#333333;">CT Today Magazine – October 2026 Special Issue</p>' +
+              '<p style="margin:0;padding:0;font-size:11px;line-height:1.45;color:#333333;">' +
+                'Powering the next phase of <strong> construction, mining &amp; aggregates </strong> with technologies built for productivity and performance.' +
+                '<br /><br />' +
+                '<strong>• Cover Story:</strong> Crushing, Screening &amp; Washing Equipment<br />' +
+                '<strong>• Special Feature:</strong> Excavators<br />' +
+                '<strong>• Industry Profile:</strong> Mobile Crushers<br />' +
+                '<br />' +
+                '<span style="color:#9f1fac;font-weight:bold;">Showcase your brand • Highlight your innovations • Connect with the industry</span>' +
+              '</p>' +
+            '</td></tr>' +
+
+            '<tr><td align="center" style="background:#f36f21;padding:32px;">' +
+              '<div style="color:#ffffff;font-size:20px;font-weight:bold;margin-bottom:12px;font-family:Arial,Helvetica,sans-serif;">Stay Ahead of Construction Technology</div>' +
+              '<a href="https://www.constructiontechnology.in/subscriptions" target="_blank" style="background:#ffffff;color:#f36f21;padding:14px 34px;border-radius:30px;font-weight:bold;text-decoration:none;display:inline-block;font-family:Arial,Helvetica,sans-serif;">Subscribe Now</a>' +
+            '</td></tr>' +
+
+            '<tr><td align="center" style="padding:18px;font-size:12px;color:#777777;font-family:Arial,Helvetica,sans-serif;">' +
+              '&copy; 2026 Construction Technology Today<br />' +
+              '<a href="https://www.constructiontechnology.in" target="_blank" style="color:#000000;text-decoration:none;">www.constructiontechnology.in</a>' +
+            '</td></tr>' +
+
           '</table>' +
         '</td></tr>' +
       '</table>' +
@@ -102,19 +175,62 @@ function renderPreview() {
 
 function addStoryField() {
   const container = document.getElementById("storiesContainer");
+  const storyCount = container.querySelectorAll(".story-entry").length + 1;
   const div = document.createElement("div");
   div.className = "story-entry";
   div.innerHTML = 
-    '<label>Story Title <span class="req">*</span></label>' +
+    '<label>Story ' + storyCount + ' Title <span class="req">*</span></label>' +
     '<input type="text" class="story-title-input" placeholder="Story title" required />' +
-    '<label>Story Link <span class="req">*</span></label>' +
+    '<label>Story ' + storyCount + ' Link <span class="req">*</span></label>' +
     '<input type="text" class="story-link-input" placeholder="https://..." required />' +
-    '<label>Image URL</label>' +
-    '<input type="text" class="story-img-input" placeholder="https://..." />' +
+    '<label>Image URL or Device File</label>' +
+    '<div class="image-input-group">' +
+      '<input type="text" class="story-img-input" placeholder="https://..." />' +
+      '<label class="file-upload-btn"><i class="fa-solid fa-upload"></i> Upload<input type="file" class="story-file-input" accept="image/*" style="display:none;" /></label>' +
+    '</div>' +
     '<label>Summary</label>' +
     '<textarea class="story-desc-input" placeholder="Brief summary..."></textarea>';
+  
   container.appendChild(div);
+  attachFileInputListeners(div);
   renderPreview();
+}
+
+function addAdField() {
+  const container = document.getElementById("adsContainer");
+  const adCount = container.querySelectorAll(".ad-entry").length + 1;
+  const div = document.createElement("div");
+  div.className = "ad-entry";
+  div.innerHTML = 
+    '<label>Ad ' + adCount + ' Destination Link</label>' +
+    '<input type="text" class="ad-link-input" placeholder="https://..." />' +
+    '<label>Ad ' + adCount + ' Banner Image URL or Device File</label>' +
+    '<div class="image-input-group">' +
+      '<input type="text" class="ad-img-input" placeholder="https://..." />' +
+      '<label class="file-upload-btn"><i class="fa-solid fa-upload"></i> Upload<input type="file" class="ad-file-input" accept="image/*" style="display:none;" /></label>' +
+    '</div>';
+  container.appendChild(div);
+  attachFileInputListeners(div);
+  renderPreview();
+}
+
+function attachFileInputListeners(scope = document) {
+  scope.querySelectorAll('input[type="file"]').forEach(fileInput => {
+    fileInput.removeEventListener('change', handleFileChange);
+    fileInput.addEventListener('change', handleFileChange);
+  });
+}
+
+function handleFileChange(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(uploadEvent) {
+    const textInput = e.target.closest('.image-input-group').querySelector('input[type="text"]');
+    textInput.value = uploadEvent.target.result;
+    renderPreview();
+  };
+  reader.readAsDataURL(file);
 }
 
 function safeDecodeBase64(str) {
@@ -203,7 +319,7 @@ async function publishIssueToGithub() {
   const headline = document.getElementById("issueHeadline").value.trim();
   const leadTitle = document.getElementById("leadTitle").value.trim();
   const leadLink = document.getElementById("leadLink").value.trim();
-  const leadDesc = document.getElementById("leadDesc").value.trim();
+  const leadBannerImg = document.getElementById("leadBannerImg").value.trim();
 
   const log = document.getElementById("publishLog");
   const btn = document.getElementById("publishBtn");
@@ -213,7 +329,7 @@ async function publishIssueToGithub() {
     tokenInput.focus();
     return;
   }
-  if (!user || !repo || !year || !folderInput || !monthName || !headline || !leadTitle || !leadLink || !leadDesc) {
+  if (!user || !repo || !year || !folderInput || !monthName || !headline || !leadTitle || !leadLink || !leadBannerImg) {
     alert("Required fields cannot be empty. Please fill in all fields marked with *.");
     return;
   }
@@ -297,7 +413,7 @@ async function publishIssueToGithub() {
   } catch (err) {
     log.style.color = "#dc2626";
     log.innerText = "Error: " + err.message;
-    alert("Publish failed: " + err.message);
+    alert("Failed to publish: " + err.message);
   } finally {
     btn.disabled = false;
     btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Save & Publish Issue to GitHub';
@@ -337,14 +453,12 @@ async function deleteIssueFromGithub() {
   try {
     const htmlFilePath = deleteFolder + "/index.html";
     
-    // Step 1: Get the file SHA of the index.html inside the folder so GitHub allows deletion
     const fileGetRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${htmlFilePath}?ref=main`, {
       headers: { "Authorization": "Bearer " + token }
     });
 
     if (fileGetRes.ok) {
       const fileData = await fileGetRes.json();
-      // Delete the physical HTML file from GitHub repository
       await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${htmlFilePath}`, {
         method: "DELETE",
         headers: {
@@ -360,7 +474,6 @@ async function deleteIssueFromGithub() {
 
     log.innerText = "2/2 Updating newsletters.json registry...";
 
-    // Step 2: Update data/newsletters.json
     const jsonPath = "data/newsletters.json";
     const jsonGet = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${jsonPath}?ref=main`, {
       headers: { "Authorization": "Bearer " + token }
@@ -405,11 +518,13 @@ async function deleteIssueFromGithub() {
 window.addEventListener("DOMContentLoaded", function() {
   document.getElementById("formPanel").addEventListener("input", renderPreview);
   document.getElementById("addStoryBtn").addEventListener("click", addStoryField);
+  document.getElementById("addAdBtn").addEventListener("click", addAdField);
   document.getElementById("refreshPreviewBtn").addEventListener("click", renderPreview);
   document.getElementById("publishBtn").addEventListener("click", publishIssueToGithub);
   document.getElementById("fetchDeleteBtn").addEventListener("click", fetchExistingIssuesViaToken);
   document.getElementById("deleteBtn").addEventListener("click", deleteIssueFromGithub);
 
+  attachFileInputListeners();
   renderPreview();
   loadLocalDeleteList();
 });
