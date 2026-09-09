@@ -117,7 +117,6 @@ function addStoryField() {
   renderPreview();
 }
 
-// Strip all newlines and whitespace before decoding GitHub base64 strings
 function safeDecodeBase64(str) {
   const cleanStr = str.replace(/\s/g, '');
   return decodeURIComponent(Array.prototype.map.call(atob(cleanStr), function(c) {
@@ -131,12 +130,11 @@ function safeEncodeBase64(str) {
   }));
 }
 
-// Automatically populate delete dropdown from local or remote registry
-async function populateDeleteDropdown(items) {
+function populateDeleteDropdown(items) {
   const deleteSelect = document.getElementById("deleteSelect");
   if (!items || !items.length) return;
   deleteSelect.innerHTML = '<option value="">-- Choose an edition to remove --</option>' +
-    items.map(item => `<option value="${item.folder}">${item.year} - ${item.monthName} (${item.title})</option>`).join("");
+    items.map(item => `<option value="${item.folder}">${item.year} - ${item.monthName} (${item.folder})</option>`).join("");
 }
 
 async function loadLocalDeleteList() {
@@ -151,7 +149,6 @@ async function loadLocalDeleteList() {
   }
 }
 
-// Explicit token-based fetch for the delete dropdown
 async function fetchExistingIssuesViaToken() {
   const tokenInput = document.getElementById("ghToken");
   const token = tokenInput.value.trim();
@@ -211,27 +208,16 @@ async function publishIssueToGithub() {
   const log = document.getElementById("publishLog");
   const btn = document.getElementById("publishBtn");
 
-  // Strict Validation
   if (!token) {
     alert("Please paste your GitHub Personal Access Token in Section 1.");
     tokenInput.focus();
     return;
   }
   if (!user || !repo || !year || !folderInput || !monthName || !headline || !leadTitle || !leadLink || !leadDesc) {
-    alert("Required fields cannot be empty. Please fill in all fields marked with an asterisk (*).");
+    alert("Required fields cannot be empty. Please fill in all fields marked with *.");
     return;
   }
 
-  const storyTitles = Array.from(document.querySelectorAll(".story-title-input"));
-  const storyLinks = Array.from(document.querySelectorAll(".story-link-input"));
-  for (let i = 0; i < storyTitles.length; i++) {
-    if (!storyTitles[i].value.trim() || !storyLinks[i].value.trim()) {
-      alert("All news stories must have at least a Title and Link.");
-      return;
-    }
-  }
-
-  // Clear token immediately from screen
   tokenInput.value = "";
   localStorage.removeItem("ct_gh_token");
 
@@ -245,7 +231,6 @@ async function publishIssueToGithub() {
     const filePath = folderPath + "/index.html";
     const content = renderPreview();
 
-    // 1. Commit new issue HTML
     const fileRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${filePath}`, {
       method: "PUT",
       headers: {
@@ -263,9 +248,8 @@ async function publishIssueToGithub() {
       throw new Error(`Failed creating ${filePath}: ${errJson.message || fileRes.statusText}`);
     }
 
-    log.innerText = "2/2 Safely reading and appending to data/newsletters.json...";
+    log.innerText = "2/2 Safely updating data/newsletters.json...";
 
-    // 2. Fetch current newsletters.json from GitHub
     const jsonPath = "data/newsletters.json";
     const jsonGet = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${jsonPath}?ref=main`, {
       headers: { "Authorization": "Bearer " + token }
@@ -275,18 +259,10 @@ async function publishIssueToGithub() {
 
     const jsonGetData = await jsonGet.json();
     const sha = jsonGetData.sha;
-    
-    // Safely decode without wiping old issues
     let existingData = JSON.parse(safeDecodeBase64(jsonGetData.content));
 
-    if (!Array.isArray(existingData)) {
-      throw new Error("Invalid registry format on GitHub. Expected an array.");
-    }
-
-    // Filter out duplicates if re-publishing the same folder
     existingData = existingData.filter(item => item.folder !== folderPath);
 
-    // Prepend the new issue to preserve all older issues
     const newEntry = {
       year: parseInt(year, 10),
       month: folderInput,
@@ -296,7 +272,6 @@ async function publishIssueToGithub() {
     };
     existingData.unshift(newEntry);
 
-    // 3. Commit updated registry back to GitHub
     const jsonPut = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${jsonPath}`, {
       method: "PUT",
       headers: {
@@ -316,8 +291,8 @@ async function publishIssueToGithub() {
     }
 
     log.style.color = "#16a34a";
-    log.innerText = "Success! Issue published. All historical editions preserved.";
-    alert("Published successfully! All editions preserved.");
+    log.innerText = "Success! Issue published and registry updated.";
+    alert("Published successfully!");
     populateDeleteDropdown(existingData);
   } catch (err) {
     log.style.color = "#dc2626";
@@ -348,19 +323,44 @@ async function deleteIssueFromGithub() {
     return;
   }
 
-  const confirmDelete = confirm(`Are you sure you want to remove "${deleteFolder}" from the active archive registry?`);
+  const confirmDelete = confirm(`Are you sure you want to completely delete "${deleteFolder}" and its index.html file from GitHub?`);
   if (!confirmDelete) return;
 
-  // Clear token immediately
   tokenInput.value = "";
   localStorage.removeItem("ct_gh_token");
 
   btn.disabled = true;
-  btn.innerText = "Removing issue...";
+  btn.innerText = "Deleting issue & files...";
   log.style.color = "#f36f21";
-  log.innerText = "Connecting to GitHub...";
+  log.innerText = "1/2 Removing index.html from GitHub...";
 
   try {
+    const htmlFilePath = deleteFolder + "/index.html";
+    
+    // Step 1: Get the file SHA of the index.html inside the folder so GitHub allows deletion
+    const fileGetRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${htmlFilePath}?ref=main`, {
+      headers: { "Authorization": "Bearer " + token }
+    });
+
+    if (fileGetRes.ok) {
+      const fileData = await fileGetRes.json();
+      // Delete the physical HTML file from GitHub repository
+      await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${htmlFilePath}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": "Bearer " + token,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: "Delete folder file: " + htmlFilePath,
+          sha: fileData.sha
+        })
+      });
+    }
+
+    log.innerText = "2/2 Updating newsletters.json registry...";
+
+    // Step 2: Update data/newsletters.json
     const jsonPath = "data/newsletters.json";
     const jsonGet = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${jsonPath}?ref=main`, {
       headers: { "Authorization": "Bearer " + token }
@@ -380,7 +380,7 @@ async function deleteIssueFromGithub() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        message: "Remove edition: " + deleteFolder,
+        message: "Remove edition from registry: " + deleteFolder,
         content: safeEncodeBase64(JSON.stringify(updatedData, null, 2)),
         sha: jsonGetData.sha
       })
@@ -389,8 +389,8 @@ async function deleteIssueFromGithub() {
     if (!jsonPut.ok) throw new Error("Failed to commit updated newsletters.json");
 
     log.style.color = "#16a34a";
-    log.innerText = "Issue successfully removed from active archive!";
-    alert("Issue removed from active archive!");
+    log.innerText = "Issue and its files successfully deleted from GitHub!";
+    alert("Issue deleted successfully!");
     populateDeleteDropdown(updatedData);
   } catch (err) {
     log.style.color = "#dc2626";
