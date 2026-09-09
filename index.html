@@ -31,708 +31,120 @@
       --card-shadow-hover: 0 12px 28px -4px rgba(15, 23, 42, 0.1), 0 4px 10px -2px rgba(15, 23, 42, 0.05);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Plus Jakarta Sans', 'Fira Sans', Arial, sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', 'Fira Sans', Arial, sans-serif; }
+    body { background-color: #f6f8fb; color: var(--slate-800); display: flex; flex-direction: column; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; transition: color 0.15s ease; }
+
+    header { background: #ffffff; border-bottom: 1px solid var(--slate-200); position: sticky; top: 0; z-index: 1000; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04); }
+    .header-container { max-width: 1400px; margin: 0 auto; padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .brand-group { display: flex; align-items: center; gap: 16px; }
+    .brand-logo { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .brand-logo img { height: 38px; width: auto; display: block; }
+    .portal-tag { font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; background: var(--primary-soft); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(243, 111, 33, 0.2); }
+
+    .nav-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .btn-home { background: var(--slate-100); color: var(--slate-800); border: 1px solid var(--slate-200); padding: 9px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease; }
+    .btn-home:hover { background: #e2e8f0; color: #000000; }
+    .btn-admin { background: #fff7ed; border-color: #fed7aa; color: #c2410c; }
+    .btn-admin:hover { background: #ffedd5; color: var(--primary-hover); }
+
+    .select-box { position: relative; }
+    .select-box select { appearance: none; -webkit-appearance: none; background: #ffffff; border: 1.5px solid var(--slate-200); border-radius: 8px; padding: 9px 34px 9px 13px; font-size: 13px; font-weight: 600; color: var(--slate-800); cursor: pointer; outline: none; min-width: 140px; transition: all 0.2s ease; }
+    .select-box select:focus, .select-box select:hover { border-color: var(--primary); }
+    .select-box i { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 10px; color: var(--slate-400); }
+
+    .btn-subscribe { background: var(--primary); color: #ffffff; padding: 9px 16px; border-radius: 8px; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; border: none; cursor: pointer; transition: background 0.2s; }
+    .btn-subscribe:hover { background: var(--primary-hover); }
+    .btn-fullscreen { background: var(--dark); color: #ffffff; padding: 9px 13px; border-radius: 8px; font-size: 13px; font-weight: 600; display: none; align-items: center; gap: 6px; }
+    .btn-fullscreen:hover { background: #1e293b; }
+
+    .portal-layout { max-width: 1400px; width: 100%; margin: 24px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 380px; gap: 28px; flex: 1; }
+    .main-column { display: flex; flex-direction: column; align-items: center; width: 100%; }
+    .view-header { width: 100%; max-width: 740px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 13px; color: var(--slate-600); }
+    .view-header strong { color: var(--slate-900); }
+
+    .dashboard-container { width: 100%; max-width: 740px; display: flex; flex-direction: column; gap: 22px; }
+
+    .portal-hero { background: linear-gradient(135deg, #111827 0%, #1f2937 100%); color: #ffffff; border-radius: 14px; padding: 26px; position: relative; overflow: hidden; box-shadow: var(--card-shadow); }
+    .portal-hero::after { content: ''; position: absolute; top: -30px; right: -30px; width: 160px; height: 160px; background: rgba(243, 111, 33, 0.12); border-radius: 50%; pointer-events: none; }
+    .portal-hero h1 { font-size: 22px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.3px; }
+    .portal-hero p { font-size: 13px; color: #cbd5e1; line-height: 20px; max-width: 580px; }
+    .hero-stats-strip { display: flex; gap: 20px; margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 12px; }
+    .stat-badge { display: flex; align-items: center; gap: 6px; color: #e2e8f0; }
+    .stat-badge i { color: var(--primary); }
+
+    .selector-prompt { background: #ffffff; border: 1px solid #fed7aa; border-left: 4px solid var(--primary); border-radius: 10px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; box-shadow: 0 2px 6px rgba(243, 111, 33, 0.05); }
+    .selector-prompt-text { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; color: var(--slate-800); }
+    .selector-prompt-text i { font-size: 20px; color: var(--primary); }
+
+    .magazine-spotlight { background: #ffffff; border: 1px solid var(--slate-200); border-radius: 14px; padding: 20px; display: flex; gap: 20px; box-shadow: var(--card-shadow); transition: all 0.2s ease; }
+    .magazine-spotlight:hover { box-shadow: var(--card-shadow-hover); border-color: #cbd5e1; }
+    .spotlight-cover { width: 145px; height: 195px; object-fit: cover; border-radius: 8px; border: 1px solid var(--slate-200); box-shadow: 0 4px 12px rgba(0,0,0,0.08); flex-shrink: 0; }
+    .spotlight-info { display: flex; flex-direction: column; justify-content: space-between; }
+    .spotlight-tag { font-size: 10px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+    .spotlight-info h3 { font-size: 18px; font-weight: 800; color: var(--slate-900); line-height: 1.35; margin-bottom: 8px; }
+    .spotlight-info p { font-size: 12px; color: var(--slate-600); line-height: 19px; margin-bottom: 14px; }
+    .spotlight-btn-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .btn-digital-copy { background: var(--primary); color: #ffffff; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-digital-copy:hover { background: var(--primary-hover); color: #ffffff; }
+    .btn-read-online { background: var(--slate-100); color: var(--slate-800); padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; border: 1px solid var(--slate-200); display: inline-flex; align-items: center; gap: 6px; }
+    .btn-read-online:hover { background: #e2e8f0; }
+
+    .section-heading { font-size: 15px; font-weight: 800; color: var(--slate-900); display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--slate-200); padding-bottom: 8px; margin-top: 4px; }
+    .section-heading a { font-size: 12px; font-weight: 700; color: var(--primary); }
+
+    .tech-articles-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .tech-card { background: #ffffff; border: 1px solid var(--slate-200); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--card-shadow); transition: all 0.2s ease; }
+    .tech-card:hover { border-color: var(--primary); box-shadow: var(--card-shadow-hover); transform: translateY(-2px); }
+    .tech-topic { font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--primary); letter-spacing: 0.5px; margin-bottom: 6px; }
+    .tech-card h4 { font-size: 14px; font-weight: 700; color: var(--slate-900); line-height: 1.4; margin-bottom: 8px; }
+    .tech-card p { font-size: 12px; color: var(--slate-600); line-height: 18px; margin-bottom: 14px; }
+    .card-footer-link { font-size: 12px; font-weight: 700; color: var(--primary); display: inline-flex; align-items: center; gap: 4px; }
+
+    .vertical-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .v-pill { background: #ffffff; border: 1px solid var(--slate-200); border-radius: 20px; padding: 7px 14px; font-size: 12px; font-weight: 600; color: var(--slate-700); display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease; }
+    .v-pill:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+
+    .viewer-card { width: 100%; max-width: 740px; background: #ffffff; border-radius: 14px; border: 1px solid var(--slate-200); box-shadow: var(--card-shadow); overflow: hidden; display: none; }
+    iframe#mailer-frame { width: 100%; height: 90vh; border: none; display: block; }
+
+    .sidebar-column { display: flex; flex-direction: column; gap: 22px; }
+    .sidebar-box { background: #ffffff; border-radius: 12px; border: 1px solid var(--slate-200); box-shadow: var(--card-shadow); overflow: hidden; }
+    .sidebar-header { padding: 13px 18px; background: var(--slate-50); border-bottom: 1px solid var(--slate-200); font-size: 13px; font-weight: 800; color: var(--slate-900); display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .sidebar-header i { color: var(--primary); font-size: 14px; }
+    .sidebar-body { padding: 16px 18px; }
+
+    .event-item-block { display: flex; gap: 14px; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px dashed var(--slate-200); transition: transform 0.15s; }
+    .event-item-block:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+    .event-item-block:hover { transform: translateX(3px); }
+    .event-calendar-badge { min-width: 50px; text-align: center; background: var(--primary-soft); border: 1px solid rgba(243, 111, 33, 0.2); color: var(--primary); border-radius: 8px; padding: 8px 4px; height: fit-content; }
+    .event-calendar-badge .cal-day { font-size: 17px; font-weight: 800; line-height: 1; }
+    .event-calendar-badge .cal-month { font-size: 10px; font-weight: 800; text-transform: uppercase; margin-top: 2px; }
+    .event-details h5 { font-size: 13px; font-weight: 700; color: var(--slate-900); line-height: 1.35; margin-bottom: 3px; }
+    .event-details p { font-size: 11px; color: var(--slate-600); margin-bottom: 4px; }
+    .event-link-text { font-size: 11px; font-weight: 700; color: var(--primary); display: inline-flex; align-items: center; gap: 3px; }
+
+    .ad-card { text-align: center; }
+    .ad-card img { width: 100%; border-radius: 8px; border: 1px solid var(--slate-200); display: block; transition: transform 0.2s; }
+    .ad-card img:hover { transform: scale(1.015); }
+    .ad-label { font-size: 10px; font-weight: 800; color: var(--slate-400); text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 0.5px; }
+
+    .contact-list { list-style: none; font-size: 12px; line-height: 22px; color: var(--slate-600); }
+    .contact-list li { margin-bottom: 6px; display: flex; align-items: flex-start; gap: 10px; }
+    .contact-list i { color: var(--primary); width: 14px; margin-top: 4px; }
 
-    body {
-      background-color: #f6f8fb;
-      color: var(--slate-800);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-      transition: color 0.15s ease;
-    }
-
-    /* --- TOP NAVBAR --- */
-    header {
-      background: #ffffff;
-      border-bottom: 1px solid var(--slate-200);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
-    }
-
-    .header-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 10px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .brand-group {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .brand-logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-    }
-
-    .brand-logo img {
-      height: 38px;
-      width: auto;
-      display: block;
-    }
-
-    .portal-tag {
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      background: var(--primary-soft);
-      padding: 4px 10px;
-      border-radius: 6px;
-      border: 1px solid rgba(243, 111, 33, 0.2);
-    }
-
-    /* NAV CONTROLS */
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .btn-home {
-      background: var(--slate-100);
-      color: var(--slate-800);
-      border: 1px solid var(--slate-200);
-      padding: 9px 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-    }
-
-    .btn-home:hover {
-      background: #e2e8f0;
-      color: #000000;
-    }
-
-    .select-box {
-      position: relative;
-    }
-
-    .select-box select {
-      appearance: none;
-      -webkit-appearance: none;
-      background: #ffffff;
-      border: 1.5px solid var(--slate-200);
-      border-radius: 8px;
-      padding: 9px 34px 9px 13px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--slate-800);
-      cursor: pointer;
-      outline: none;
-      min-width: 140px;
-      transition: all 0.2s ease;
-    }
-
-    .select-box select:focus,
-    .select-box select:hover {
-      border-color: var(--primary);
-    }
-
-    .select-box i {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none;
-      font-size: 10px;
-      color: var(--slate-400);
-    }
-
-    .btn-subscribe {
-      background: var(--primary);
-      color: #ffffff;
-      padding: 9px 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .btn-subscribe:hover {
-      background: var(--primary-hover);
-    }
-
-    .btn-fullscreen {
-      background: var(--dark);
-      color: #ffffff;
-      padding: 9px 13px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      display: none;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn-fullscreen:hover {
-      background: #1e293b;
-    }
-
-    /* --- LAYOUT GRID --- */
-    .portal-layout {
-      max-width: 1400px;
-      width: 100%;
-      margin: 24px auto;
-      padding: 0 20px;
-      display: grid;
-      grid-template-columns: 1fr 380px;
-      gap: 28px;
-      flex: 1;
-    }
-
-    /* LEFT / CENTER WORKSPACE */
-    .main-column {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-    }
-
-    .view-header {
-      width: 100%;
-      max-width: 740px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-      font-size: 13px;
-      color: var(--slate-600);
-    }
-
-    .view-header strong {
-      color: var(--slate-900);
-    }
-
-    /* DEFAULT DASHBOARD CONTAINER */
-    .dashboard-container {
-      width: 100%;
-      max-width: 740px;
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-    }
-
-    /* HERO CARD */
-    .portal-hero {
-      background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
-      color: #ffffff;
-      border-radius: 14px;
-      padding: 26px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: var(--card-shadow);
-    }
-
-    .portal-hero::after {
-      content: '';
-      position: absolute;
-      top: -30px;
-      right: -30px;
-      width: 160px;
-      height: 160px;
-      background: rgba(243, 111, 33, 0.12);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-
-    .portal-hero h1 {
-      font-size: 22px;
-      font-weight: 800;
-      margin-bottom: 8px;
-      letter-spacing: -0.3px;
-    }
-
-    .portal-hero p {
-      font-size: 13px;
-      color: #cbd5e1;
-      line-height: 20px;
-      max-width: 580px;
-    }
-
-    .hero-stats-strip {
-      display: flex;
-      gap: 20px;
-      margin-top: 20px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      font-size: 12px;
-    }
-
-    .stat-badge {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: #e2e8f0;
-    }
-
-    .stat-badge i {
-      color: var(--primary);
-    }
-
-    /* INSTRUCTION SELECTOR BANNER */
-    .selector-prompt {
-      background: #ffffff;
-      border: 1px solid #fed7aa;
-      border-left: 4px solid var(--primary);
-      border-radius: 10px;
-      padding: 14px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      box-shadow: 0 2px 6px rgba(243, 111, 33, 0.05);
-    }
-
-    .selector-prompt-text {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--slate-800);
-    }
-
-    .selector-prompt-text i {
-      font-size: 20px;
-      color: var(--primary);
-    }
-
-    /* DIGITAL MAGAZINE SHOWCASE */
-    .magazine-spotlight {
-      background: #ffffff;
-      border: 1px solid var(--slate-200);
-      border-radius: 14px;
-      padding: 20px;
-      display: flex;
-      gap: 20px;
-      box-shadow: var(--card-shadow);
-      transition: all 0.2s ease;
-    }
-
-    .magazine-spotlight:hover {
-      box-shadow: var(--card-shadow-hover);
-      border-color: #cbd5e1;
-    }
-
-    .spotlight-cover {
-      width: 145px;
-      height: 195px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 1px solid var(--slate-200);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      flex-shrink: 0;
-    }
-
-    .spotlight-info {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .spotlight-tag {
-      font-size: 10px;
-      font-weight: 800;
-      color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-bottom: 4px;
-    }
-
-    .spotlight-info h3 {
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--slate-900);
-      line-height: 1.35;
-      margin-bottom: 8px;
-    }
-
-    .spotlight-info p {
-      font-size: 12px;
-      color: var(--slate-600);
-      line-height: 19px;
-      margin-bottom: 14px;
-    }
-
-    .spotlight-btn-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .btn-digital-copy {
-      background: var(--primary);
-      color: #ffffff;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.15s;
-    }
-
-    .btn-digital-copy:hover {
-      background: var(--primary-hover);
-      color: #ffffff;
-    }
-
-    .btn-read-online {
-      background: var(--slate-100);
-      color: var(--slate-800);
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      border: 1px solid var(--slate-200);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn-read-online:hover {
-      background: #e2e8f0;
-    }
-
-    /* SECTION TITLES */
-    .section-heading {
-      font-size: 15px;
-      font-weight: 800;
-      color: var(--slate-900);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 2px solid var(--slate-200);
-      padding-bottom: 8px;
-      margin-top: 4px;
-    }
-
-    .section-heading a {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    /* TECHNICAL ARTICLES GRID */
-    .tech-articles-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-
-    .tech-card {
-      background: #ffffff;
-      border: 1px solid var(--slate-200);
-      border-radius: 12px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: var(--card-shadow);
-      transition: all 0.2s ease;
-    }
-
-    .tech-card:hover {
-      border-color: var(--primary);
-      box-shadow: var(--card-shadow-hover);
-      transform: translateY(-2px);
-    }
-
-    .tech-topic {
-      font-size: 10px;
-      font-weight: 800;
-      text-transform: uppercase;
-      color: var(--primary);
-      letter-spacing: 0.5px;
-      margin-bottom: 6px;
-    }
-
-    .tech-card h4 {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--slate-900);
-      line-height: 1.4;
-      margin-bottom: 8px;
-    }
-
-    .tech-card p {
-      font-size: 12px;
-      color: var(--slate-600);
-      line-height: 18px;
-      margin-bottom: 14px;
-    }
-
-    .card-footer-link {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--primary);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    /* VERTICAL PILLS */
-    .vertical-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .v-pill {
-      background: #ffffff;
-      border: 1px solid var(--slate-200);
-      border-radius: 20px;
-      padding: 7px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--slate-700);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-    }
-
-    .v-pill:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-      background: var(--primary-soft);
-    }
-
-    /* MAILER FRAME CONTAINER */
-    .viewer-card {
-      width: 100%;
-      max-width: 740px;
-      background: #ffffff;
-      border-radius: 14px;
-      border: 1px solid var(--slate-200);
-      box-shadow: var(--card-shadow);
-      overflow: hidden;
-      display: none;
-    }
-
-    iframe#mailer-frame {
-      width: 100%;
-      height: 90vh;
-      border: none;
-      display: block;
-    }
-
-    /* --- SIDEBAR --- */
-    .sidebar-column {
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-    }
-
-    .sidebar-box {
-      background: #ffffff;
-      border-radius: 12px;
-      border: 1px solid var(--slate-200);
-      box-shadow: var(--card-shadow);
-      overflow: hidden;
-    }
-
-    .sidebar-header {
-      padding: 13px 18px;
-      background: var(--slate-50);
-      border-bottom: 1px solid var(--slate-200);
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--slate-900);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .sidebar-header i {
-      color: var(--primary);
-      font-size: 14px;
-    }
-
-    .sidebar-body {
-      padding: 16px 18px;
-    }
-
-    /* EVENTS LIST */
-    .event-item-block {
-      display: flex;
-      gap: 14px;
-      padding-bottom: 12px;
-      margin-bottom: 12px;
-      border-bottom: 1px dashed var(--slate-200);
-      transition: transform 0.15s;
-    }
-
-    .event-item-block:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-      margin-bottom: 0;
-    }
-
-    .event-item-block:hover {
-      transform: translateX(3px);
-    }
-
-    .event-calendar-badge {
-      min-width: 50px;
-      text-align: center;
-      background: var(--primary-soft);
-      border: 1px solid rgba(243, 111, 33, 0.2);
-      color: var(--primary);
-      border-radius: 8px;
-      padding: 8px 4px;
-      height: fit-content;
-    }
-
-    .event-calendar-badge .cal-day {
-      font-size: 17px;
-      font-weight: 800;
-      line-height: 1;
-    }
-
-    .event-calendar-badge .cal-month {
-      font-size: 10px;
-      font-weight: 800;
-      text-transform: uppercase;
-      margin-top: 2px;
-    }
-
-    .event-details h5 {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--slate-900);
-      line-height: 1.35;
-      margin-bottom: 3px;
-    }
-
-    .event-details p {
-      font-size: 11px;
-      color: var(--slate-600);
-      margin-bottom: 4px;
-    }
-
-    .event-link-text {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--primary);
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-    }
-
-    /* SPONSOR ADS */
-    .ad-card {
-      text-align: center;
-    }
-
-    .ad-card img {
-      width: 100%;
-      border-radius: 8px;
-      border: 1px solid var(--slate-200);
-      display: block;
-      transition: transform 0.2s;
-    }
-
-    .ad-card img:hover {
-      transform: scale(1.015);
-    }
-
-    .ad-label {
-      font-size: 10px;
-      font-weight: 800;
-      color: var(--slate-400);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-      display: block;
-      letter-spacing: 0.5px;
-    }
-
-    /* PUBLISHER INFO */
-    .contact-list {
-      list-style: none;
-      font-size: 12px;
-      line-height: 22px;
-      color: var(--slate-600);
-    }
-
-    .contact-list li {
-      margin-bottom: 6px;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-    }
-
-    .contact-list i {
-      color: var(--primary);
-      width: 14px;
-      margin-top: 4px;
-    }
-
-    footer {
-      background: #ffffff;
-      border-top: 1px solid var(--slate-200);
-      padding: 24px;
-      text-align: center;
-      font-size: 12px;
-      color: var(--slate-600);
-      margin-top: auto;
-    }
+    footer { background: #ffffff; border-top: 1px solid var(--slate-200); padding: 24px; text-align: center; font-size: 12px; color: var(--slate-600); margin-top: auto; }
 
     @media (max-width: 1080px) {
-      .portal-layout {
-        grid-template-columns: 1fr;
-      }
-      .tech-articles-grid {
-        grid-template-columns: 1fr;
-      }
+      .portal-layout { grid-template-columns: 1fr; }
+      .tech-articles-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
   <header>
     <div class="header-container">
-      
       <div class="brand-group">
         <div class="brand-logo" onclick="resetToHomeView()" title="Return to Portal Dashboard">
           <img src="https://www.constructiontechnology.in/nl_images/logo.png" alt="Construction Technology Today" />
@@ -740,13 +152,14 @@
         <span class="portal-tag">e-Newsletter Archive</span>
       </div>
 
-      <!-- Quick Action Controls -->
       <div class="nav-actions">
-        
-        <!-- Dedicated Home Page Button -->
         <button class="btn-home" onclick="resetToHomeView()" title="Return to Main Portal Home">
           <i class="fa-solid fa-house"></i> Home
         </button>
+
+        <a href="admin.html" class="btn-home btn-admin" title="Go to Admin Panel">
+          <i class="fa-solid fa-lock"></i> Admin
+        </a>
 
         <div class="select-box">
           <select id="yearSelect" aria-label="Select Year">
@@ -770,29 +183,20 @@
           <i class="fa-solid fa-envelope-open-text"></i> Subscribe
         </a>
       </div>
-
     </div>
   </header>
 
-  <!-- MAIN WORKSPACE -->
   <div class="portal-layout">
-
-    <!-- LEFT COLUMN: CONTENT HUB / VIEWER -->
     <main class="main-column">
-      
       <div class="view-header">
         <span id="statusIndicator">Status: <strong>Portal Hub</strong></span>
         <span>Construction Technology Today</span>
       </div>
 
-      <!-- VIEW A: DEFAULT EDITORIAL HOME (Visible by default) -->
       <div id="defaultHomeView" class="dashboard-container">
-        
-        <!-- Hero Card -->
         <section class="portal-hero">
           <h1>Equipment & Infrastructure Intelligence</h1>
           <p>The official digital archive for Construction Technology Today. Access technical features, machinery developments, and sector reports across India's construction economy.</p>
-          
           <div class="hero-stats-strip">
             <div class="stat-badge"><i class="fa-solid fa-layer-group"></i> 60+ Issues Archived</div>
             <div class="stat-badge"><i class="fa-solid fa-industry"></i> 12 Equipment Verticals</div>
@@ -800,18 +204,16 @@
           </div>
         </section>
 
-        <!-- Dynamic Issue Selector Prompt -->
         <div class="selector-prompt">
           <div class="selector-prompt-text">
             <i class="fa-solid fa-folder-open"></i>
             <span>Looking for an edition? Select a <strong>Year</strong> and <strong>Month</strong> above to view that newsletter.</span>
           </div>
-          <button class="btn-digital-copy" onclick="triggerQuickLoad(2026, '09')">
+          <button class="btn-digital-copy" onclick="triggerQuickLoad(2026, '09-magazine')">
             Latest Issue <i class="fa-solid fa-arrow-right"></i>
           </button>
         </div>
 
-        <!-- Latest Print & Digital Edition Preview -->
         <div class="magazine-spotlight">
           <a href="https://www.constructiontechnology.in/epaper" target="_blank">
             <img class="spotlight-cover" src="https://www.constructiontechnology.in/upload/current_issue/IMG_20260905_173114_06f052b9.jpg" alt="Construction Technology Magazine" />
@@ -826,22 +228,19 @@
               <a href="https://www.constructiontechnology.in/epaper" target="_blank" class="btn-digital-copy">
                 <i class="fa-solid fa-book-open"></i> Read Full Magazine
               </a>
-              <button class="btn-read-online" onclick="triggerQuickLoad(2026, '09')">
+              <button class="btn-read-online" onclick="triggerQuickLoad(2026, '09-magazine')">
                 <i class="fa-solid fa-envelope"></i> Open Mailer View
               </button>
             </div>
           </div>
         </div>
 
-        <!-- TECHNICAL MACHINERY ARTICLES -->
         <div class="section-heading">
           <span><i class="fa-solid fa-gear"></i> Technical Insights & Reports</span>
           <a href="https://www.constructiontechnology.in/articles" target="_blank">Browse Archive <i class="fa-solid fa-chevron-right"></i></a>
         </div>
 
         <div class="tech-articles-grid">
-          
-          <!-- Article 1 -->
           <article class="tech-card">
             <div>
               <div class="tech-topic">Alternative Power & Heavy Plant</div>
@@ -853,7 +252,6 @@
             </a>
           </article>
 
-          <!-- Article 2 -->
           <article class="tech-card">
             <div>
               <div class="tech-topic">Crushing, Screening & Washing</div>
@@ -865,7 +263,6 @@
             </a>
           </article>
 
-          <!-- Article 3 -->
           <article class="tech-card">
             <div>
               <div class="tech-topic">Concrete & Precast</div>
@@ -877,7 +274,6 @@
             </a>
           </article>
 
-          <!-- Article 4 -->
           <article class="tech-card">
             <div>
               <div class="tech-topic">IoT & Telematics</div>
@@ -888,10 +284,8 @@
               Explore Technology <i class="fa-solid fa-arrow-up-right-from-square"></i>
             </a>
           </article>
-
         </div>
 
-        <!-- MACHINERY VERTICALS -->
         <div class="section-heading">
           <span><i class="fa-solid fa-cubes"></i> Industry Sectors</span>
         </div>
@@ -903,20 +297,14 @@
           <a class="v-pill" href="https://www.constructiontechnology.in/machinery_equipments/Tyre" target="_blank"><i class="fa-solid fa-circle-notch"></i> OTR Tyres</a>
           <a class="v-pill" href="https://www.constructiontechnology.in/contact" target="_blank"><i class="fa-solid fa-bullhorn"></i> Advertise With Us</a>
         </div>
-
       </div>
 
-      <!-- VIEW B: NEWSLETTER VIEWER (Swapped in when year & month are chosen) -->
       <div id="viewerView" class="viewer-card">
         <iframe id="mailer-frame" src="about:blank" title="Newsletter Viewer"></iframe>
       </div>
-
     </main>
 
-    <!-- RIGHT COLUMN: SIDEBAR WIDGETS -->
     <aside class="sidebar-column">
-
-      <!-- ADVERTISEMENT 1 -->
       <div class="sidebar-box ad-card">
         <div class="sidebar-body" style="padding: 12px;">
           <span class="ad-label">Partner Showcase</span>
@@ -926,77 +314,44 @@
         </div>
       </div>
 
-      <!-- UPCOMING INDUSTRY EVENTS -->
       <div class="sidebar-box">
-        <div class="sidebar-header">
-          <i class="fa-solid fa-calendar-days"></i> Upcoming Trade Shows
-        </div>
+        <div class="sidebar-header"><i class="fa-solid fa-calendar-days"></i> Upcoming Trade Shows</div>
         <div class="sidebar-body">
-          
-          <!-- Event 1 -->
           <div class="event-item-block">
-            <div class="event-calendar-badge">
-              <div class="cal-day">15</div>
-              <div class="cal-month">Sep</div>
-            </div>
+            <div class="event-calendar-badge"><div class="cal-day">15</div><div class="cal-month">Sep</div></div>
             <div class="event-details">
               <h5>bauma CONEXPO INDIA 2026</h5>
               <p>15–18 Sep 2026 • India Expo Centre, Greater Noida</p>
-              <a href="https://www.constructiontechnology.in/contact" target="_blank" class="event-link-text">
-                Contact Us For Details <i class="fa-solid fa-chevron-right"></i>
-              </a>
+              <a href="https://www.constructiontechnology.in/contact" target="_blank" class="event-link-text">Contact Us For Details <i class="fa-solid fa-chevron-right"></i></a>
             </div>
           </div>
-
-          <!-- Event 2 -->
           <div class="event-item-block">
-            <div class="event-calendar-badge">
-              <div class="cal-day">17</div>
-              <div class="cal-month">Sep</div>
-            </div>
+            <div class="event-calendar-badge"><div class="cal-day">17</div><div class="cal-month">Sep</div></div>
             <div class="event-details">
               <h5>D-arc BUILD Delhi 2026</h5>
               <p>17–20 Sep 2026 • Okhla NSIC, New Delhi</p>
-              <a href="https://www.constructiontechnology.in/contact" target="_blank" class="event-link-text">
-                Contact Us For Details <i class="fa-solid fa-chevron-right"></i>
-              </a>
+              <a href="https://www.constructiontechnology.in/contact" target="_blank" class="event-link-text">Contact Us For Details <i class="fa-solid fa-chevron-right"></i></a>
             </div>
           </div>
-
-          <!-- Event 3 -->
           <div class="event-item-block">
-            <div class="event-calendar-badge">
-              <div class="cal-day">26</div>
-              <div class="cal-month">Nov</div>
-            </div>
+            <div class="event-calendar-badge"><div class="cal-day">26</div><div class="cal-month">Nov</div></div>
             <div class="event-details">
               <h5>IGBC Green Building Congress</h5>
               <p>26–28 Nov 2026 • Jio World Centre, Mumbai</p>
-              <a href="https://www.constructiontechnology.in/contact" target="_blank" class="event-link-text">
-                Contact Us For Details <i class="fa-solid fa-chevron-right"></i>
-              </a>
+              <a href="https://www.constructiontechnology.in/contact" target="_blank" class="event-link-text">Contact Us For Details <i class="fa-solid fa-chevron-right"></i></a>
             </div>
           </div>
-
-          <!-- Event 4 -->
           <div class="event-item-block">
-            <div class="event-calendar-badge">
-              <div class="cal-day">20</div>
-              <div class="cal-month">Oct</div>
-            </div>
+            <div class="event-calendar-badge"><div class="cal-day">20</div><div class="cal-month">Oct</div></div>
             <div class="event-details">
               <h5>World of Concrete India 2027</h5>
               <p>20–22 Oct 2027 • BEC, Mumbai</p>
-              <a href="https://www.constructiontechnology.in/contact" target="_blank" class="event-link-text">
-                Contact Us For Details <i class="fa-solid fa-chevron-right"></i>
-              </a>
+              <a href="https://www.constructiontechnology.in/contact" target="_blank" class="event-link-text">Contact Us For Details <i class="fa-solid fa-chevron-right"></i></a>
             </div>
           </div>
-
         </div>
       </div>
 
-      <!-- ADVERTISEMENT 2 -->
       <div class="sidebar-box ad-card">
         <div class="sidebar-body" style="padding: 12px;">
           <span class="ad-label">Equipment Solutions</span>
@@ -1006,11 +361,8 @@
         </div>
       </div>
 
-      <!-- PUBLISHER INFORMATION -->
       <div class="sidebar-box">
-        <div class="sidebar-header">
-          <i class="fa-solid fa-building"></i> Media Office
-        </div>
+        <div class="sidebar-header"><i class="fa-solid fa-building"></i> Media Office</div>
         <div class="sidebar-body">
           <ul class="contact-list">
             <li><strong>Karan Communications</strong></li>
@@ -1021,9 +373,7 @@
           </ul>
         </div>
       </div>
-
     </aside>
-
   </div>
 
   <footer>
@@ -1031,355 +381,58 @@
   </footer>
 
   <script>
-    /**
-     * CLEANED NEWSLETTER ARCHIVE REGISTRY
-     * Chronologically ordered with distinct, readable month labels
-     */
-    const newsletterData = [
-      // --- 2026 ISSUES ---
-      {
-        year: 2026,
-        month: "01-magazine",
-        monthName: "January (e-Magazine)",
-        title: "e-Magazine January 2026",
-        folder: "issues/2026/Jan_26_Mailer"
-      },
-      {
-        year: 2026,
-        month: "01-news",
-        monthName: "January 12 (Weekly News)",
-        title: "Weekly Newsletter - 12 Jan 2026",
-        folder: "issues/2026/Jan_26_NewsMailer"
-      },
-      {
-    year: 2026,
-    month: "02",
-    monthName: "February (e-Magazine)",
-    title: "e-Magazine February 2026",
-    folder: "issues/2026/Feb_26_Mailer"
-  },
-      {
-    year: 2026,
-    month: "02-02-news",
-    monthName: "February 02 (Weekly News)",
-    title: "Weekly Newsletter - 02 Feb 2026",
-    folder: "issues/2026/Feb_02_26_NewsMailer"
-  },
-  {
-    year: 2026,
-    month: "02-16-news",
-    monthName: "February 16 (Weekly News)",
-    title: "Weekly Newsletter - 16 Feb 2026",
-    folder: "issues/2026/Feb_16_26_NewsMailer"
-  },
-  {
-    year: 2026,
-    month: "02-23-news",
-    monthName: "February 23 (Weekly News)",
-    title: "Weekly Newsletter - 23 Feb 2026",
-    folder: "issues/2026/Feb_23_26_NewsMailer"
-  },
-  {
-    year: 2026,
-    month: "03",
-    monthName: "March (e-Magazine)",
-    title: "e-Magazine March 2026",
-    folder: "issues/2026/March_26_Mailer"
-  },
-      {
-    year: 2026,
-    month: "03-09-news",
-    monthName: "March 09 (Weekly News)",
-    title: "Weekly Newsletter - 09 Mar 2026",
-    folder: "issues/2026/March_09_26_NewsMailer"
-  },
-  {
-    year: 2026,
-    month: "03-16-news",
-    monthName: "March 16 (Weekly News)",
-    title: "Weekly Newsletter - 16 Mar 2026",
-    folder: "issues/2026/March_16_26_NewsMailer"
-  },
-  {
-    year: 2026,
-    month: "03-23-news",
-    monthName: "March 23 (Weekly News)",
-    title: "Weekly Newsletter - 23 Mar 2026",
-    folder: "issues/2026/March_23_26_NewsMailer"
-  },
-   {
-    year: 2026,
-    month: "04",
-    monthName: "April (e-Magazine)",
-    title: "e-Magazine April 2026",
-    folder: "issues/2026/April_26_Mailer"
-  },
-      {
-    year: 2026,
-    month: "04-06-news",
-    monthName: "April 06 (Weekly News)",
-    title: "Weekly Newsletter - 06 Apr 2026",
-    folder: "issues/2026/April_06_26_NewsMailer"
-  },
-  {
-    year: 2026,
-    month: "04-13-news",
-    monthName: "April 13 (Weekly News)",
-    title: "Weekly Newsletter - 13 Apr 2026",
-    folder: "issues/2026/April_13_26_NewsMailer"
-  },
-  {
-    year: 2026,
-    month: "04-27-news",
-    monthName: "April 27 (Weekly News)",
-    title: "Weekly Newsletter - 27 Apr 2026",
-    folder: "issues/2026/April_27_26_NewsMailer"
-  },
-  {
-    year: 2026,
-    month: "05",
-    monthName: "May (e-Magazine)",
-    title: "e-Magazine May 2026",
-    folder: "issues/2026/May_26_Mailer"
-  },
-      {
-    year: 2026,
-    month: "05-04-news",
-    monthName: "May 04 (Weekly News)",
-    title: "Weekly Newsletter - 04 May 2026",
-    folder: "issues/2026/May_04_26_NewsMailer"
-  },
-  {
-    year: 2026,
-    month: "05-11-news",
-    monthName: "May 11 (Weekly News)",
-    title: "Weekly Newsletter - 11 May 2026",
-    folder: "issues/2026/May_11_26_NewsMailer"
-  },
-  {
-    year: 2026,
-    month: "05-18-news",
-    monthName: "May 18 (Weekly News)",
-    title: "Weekly Newsletter - 18 May 2026",
-    folder: "issues/2026/May_18_26_NewsMailer"
-  },
-   {
-    year: 2026,
-    month: "06",
-    monthName: "June (e-Magazine)",
-    title: "e-Magazine June 2026",
-    folder: "issues/2026/June_26_Mailer"
-  },
-      {
-    year: 2026,
-    month: "06-15-news",
-    monthName: "June 15 (Weekly News)",
-    title: "Weekly Newsletter - 15 Jun 2026",
-    folder: "issues/2026/June_15_26_NewsMailer"
-  },
-  {
-    year: 2026,
-    month: "06-22-news",
-    monthName: "June 22 (Weekly News)",
-    title: "Weekly Newsletter - 22 Jun 2026",
-    folder: "issues/2026/June_22_26_NewsMailer"
-  },
-  {
-    year: 2026,
-    month: "06-29-news",
-    monthName: "June 29 (Weekly News)",
-    title: "Weekly Newsletter - 29 Jun 2026",
-    folder: "issues/2026/June_29_26_NewsMailer"
-  },
-     {
-    year: 2026,
-    month: "07",
-    monthName: "July (e-Magazine)",
-    title: "e-Magazine July 2026",
-    folder: "issues/2026/July_26_Mailer"
-  },
-      {
-    year: 2026,
-    month: "07-06-news",
-    monthName: "July 6 (Weekly News)",
-    title: "Weekly Newsletter - 06 Jul 2026",
-    folder: "issues/2026/July_06_26_NewsMailer"
-  },
-  {
-    year: 2026,
-    month: "07-20-news",
-    monthName: "July 20 (Weekly News)",
-    title: "Weekly Newsletter - 20 Jul 2026",
-    folder: "issues/2026/July_20_26_NewsMailer"
-  },
-  {
-    year: 2026,
-    month: "07-27-news",
-    monthName: "July 27 (Weekly News)",
-    title: "Weekly Newsletter - 27 Jul 2026",
-    folder: "issues/2026/July_27_26_NewsMailer"
-  },
-  {
-    year: 2026,
-    month: "08",
-    monthName: "August (e-Magazine)",
-    title: "e-Magazine August 2026",
-    folder: "issues/2026/Aug_26_Mailer"
-  },
-  
-      {
-        year: 2026,
-        month: "09",
-        monthName: "September (e-Magazine)",
-        title: "e-Magazine September 2026",
-        folder: "issues/2026/Sept_26_Mailer"
-      },
-      // --- 2025 ISSUES ---
-      {
-        year: 2025,
-        month: "12",
-        monthName: "December (e-Magazine)",
-        title: "e-Magazine December 2025",
-        folder: "issues/2025/Dec_25_Mailer"
-      },
-
-      // --- 2024 ISSUES ---
-      {
-        year: 2024,
-        month: "01-vol1",
-        monthName: "January (Edition 1)",
-        title: "e-Magazine January 2024 (Vol. 1)",
-        folder: "issues/2024/Jan_24_Mailer"
-      },
-      {
-        year: 2024,
-        month: "01-vol2",
-        monthName: "January (Edition 2)",
-        title: "e-Magazine January 2024 (Vol. 2)",
-        folder: "issues/2024/Jan_1_24_Mailer"
-      },
-      {
-        year: 2024,
-        month: "02-vol1",
-        monthName: "February (Edition 1)",
-        title: "e-Magazine February 2024 (Vol. 1)",
-        folder: "issues/2024/Feb_24_Mailer"
-      },
-      {
-        year: 2024,
-        month: "02-vol2",
-        monthName: "February (Edition 2)",
-        title: "e-Magazine February 2024 (Vol. 2)",
-        folder: "issues/2024/Feb_1_24_Mailer"
-      },
-      {
-        year: 2024,
-        month: "02-vol3",
-        monthName: "February (Special Issue)",
-        title: "e-Magazine February 2024 (Special Issue)",
-        folder: "issues/2024/Feb_2_24_Mailer"
-      },
-      {
-        year: 2024,
-        month: "03-vol1",
-        monthName: "March (Edition 1)",
-        title: "e-Magazine March 2024 (Vol. 1)",
-        folder: "issues/2024/March_24_Mailer"
-      },
-      {
-        year: 2024,
-        month: "03-vol2",
-        monthName: "March (Edition 2)",
-        title: "e-Magazine March 2024 (Vol. 2)",
-        folder: "issues/2024/March_1_24_Mailer"
-      },
-      {
-        year: 2024,
-        month: "03-vol3",
-        monthName: "March (Special Focus)",
-        title: "e-Magazine March 2024 (Special Focus)",
-        folder: "issues/2024/March_2_24_Mailer"
-      },
-      {
-        year: 2024,
-        month: "05",
-        monthName: "May",
-        title: "e-Magazine May 2024",
-        folder: "issues/2024/May_24_Mailer"
-      },
-      {
-        year: 2024,
-        month: "06",
-        monthName: "June",
-        title: "e-Magazine June 2024",
-        folder: "issues/2024/June_24_Mailer"
-      },
-      {
-        year: 2024,
-        month: "07",
-        monthName: "July",
-        title: "e-Magazine July 2024",
-        folder: "issues/2024/July_24_Mailer"
-      },
-      {
-        year: 2024,
-        month: "08",
-        monthName: "August",
-        title: "e-Magazine August 2024",
-        folder: "issues/2024/August_24_Mailer"
-      },
-      {
-        year: 2024,
-        month: "09",
-        monthName: "September",
-        title: "e-Magazine September 2024",
-        folder: "issues/2024/Sept_24_Mailer"
-      },
-      {
-        year: 2024,
-        month: "10",
-        monthName: "October",
-        title: "e-Magazine October 2024",
-        folder: "issues/2024/Oct_24_Mailer"
-      },
-
-      // --- 2023 ISSUES ---
-      {
-        year: 2023,
-        month: "09",
-        monthName: "September",
-        title: "e-Magazine September 2023",
-        folder: "issues/2023/Sept_23_Mailer"
-      },
-      {
-        year: 2023,
-        month: "10",
-        monthName: "October",
-        title: "e-Magazine October 2023",
-        folder: "issues/2023/Oct_23_Mailer"
-      },
-      {
-        year: 2023,
-        month: "11",
-        monthName: "November",
-        title: "e-Magazine November 2023",
-        folder: "issues/2023/Nov_23_Mailer"
-      },
-      {
-        year: 2023,
-        month: "12-vol1",
-        monthName: "December (Edition 1)",
-        title: "e-Magazine December 2023 (Vol. 1)",
-        folder: "issues/2023/Dec_23_Mailer"
-      },
-      {
-        year: 2023,
-        month: "12-vol2",
-        monthName: "December (Edition 2)",
-        title: "e-Magazine December 2023 (Vol. 2)",
-        folder: "issues/2023/Dec_1_23_Mailer"
-      }
+    const embeddedRegistry = [
+      { year: 2026, month: "01-magazine", monthName: "January (e-Magazine)", title: "e-Magazine January 2026", folder: "issues/2026/Jan_26_Mailer" },
+      { year: 2026, month: "01-12-news", monthName: "January 12 (Weekly News)", title: "Weekly Newsletter - 12 Jan 2026", folder: "issues/2026/Jan_26_NewsMailer" },
+      { year: 2026, month: "02-magazine", monthName: "February (e-Magazine)", title: "e-Magazine February 2026", folder: "issues/2026/Feb_26_Mailer" },
+      { year: 2026, month: "02-02-news", monthName: "February 02 (Weekly News)", title: "Weekly Newsletter - 02 Feb 2026", folder: "issues/2026/Feb_02_26_NewsMailer" },
+      { year: 2026, month: "02-16-news", monthName: "February 16 (Weekly News)", title: "Weekly Newsletter - 16 Feb 2026", folder: "issues/2026/Feb_16_26_NewsMailer" },
+      { year: 2026, month: "02-23-news", monthName: "February 23 (Weekly News)", title: "Weekly Newsletter - 23 Feb 2026", folder: "issues/2026/Feb_23_26_NewsMailer" },
+      { year: 2026, month: "03-magazine", monthName: "March (e-Magazine)", title: "e-Magazine March 2026", folder: "issues/2026/March_26_Mailer" },
+      { year: 2026, month: "03-09-news", monthName: "March 09 (Weekly News)", title: "Weekly Newsletter - 09 Mar 2026", folder: "issues/2026/March_09_26_NewsMailer" },
+      { year: 2026, month: "03-16-news", monthName: "March 16 (Weekly News)", title: "Weekly Newsletter - 16 Mar 2026", folder: "issues/2026/March_16_26_NewsMailer" },
+      { year: 2026, month: "03-23-news", monthName: "March 23 (Weekly News)", title: "Weekly Newsletter - 23 Mar 2026", folder: "issues/2026/March_23_26_NewsMailer" },
+      { year: 2026, month: "04-magazine", monthName: "April (e-Magazine)", title: "e-Magazine April 2026", folder: "issues/2026/April_26_Mailer" },
+      { year: 2026, month: "04-06-news", monthName: "April 06 (Weekly News)", title: "Weekly Newsletter - 06 Apr 2026", folder: "issues/2026/April_06_26_NewsMailer" },
+      { year: 2026, month: "04-13-news", monthName: "April 13 (Weekly News)", title: "Weekly Newsletter - 13 Apr 2026", folder: "issues/2026/April_13_26_NewsMailer" },
+      { year: 2026, month: "04-27-news", monthName: "April 27 (Weekly News)", title: "Weekly Newsletter - 27 Apr 2026", folder: "issues/2026/April_27_26_NewsMailer" },
+      { year: 2026, month: "05-magazine", monthName: "May (e-Magazine)", title: "e-Magazine May 2026", folder: "issues/2026/May_26_Mailer" },
+      { year: 2026, month: "05-04-news", monthName: "May 04 (Weekly News)", title: "Weekly Newsletter - 04 May 2026", folder: "issues/2026/May_04_26_NewsMailer" },
+      { year: 2026, month: "05-11-news", monthName: "May 11 (Weekly News)", title: "Weekly Newsletter - 11 May 2026", folder: "issues/2026/May_11_26_NewsMailer" },
+      { year: 2026, month: "05-18-news", monthName: "May 18 (Weekly News)", title: "Weekly Newsletter - 18 May 2026", folder: "issues/2026/May_18_26_NewsMailer" },
+      { year: 2026, month: "06-magazine", monthName: "June (e-Magazine)", title: "e-Magazine June 2026", folder: "issues/2026/June_26_Mailer" },
+      { year: 2026, month: "06-15-news", monthName: "June 15 (Weekly News)", title: "Weekly Newsletter - 15 Jun 2026", folder: "issues/2026/June_15_26_NewsMailer" },
+      { year: 2026, month: "06-22-news", monthName: "June 22 (Weekly News)", title: "Weekly Newsletter - 22 Jun 2026", folder: "issues/2026/June_22_26_NewsMailer" },
+      { year: 2026, month: "06-29-news", monthName: "June 29 (Weekly News)", title: "Weekly Newsletter - 29 Jun 2026", folder: "issues/2026/June_29_26_NewsMailer" },
+      { year: 2026, month: "07-magazine", monthName: "July (e-Magazine)", title: "e-Magazine July 2026", folder: "issues/2026/July_26_Mailer" },
+      { year: 2026, month: "07-06-news", monthName: "July 06 (Weekly News)", title: "Weekly Newsletter - 06 Jul 2026", folder: "issues/2026/July_06_26_NewsMailer" },
+      { year: 2026, month: "07-20-news", monthName: "July 20 (Weekly News)", title: "Weekly Newsletter - 20 Jul 2026", folder: "issues/2026/July_20_26_NewsMailer" },
+      { year: 2026, month: "07-27-news", monthName: "July 27 (Weekly News)", title: "Weekly Newsletter - 27 Jul 2026", folder: "issues/2026/July_27_26_NewsMailer" },
+      { year: 2026, month: "08-magazine", monthName: "August (e-Magazine)", title: "e-Magazine August 2026", folder: "issues/2026/Aug_26_Mailer" },
+      { year: 2026, month: "09-magazine", monthName: "September (e-Magazine)", title: "e-Magazine September 2026", folder: "issues/2026/Sept_26_Mailer" },
+      { year: 2025, month: "12-magazine", monthName: "December (e-Magazine)", title: "e-Magazine December 2025", folder: "issues/2025/Dec_25_Mailer" },
+      { year: 2024, month: "01-vol1", monthName: "January (Edition 1)", title: "e-Magazine January 2024 (Vol. 1)", folder: "issues/2024/Jan_24_Mailer" },
+      { year: 2024, month: "01-vol2", monthName: "January (Edition 2)", title: "e-Magazine January 2024 (Vol. 2)", folder: "issues/2024/Jan_1_24_Mailer" },
+      { year: 2024, month: "02-vol1", monthName: "February (Edition 1)", title: "e-Magazine February 2024 (Vol. 1)", folder: "issues/2024/Feb_24_Mailer" },
+      { year: 2024, month: "02-vol2", monthName: "February (Edition 2)", title: "e-Magazine February 2024 (Vol. 2)", folder: "issues/2024/Feb_1_24_Mailer" },
+      { year: 2024, month: "02-vol3", monthName: "February (Special Issue)", title: "e-Magazine February 2024 (Special Issue)", folder: "issues/2024/Feb_2_24_Mailer" },
+      { year: 2024, month: "03-vol1", monthName: "March (Edition 1)", title: "e-Magazine March 2024 (Vol. 1)", folder: "issues/2024/March_24_Mailer" },
+      { year: 2024, month: "03-vol2", monthName: "March (Edition 2)", title: "e-Magazine March 2024 (Vol. 2)", folder: "issues/2024/March_1_24_Mailer" },
+      { year: 2024, month: "03-vol3", monthName: "March (Special Focus)", title: "e-Magazine March 2024 (Special Focus)", folder: "issues/2024/March_2_24_Mailer" },
+      { year: 2024, month: "05", monthName: "May", title: "e-Magazine May 2024", folder: "issues/2024/May_24_Mailer" },
+      { year: 2024, month: "06", monthName: "June", title: "e-Magazine June 2024", folder: "issues/2024/June_24_Mailer" },
+      { year: 2024, month: "07", monthName: "July", title: "e-Magazine July 2024", folder: "issues/2024/July_24_Mailer" },
+      { year: 2024, month: "08", monthName: "August", title: "e-Magazine August 2024", folder: "issues/2024/August_24_Mailer" },
+      { year: 2024, month: "09", monthName: "September", title: "e-Magazine September 2024", folder: "issues/2024/Sept_24_Mailer" },
+      { year: 2024, month: "10", monthName: "October", title: "e-Magazine October 2024", folder: "issues/2024/Oct_24_Mailer" },
+      { year: 2023, month: "09", monthName: "September", title: "e-Magazine September 2023", folder: "issues/2023/Sept_23_Mailer" },
+      { year: 2023, month: "10", monthName: "October", title: "e-Magazine October 2023", folder: "issues/2023/Oct_23_Mailer" },
+      { year: 2023, month: "11", monthName: "November", title: "e-Magazine November 2023", folder: "issues/2023/Nov_23_Mailer" },
+      { year: 2023, month: "12-vol1", monthName: "December (Edition 1)", title: "e-Magazine December 2023 (Vol. 1)", folder: "issues/2023/Dec_23_Mailer" },
+      { year: 2023, month: "12-vol2", monthName: "December (Edition 2)", title: "e-Magazine December 2023 (Vol. 2)", folder: "issues/2023/Dec_1_23_Mailer" }
     ];
+
+    let newsletterData = embeddedRegistry;
 
     const yearSelect = document.getElementById("yearSelect");
     const monthSelect = document.getElementById("monthSelect");
@@ -1389,25 +442,49 @@
     const statusIndicator = document.getElementById("statusIndicator");
     const openNewTabBtn = document.getElementById("openNewTabBtn");
 
+    async function loadNewsletterRegistry() {
+      try {
+        const response = await fetch("data/newsletters.json?t=" + Date.now());
+        if (response.ok) {
+          newsletterData = await response.json();
+        }
+      } catch (e) {
+        console.warn("Using embedded fallback registry:", e);
+      }
+
+      initYears();
+
+      const params = new URLSearchParams(window.location.search);
+      const qYear = params.get("year");
+      const qMonth = params.get("month");
+
+      if (qYear && qMonth) {
+        yearSelect.value = qYear;
+        handleYearChange(qYear);
+        monthSelect.value = qMonth;
+        displayNewsletter(qYear, qMonth);
+      }
+    }
+
     function initYears() {
       const years = [...new Set(newsletterData.map(item => item.year))].sort((a,b) => b - a);
-      yearSelect.innerHTML = `<option value="">Select Year</option>` + 
+      yearSelect.innerHTML = '<option value="">Select Year</option>' + 
         years.map(y => `<option value="${y}">${y}</option>`).join("");
       
-      monthSelect.innerHTML = `<option value="">Select Month</option>`;
+      monthSelect.innerHTML = '<option value="">Select Month</option>';
       monthSelect.disabled = true;
     }
 
     function handleYearChange(selectedYear) {
       if (!selectedYear) {
-        monthSelect.innerHTML = `<option value="">Select Month</option>`;
+        monthSelect.innerHTML = '<option value="">Select Month</option>';
         monthSelect.disabled = true;
         resetToHomeView();
         return;
       }
 
       const availableIssues = newsletterData.filter(item => item.year === parseInt(selectedYear, 10));
-      monthSelect.innerHTML = `<option value="">Select Month</option>` + 
+      monthSelect.innerHTML = '<option value="">Select Month</option>' + 
         availableIssues.map(item => `<option value="${item.month}">${item.monthName}</option>`).join("");
       monthSelect.disabled = false;
     }
@@ -1422,7 +499,6 @@
         openNewTabBtn.style.display = "inline-flex";
 
         statusIndicator.innerHTML = `Showing: <strong>${issue.title}</strong>`;
-
         defaultHomeView.style.display = "none";
         viewerView.style.display = "block";
 
@@ -1440,10 +516,10 @@
       openNewTabBtn.style.display = "none";
       
       yearSelect.value = "";
-      monthSelect.innerHTML = `<option value="">Select Month</option>`;
+      monthSelect.innerHTML = '<option value="">Select Month</option>';
       monthSelect.disabled = true;
 
-      statusIndicator.innerHTML = `Status: <strong>Portal Hub</strong>`;
+      statusIndicator.innerHTML = "Status: <strong>Portal Hub</strong>";
       defaultHomeView.style.display = "flex";
       viewerView.style.display = "none";
 
@@ -1472,19 +548,7 @@
       }
     });
 
-    window.addEventListener("DOMContentLoaded", () => {
-      initYears();
-      const params = new URLSearchParams(window.location.search);
-      const qYear = params.get("year");
-      const qMonth = params.get("month");
-
-      if (qYear && qMonth) {
-        yearSelect.value = qYear;
-        handleYearChange(qYear);
-        monthSelect.value = qMonth;
-        displayNewsletter(qYear, qMonth);
-      }
-    });
+    window.addEventListener("DOMContentLoaded", loadNewsletterRegistry);
   </script>
 </body>
 </html>

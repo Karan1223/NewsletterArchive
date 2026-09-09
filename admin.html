@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CT Today - Easy Mailer Creator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #f36f21;
+      --primary-dark: #dc5b10;
+      --slate-800: #1e293b;
+      --border: #e2e8f0;
+      --bg: #f8fafc;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background: var(--bg); color: var(--slate-800); min-height: 100vh; display: flex; flex-direction: column; }
+    
+    header { background: #ffffff; border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 16px; }
+    .brand span { color: var(--primary); }
+
+    .main-grid { display: grid; grid-template-columns: 520px 1fr; gap: 20px; padding: 20px; max-width: 1600px; width: 100%; margin: 0 auto; flex: 1; }
+    .form-panel { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; height: calc(100vh - 110px); overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+    .preview-panel { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; height: calc(100vh - 110px); overflow: hidden; display: flex; flex-direction: column; }
+
+    .preview-header { background: #f1f5f9; padding: 10px 16px; font-size: 12px; font-weight: 700; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    iframe#livePreview { width: 100%; flex: 1; border: none; background: #f4f5f7; }
+
+    .section-box { border: 1px solid var(--border); border-radius: 8px; padding: 16px; background: #fafafa; }
+    .section-title { font-size: 13px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+
+    label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; color: #475569; }
+    input, textarea { width: 100%; padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 13px; outline: none; margin-bottom: 12px; }
+    input:focus, textarea:focus { border-color: var(--primary); }
+    textarea { resize: vertical; min-height: 60px; }
+
+    .story-entry { background: #ffffff; border: 1px solid var(--border); padding: 12px; border-radius: 6px; margin-bottom: 12px; }
+    .btn { padding: 10px 18px; border-radius: 6px; font-size: 13px; font-weight: 700; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s; }
+    .btn-secondary { background: #e2e8f0; color: #1e293b; }
+    .btn-success { background: #16a34a; color: #fff; font-size: 14px; width: 100%; justify-content: center; padding: 14px; }
+    .btn-success:hover { background: #15803d; }
+    #publishLog { font-size: 12px; font-weight: 700; margin-top: 8px; text-align: center; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <img src="https://www.constructiontechnology.in/nl_images/logo.png" height="32" alt="Logo" />
+      <span>Easy Mailer Publisher</span>
+    </div>
+    <div>
+      <a href="index.html" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> View Live Archive</a>
+    </div>
+  </header>
+
+  <div class="main-grid">
+    <div class="form-panel" id="formPanel">
+      
+      <!-- 1. SETUP CONNECTION -->
+      <div class="section-box" style="background: #fff8f3; border-color: #ffd8bf;">
+        <div class="section-title"><i class="fa-solid fa-key"></i> 1. Setup Connection</div>
+        <label>GitHub Username</label>
+        <input type="text" id="ghUsername" value="karan1223" />
+        <label>Repository Name</label>
+        <input type="text" id="ghRepo" value="Newsletter_Archive" />
+        <label>GitHub Personal Token</label>
+        <input type="password" id="ghToken" placeholder="Paste ghp_... token once" />
+        <p style="font-size: 11px; color: #666;">Token is saved securely in your browser only.</p>
+      </div>
+
+      <!-- 2. ISSUE DETAILS -->
+      <div class="section-box">
+        <div class="section-title"><i class="fa-solid fa-calendar"></i> 2. Issue Information</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <label>Year</label>
+            <input type="number" id="issueYear" value="2026" />
+          </div>
+          <div>
+            <label>Folder Name (no spaces)</label>
+            <input type="text" id="issueFolder" placeholder="e.g. March_26_NewsMailer" />
+          </div>
+        </div>
+        <label>Month Label in Dropdown</label>
+        <input type="text" id="issueMonthName" placeholder="e.g. March 16 (Weekly News)" />
+        <label>Issue Headline</label>
+        <input type="text" id="issueHeadline" placeholder="e.g. Weekly Newsletter - 16 Mar 2026" />
+        <label>Left Cover Image URL</label>
+        <input type="text" id="coverImgUrl" value="https://www.constructiontechnology.in/upload/current_issue/IMG_20260905_173114_06f052b9.jpg" />
+      </div>
+
+      <!-- 3. LEAD STORY -->
+      <div class="section-box">
+        <div class="section-title"><i class="fa-solid fa-star"></i> 3. Lead Cover Story</div>
+        <label>Headline</label>
+        <input type="text" id="leadTitle" value="Infrastructure & Equipment Outlook" />
+        <label>Article Link</label>
+        <input type="text" id="leadLink" value="https://www.constructiontechnology.in" />
+        <label>Summary Description</label>
+        <textarea id="leadDesc">New developments in heavy civil projects, crushing automation, and modern earthmoving technology.</textarea>
+      </div>
+
+      <!-- 4. NEWS STORIES -->
+      <div class="section-box">
+        <div class="section-title"><i class="fa-solid fa-list"></i> 4. News Stories</div>
+        <div id="storiesContainer">
+          <div class="story-entry">
+            <label>Story 1 Title</label>
+            <input type="text" class="story-title-input" value="L&T Construction Wins Major Highway Project" />
+            <label>Story 1 Link</label>
+            <input type="text" class="story-link-input" value="https://www.constructiontechnology.in" />
+            <label>Image URL</label>
+            <input type="text" class="story-img-input" value="https://www.constructiontechnology.in/nl_images/lt_showcases.png" />
+            <label>Summary</label>
+            <textarea class="story-desc-input">Engineering infrastructure package for high-speed connectivity corridors.</textarea>
+          </div>
+          <div class="story-entry">
+            <label>Story 2 Title</label>
+            <input type="text" class="story-title-input" value="Ammann India Showcases Walk-Behind Rollers" />
+            <label>Story 2 Link</label>
+            <input type="text" class="story-link-input" value="https://www.constructiontechnology.in" />
+            <label>Image URL</label>
+            <input type="text" class="story-img-input" value="https://www.constructiontechnology.in/nl_images/ammann_india.png" />
+            <label>Summary</label>
+            <textarea class="story-desc-input">Precision compaction machinery manufactured at the Mehsana facility.</textarea>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary" id="addStoryBtn"><i class="fa-solid fa-plus"></i> Add Another Story</button>
+      </div>
+
+      <button class="btn btn-success" id="publishBtn">
+        <i class="fa-solid fa-cloud-arrow-up"></i> Save & Publish Issue to GitHub
+      </button>
+
+      <div id="publishLog"></div>
+    </div>
+
+    <!-- PREVIEW PANE -->
+    <div class="preview-panel">
+      <div class="preview-header">
+        <span>LIVE EMAIL PREVIEW</span>
+        <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 11px;" id="refreshPreviewBtn">Refresh Preview</button>
+      </div>
+      <iframe id="livePreview"></iframe>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
