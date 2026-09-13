@@ -8,15 +8,10 @@
   <!-- PASSWORD PROTECTION SCRIPT -->
   <script>
     const ADMIN_PASSWORD = "ct_admin_2026"; 
-
-    if (sessionStorage.getItem("ct_authenticated") !== "true") {
-      const pwd = prompt("Enter Admin Access Password:");
-      if (pwd === ADMIN_PASSWORD) {
-        sessionStorage.setItem("ct_authenticated", "true");
-      } else {
-        alert("Incorrect password. Access denied.");
-        window.location.href = "index.html";
-      }
+    const pwd = prompt("Enter Admin Access Password:");
+    if (pwd !== ADMIN_PASSWORD) {
+      alert("Incorrect password. Access denied.");
+      window.location.href = "index.html";
     }
   </script>
 

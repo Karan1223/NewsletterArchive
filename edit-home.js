@@ -11,7 +11,6 @@ function safeEncodeBase64(str) {
   }));
 }
 
-// Local file upload handler for Spotlight & Ads
 function attachFileUpload(fileInputId, textInputId) {
   const fileInput = document.getElementById(fileInputId);
   const textInput = document.getElementById(textInputId);
@@ -37,11 +36,12 @@ async function publishHomeUpdates() {
   const btn = document.getElementById("publishHomeBtn");
 
   if (!token) {
-    alert("Please paste your GitHub Personal Access Token.");
+    alert("Please paste your GitHub Personal Access Token in Section 1.");
     tokenInput.focus();
     return;
   }
 
+  // 1. Gather form values
   const sImg = document.getElementById("spotlightImg").value.trim();
   const sLink = document.getElementById("spotlightLink").value.trim();
   const sDesc = document.getElementById("spotlightDesc").value.trim();
@@ -73,21 +73,29 @@ async function publishHomeUpdates() {
   try {
     const indexPath = "index.html";
     const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${indexPath}?ref=main`, {
-      headers: { "Authorization": "Bearer " + token }
+      headers: {
+        "Authorization": "Bearer " + token,
+        "Accept": "application/vnd.github.v3+json"
+      }
     });
 
-    if (!res.ok) throw new Error("Could not retrieve index.html from repository.");
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.message || "Could not retrieve index.html from repository.");
+    }
 
     const indexData = await res.json();
     let html = safeDecodeBase64(indexData.content);
 
-    // 1. Update Spotlight Cover, Link, & Description
-    html = html.replace(/(<a href=")[^"]*("[^>]*>\s*<img class="spotlight-cover" src=")/, `$1${sLink}$2`);
+    // 2. Safely perform string replacements for homepage components
+    
+    // Spotlight Magazine Cover & Description & Links
+    html = html.replace(/(<div class="magazine-spotlight">[\s\S]*?<a href=")[^"]*("[^>]*>)/, `$1${sLink}$2`);
     html = html.replace(/(<img class="spotlight-cover" src=")[^"]*(")/, `$1${sImg}$2`);
     html = html.replace(/(<div class="spotlight-info">[\s\S]*?<p>)[^<]*(<\/p>)/, `$1${sDesc}$2`);
     html = html.replace(/(<a href=")[^"]*("[^>]* class="btn-digital-copy">[\s\S]*?<i class="fa-solid fa-book-open"><\/i> Read Full Magazine<\/a>)/, `$1${sLink}$2`);
 
-    // 2. Update Technical Cards with individual links
+    // Technical Insight Cards
     let cardsHtml = "";
     for (let i = 0; i < cardTitles.length; i++) {
       cardsHtml += `
@@ -104,7 +112,7 @@ async function publishHomeUpdates() {
     }
     html = html.replace(/(<div class="tech-articles-grid">)[\s\S]*?(<\/div>\s*<div class="section-heading">)/, `$1${cardsHtml}\n        </div>$2`);
 
-    // 3. Update Upcoming Trade Shows with individual links
+    // Upcoming Trade Shows
     let eventsHtml = "";
     for (let j = 0; j < evNames.length; j++) {
       eventsHtml += `
@@ -119,11 +127,13 @@ async function publishHomeUpdates() {
     }
     html = html.replace(/(<div class="sidebar-box">\s*<div class="sidebar-header"><i class="fa-solid fa-calendar-days"></i> Upcoming Trade Shows<\/div>\s*<div class="sidebar-body">)[\s\S]*?(<\/div>\s*<\/div>\s*<div class="sidebar-box ad-card">)/, `$1${eventsHtml}\n        </div>$2`);
 
-    // 4. Update Sidebar Ad Banners & Links
-    html = html.replace(/(<div class="sidebar-box ad-card">[\s\S]*?<a href=")[^"]*(" [^>]*>\s*<img src=")[^"]*("[^>]*>\s*<\/a>\s*<\/div>\s*<div class="sidebar-box">\s*<div class="sidebar-header">[\s\S]*?<div class="sidebar-box ad-card">[\s\S]*?<a href=")[^"]*(" [^>]*>\s*<img src=")[^"]*("[^>]*>)/, 
-      `$1${adLink1}$2${adImg1}$3$4${adLink2}$5${adImg2}$6`);
+    // Sidebar Banner Ads (Ad 1 and Ad 2)
+    html = html.replace(
+      /(<div class="sidebar-box ad-card">[\s\S]*?<a href=")[^"]*("[^>]*>\s*<img src=")[^"]*("[^>]*>\s*<\/a>\s*<\/div>[\s\S]*?<div class="sidebar-box ad-card">[\s\S]*?<a href=")[^"]*("[^>]*>\s*<img src=")[^"]*("[^>]*>\s*<\/a>\s*<\/div>)/,
+      `$1${adLink1}$2${adImg1}$3$4${adLink2}$5${adImg2}$6`
+    );
 
-    // 5. Commit updated index.html back to GitHub
+    // 3. Commit updated index.html back to GitHub repository
     const putRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${indexPath}`, {
       method: "PUT",
       headers: {
@@ -131,7 +141,7 @@ async function publishHomeUpdates() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        message: "Update portal homepage custom banner ads and links",
+        message: "Update portal homepage custom banner ads, articles, and links via customizer",
         content: safeEncodeBase64(html),
         sha: indexData.sha
       })
@@ -143,8 +153,8 @@ async function publishHomeUpdates() {
     }
 
     log.style.color = "#16a34a";
-    log.innerText = "Success! Portal homepage updated with custom banner ads and links.";
-    alert("Homepage updated successfully!");
+    log.innerText = "Success! Portal homepage updated on GitHub.";
+    alert("Homepage updated successfully! Changes will appear live in about 1 minute.");
   } catch (err) {
     log.style.color = "#dc2626";
     log.innerText = "Error: " + err.message;
