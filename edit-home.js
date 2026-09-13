@@ -27,24 +27,31 @@ function attachFileUpload(fileInputId, textInputId) {
   });
 }
 
-async function publishHomeUpdates() {
+async function publishHomeUpdates(e) {
+  if (e) e.preventDefault();
+
   const tokenInput = document.getElementById("ghToken");
-  const token = tokenInput.value.trim();
-  const user = document.getElementById("ghUsername").value.trim();
-  const repo = document.getElementById("ghRepo").value.trim();
+  const token = tokenInput ? tokenInput.value.trim() : "";
+  const user = document.getElementById("ghUsername") ? document.getElementById("ghUsername").value.trim() : "";
+  const repo = document.getElementById("ghRepo") ? document.getElementById("ghRepo").value.trim() : "";
   const log = document.getElementById("publishLog");
   const btn = document.getElementById("publishHomeBtn");
 
   if (!token) {
     alert("Please paste your GitHub Personal Access Token in Section 1.");
-    tokenInput.focus();
+    if (tokenInput) tokenInput.focus();
+    return;
+  }
+
+  if (!user || !repo) {
+    alert("GitHub Username and Repository name cannot be empty.");
     return;
   }
 
   // 1. Gather form values
-  const sImg = document.getElementById("spotlightImg").value.trim();
-  const sLink = document.getElementById("spotlightLink").value.trim();
-  const sDesc = document.getElementById("spotlightDesc").value.trim();
+  const sImg = document.getElementById("spotlightImg")?.value.trim() || "";
+  const sLink = document.getElementById("spotlightLink")?.value.trim() || "";
+  const sDesc = document.getElementById("spotlightDesc")?.value.trim() || "";
 
   const cardTopics = Array.from(document.querySelectorAll(".card-topic")).map(el => el.value.trim());
   const cardLinks = Array.from(document.querySelectorAll(".card-link")).map(el => el.value.trim());
@@ -57,22 +64,28 @@ async function publishHomeUpdates() {
   const evMetas = Array.from(document.querySelectorAll(".ev-meta")).map(el => el.value.trim());
   const evLinks = Array.from(document.querySelectorAll(".ev-link")).map(el => el.value.trim());
 
-  const adImg1 = document.getElementById("adImg1").value.trim();
-  const adLink1 = document.getElementById("adLink1").value.trim();
-  const adImg2 = document.getElementById("adImg2").value.trim();
-  const adLink2 = document.getElementById("adLink2").value.trim();
+  const adImg1 = document.getElementById("adImg1")?.value.trim() || "";
+  const adLink1 = document.getElementById("adLink1")?.value.trim() || "";
+  const adImg2 = document.getElementById("adImg2")?.value.trim() || "";
+  const adLink2 = document.getElementById("adLink2")?.value.trim() || "";
 
   tokenInput.value = "";
   localStorage.removeItem("ct_gh_token");
 
-  btn.disabled = true;
-  btn.innerText = "Publishing updates to GitHub...";
-  log.style.color = "#f36f21";
-  log.innerText = "Fetching current index.html from repository...";
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = "Publishing updates to GitHub...";
+  }
+  if (log) {
+    log.style.color = "#f36f21";
+    log.innerText = "Fetching current index.html from repository...";
+  }
 
   try {
     const indexPath = "index.html";
-    const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${indexPath}?ref=main`, {
+    const apiUrl = `https://api.github.com/repos/${user}/${repo}/contents/${indexPath}?ref=main`;
+
+    const res = await fetch(apiUrl, {
       headers: {
         "Authorization": "Bearer " + token,
         "Accept": "application/vnd.github.v3+json"
@@ -80,25 +93,45 @@ async function publishHomeUpdates() {
     });
 
     if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.message || "Could not retrieve index.html from repository.");
+      const errJson = await res.json().catch(() => ({}));
+      throw new Error(errJson.message || `GitHub returned status ${res.status}: ${res.statusText}`);
     }
 
     const indexData = await res.json();
-    let html = safeDecodeBase64(indexData.content);
+    let rawHtml = safeDecodeBase64(indexData.content);
 
-    // 2. Safely perform string replacements for homepage components
-    
-    // Spotlight Magazine Cover & Description & Links
-    html = html.replace(/(<div class="magazine-spotlight">[\s\S]*?<a href=")[^"]*("[^>]*>)/, `$1${sLink}$2`);
-    html = html.replace(/(<img class="spotlight-cover" src=")[^"]*(")/, `$1${sImg}$2`);
-    html = html.replace(/(<div class="spotlight-info">[\s\S]*?<p>)[^<]*(<\/p>)/, `$1${sDesc}$2`);
-    html = html.replace(/(<a href=")[^"]*("[^>]* class="btn-digital-copy">[\s\S]*?<i class="fa-solid fa-book-open"><\/i> Read Full Magazine<\/a>)/, `$1${sLink}$2`);
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(rawHtml, "text/html");
 
-    // Technical Insight Cards
-    let cardsHtml = "";
-    for (let i = 0; i < cardTitles.length; i++) {
-      cardsHtml += `
+    // ── 2. DIGITAL MAGAZINE SPOTLIGHT (FIXED & TARGETED) ──
+    const spotlightCoverImg = doc.querySelector(".magazine-spotlight img.spotlight-cover");
+    if (spotlightCoverImg && sImg) {
+      spotlightCoverImg.setAttribute("src", sImg);
+    }
+
+    const spotlightDescP = doc.querySelector(".magazine-spotlight .spotlight-info p");
+    if (spotlightDescP && sDesc) {
+      spotlightDescP.textContent = sDesc;
+    }
+
+    // Target the cover image wrapper anchor specifically
+    const spotlightImageAnchor = doc.querySelector(".magazine-spotlight > a");
+    if (spotlightImageAnchor && sLink) {
+      spotlightImageAnchor.setAttribute("href", sLink);
+    }
+
+    // Target the "Read Full Magazine" button specifically
+    const spotlightReadMagBtn = doc.querySelector(".magazine-spotlight a.btn-digital-copy");
+    if (spotlightReadMagBtn && sLink) {
+      spotlightReadMagBtn.setAttribute("href", sLink);
+    }
+
+    // ── 3. TECHNICAL INSIGHT CARDS ──
+    const techGrid = doc.querySelector(".tech-articles-grid");
+    if (techGrid) {
+      let cardsHtml = "";
+      for (let i = 0; i < cardTitles.length; i++) {
+        cardsHtml += `
           <article class="tech-card">
             <div>
               <div class="tech-topic">${cardTopics[i]}</div>
@@ -109,13 +142,24 @@ async function publishHomeUpdates() {
               Explore Technology <i class="fa-solid fa-arrow-up-right-from-square"></i>
             </a>
           </article>`;
+      }
+      techGrid.innerHTML = cardsHtml;
     }
-    html = html.replace(/(<div class="tech-articles-grid">)[\s\S]*?(<\/div>\s*<div class="section-heading">)/, `$1${cardsHtml}\n        </div>$2`);
 
-    // Upcoming Trade Shows
-    let eventsHtml = "";
-    for (let j = 0; j < evNames.length; j++) {
-      eventsHtml += `
+    // ── 4. UPCOMING TRADE SHOWS ──
+    const tradeShowsBoxes = doc.querySelectorAll(".sidebar-box");
+    let tradeShowsBody = null;
+    tradeShowsBoxes.forEach(box => {
+      const header = box.querySelector(".sidebar-header");
+      if (header && header.textContent.includes("Upcoming Trade Shows")) {
+        tradeShowsBody = box.querySelector(".sidebar-body");
+      }
+    });
+
+    if (tradeShowsBody) {
+      let eventsHtml = "";
+      for (let j = 0; j < evNames.length; j++) {
+        eventsHtml += `
           <div class="event-item-block">
             <div class="event-calendar-badge"><div class="cal-day">${evDays[j]}</div><div class="cal-month">${evMonths[j]}</div></div>
             <div class="event-details">
@@ -124,16 +168,27 @@ async function publishHomeUpdates() {
               <a href="${evLinks[j]}" target="_blank" class="event-link-text">Contact Us For Details <i class="fa-solid fa-chevron-right"></i></a>
             </div>
           </div>`;
+      }
+      tradeShowsBody.innerHTML = eventsHtml;
     }
-    html = html.replace(/(<div class="sidebar-box">\s*<div class="sidebar-header"><i class="fa-solid fa-calendar-days"></i> Upcoming Trade Shows<\/div>\s*<div class="sidebar-body">)[\s\S]*?(<\/div>\s*<\/div>\s*<div class="sidebar-box ad-card">)/, `$1${eventsHtml}\n        </div>$2`);
 
-    // Sidebar Banner Ads (Ad 1 and Ad 2)
-    html = html.replace(
-      /(<div class="sidebar-box ad-card">[\s\S]*?<a href=")[^"]*("[^>]*>\s*<img src=")[^"]*("[^>]*>\s*<\/a>\s*<\/div>[\s\S]*?<div class="sidebar-box ad-card">[\s\S]*?<a href=")[^"]*("[^>]*>\s*<img src=")[^"]*("[^>]*>\s*<\/a>\s*<\/div>)/,
-      `$1${adLink1}$2${adImg1}$3$4${adLink2}$5${adImg2}$6`
-    );
+    // ── 5. SIDEBAR BANNER ADS ──
+    const adCards = doc.querySelectorAll(".sidebar-box.ad-card");
+    if (adCards.length >= 2) {
+      const ad1Anchor = adCards[0].querySelector("a");
+      const ad1Img = adCards[0].querySelector("img");
+      if (ad1Anchor && adLink1) ad1Anchor.setAttribute("href", adLink1);
+      if (ad1Img && adImg1) ad1Img.setAttribute("src", adImg1);
 
-    // 3. Commit updated index.html back to GitHub repository
+      const ad2Anchor = adCards[1].querySelector("a");
+      const ad2Img = adCards[1].querySelector("img");
+      if (ad2Anchor && adLink2) ad2Anchor.setAttribute("href", adLink2);
+      if (ad2Img && adImg2) ad2Img.setAttribute("src", adImg2);
+    }
+
+    const updatedHtml = "<!DOCTYPE html>\n" + doc.documentElement.outerHTML;
+
+    // Commit back to GitHub
     const putRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${indexPath}`, {
       method: "PUT",
       headers: {
@@ -141,27 +196,34 @@ async function publishHomeUpdates() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        message: "Update portal homepage custom banner ads, articles, and links via customizer",
-        content: safeEncodeBase64(html),
+        message: "Update portal spotlight cover, descriptions, links, and banners via Homepage Editor",
+        content: safeEncodeBase64(updatedHtml),
         sha: indexData.sha
       })
     });
 
     if (!putRes.ok) {
-      const errJson = await putRes.json();
-      throw new Error(errJson.message || putRes.statusText);
+      const errJson = await putRes.json().catch(() => ({}));
+      throw new Error(errJson.message || `Commit failed with status ${putRes.status}`);
     }
 
-    log.style.color = "#16a34a";
-    log.innerText = "Success! Portal homepage updated on GitHub.";
-    alert("Homepage updated successfully! Changes will appear live in about 1 minute.");
+    if (log) {
+      log.style.color = "#16a34a";
+      log.innerText = "Success! Portal homepage updated on GitHub.";
+    }
+    alert("Homepage updated successfully! Spotlight cover image and description are now live.");
   } catch (err) {
-    log.style.color = "#dc2626";
-    log.innerText = "Error: " + err.message;
+    console.error("Publish error:", err);
+    if (log) {
+      log.style.color = "#dc2626";
+      log.innerText = "Error: " + err.message;
+    }
     alert("Update failed: " + err.message);
   } finally {
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Save & Publish Homepage Updates to GitHub';
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Save & Publish Homepage Updates to GitHub';
+    }
   }
 }
 
@@ -170,5 +232,8 @@ window.addEventListener("DOMContentLoaded", function() {
   attachFileUpload('adImg1File', 'adImg1');
   attachFileUpload('adImg2File', 'adImg2');
 
-  document.getElementById("publishHomeBtn").addEventListener("click", publishHomeUpdates);
+  const publishBtn = document.getElementById("publishHomeBtn");
+  if (publishBtn) {
+    publishBtn.addEventListener("click", publishHomeUpdates);
+  }
 });
