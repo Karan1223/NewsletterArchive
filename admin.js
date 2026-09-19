@@ -6,7 +6,10 @@ function renderPreview() {
   const coverImg = document.getElementById("coverImgUrl").value;
   const leadTitle = document.getElementById("leadTitle").value;
   const leadLink = document.getElementById("leadLink").value;
+  const leadDesc = document.getElementById("leadDesc").value;
   const leadBannerImg = document.getElementById("leadBannerImg").value;
+  const rightBadge = document.getElementById("rightBadgeText")?.value || "Special Report";
+  const rightLink = document.getElementById("rightBannerLink")?.value || "https://www.constructiontechnology.in/contact";
 
   const titles = Array.from(document.querySelectorAll(".story-title-input")).map(el => el.value);
   const links = Array.from(document.querySelectorAll(".story-link-input")).map(el => el.value);
@@ -16,9 +19,17 @@ function renderPreview() {
   const adLinks = Array.from(document.querySelectorAll(".ad-link-input")).map(el => el.value);
   const adImages = Array.from(document.querySelectorAll(".ad-img-input")).map(el => el.value);
 
+  const nextTitle = document.getElementById("nextIssueTitle")?.value || "CT Today Magazine – October 2026 Special Issue";
+  const nextIntro = document.getElementById("nextIssueIntro")?.value || "Powering the next phase of construction, mining & aggregates with technologies built for productivity and performance.";
+  const nextCover = document.getElementById("nextIssueCoverStory")?.value || "Crushing, Screening & Washing Equipment";
+  const nextFeat = document.getElementById("nextIssueSpecialFeature")?.value || "Excavators";
+  const nextProf = document.getElementById("nextIssueIndustryProfile")?.value || "Mobile Crushers";
+  const nextHigh = document.getElementById("nextIssueProductHighlights")?.value || "Cone Crushers";
+  const nextCov = document.getElementById("nextIssueSpecialCoverage")?.value || "Post bauma CONEXPO INDIA 2026";
+  const nextPromo = document.getElementById("nextIssuePromoText")?.value || "Showcase your brand • Highlight your innovations • Connect with the industry";
+
   function buildStoryRow(i) {
     if (i >= titles.length) return "";
-    
     const leftImg = images[i] || "https://www.constructiontechnology.in/nl_images/logo.png";
     let rightCol = "";
 
@@ -71,7 +82,6 @@ function renderPreview() {
         assembledLayout += '<tr><td style="padding:0 26px 14px;"><div style="font-size:20px;font-weight:bold;border-left:5px solid #f36f21;padding-left:14px;line-height:24px;">The Inside Story</div></td></tr>';
         sectionHeadingAdded = true;
       }
-      
       storyBatchHtml += '<tr><td style="padding:0 26px 12px;"><table width="100%" cellpadding="0" cellspacing="0" border="0">';
       storyBatchHtml += buildStoryRow(storyIndex);
       storyIndex += 2;
@@ -119,29 +129,39 @@ function renderPreview() {
                 '</td>' +
                 '<td width="4%"></td>' +
                 '<td width="48%" valign="top">' +
-                  '<div style="display:inline-block;background:#111111;color:#ffffff;font-size:11px;font-weight:bold;line-height:1;padding:6px 12px;border-radius:20px;margin-bottom:10px;">Visit Booth</div>' +
-                  '<a href="https://www.constructiontechnology.in/contact" target="_blank">' +
-                    '<img src="' + leadBannerImg + '" width="100%" alt="Visit Booth" style="width:100%;height:350px;object-fit:contain;border-radius:8px;display:block;" />' +
+                  '<div style="display:inline-block;background:#111111;color:#ffffff;font-size:11px;font-weight:bold;line-height:1;padding:6px 12px;border-radius:20px;margin-bottom:10px;">' + rightBadge + '</div>' +
+                  '<a href="' + rightLink + '" target="_blank">' +
+                    '<img src="' + leadBannerImg + '" width="100%" alt="Right Panel Hero" style="width:100%;height:350px;object-fit:contain;border-radius:8px;display:block;" />' +
                   '</a>' +
                 '</td>' +
               '</tr></table>' +
             '</td></tr>' +
 
+            '<tr><td style="padding:0 26px 20px;" class="lead-story-block">' +
+              '<div style="background:#fff7ed;border-left:4px solid #f36f21;padding:14px 18px;border-radius:0 8px 8px 0;border-top:1px solid #fed7aa;border-right:1px solid #fed7aa;border-bottom:1px solid #fed7aa;">' +
+                '<div style="font-size:11px;font-weight:bold;color:#f36f21;text-transform:uppercase;margin-bottom:4px;">Lead Cover Story</div>' +
+                '<h2 style="font-size:16px;font-weight:bold;margin:0 0 6px 0;line-height:1.4;"><a href="' + leadLink + '" target="_blank" style="color:#111111;text-decoration:none;">' + leadTitle + '</a></h2>' +
+                '<p style="font-size:12px;color:#444444;line-height:1.5;margin:0;">' + leadDesc + '</p>' +
+              '</div>' +
+            '</td></tr>' +
+
             assembledLayout +
 
-            '<tr><td style="padding:17px 26px 26px;border-top:2px solid #666666;">' +
+            '<tr><td style="padding:17px 26px 26px;border-top:2px solid #666666;" class="next-issue-block">' +
               '<table cellpadding="0" cellspacing="0" border="0"><tr>' +
                 '<td style="background-color:#f7941d;color:#ffffff;font-size:9px;line-height:1;font-weight:bold;padding:5px 8px;white-space:nowrap;">NEXT ISSUE FOCUS</td>' +
               '</tr></table>' +
-              '<p style="margin:10px 0 8px;padding:0;font-size:12px;line-height:1.35;font-weight:bold;color:#333333;">CT Today Magazine – October 2026 Special Issue</p>' +
+              '<p style="margin:10px 0 8px;padding:0;font-size:12px;line-height:1.35;font-weight:bold;color:#333333;">' + nextTitle + '</p>' +
               '<p style="margin:0;padding:0;font-size:11px;line-height:1.45;color:#333333;">' +
-                'Powering the next phase of <strong> construction, mining &amp; aggregates </strong> with technologies built for productivity and performance.' +
+                nextIntro +
                 '<br /><br />' +
-                '<strong>• Cover Story:</strong> Crushing, Screening &amp; Washing Equipment<br />' +
-                '<strong>• Special Feature:</strong> Excavators<br />' +
-                '<strong>• Industry Profile:</strong> Mobile Crushers<br />' +
-                '<br />' +
-                '<span style="color:#9f1fac;font-weight:bold;">Showcase your brand • Highlight your innovations • Connect with the industry</span>' +
+                '<strong>• Cover Story:</strong> ' + nextCover + '<br />' +
+                '<strong>• Special Feature:</strong> ' + nextFeat + '<br />' +
+                '<strong>• Industry Profile:</strong> ' + nextProf + '<br />' +
+                '<strong>• Product Highlights:</strong> ' + nextHigh + '<br />' +
+                '<strong>• Special Coverage:</strong> ' + nextCov +
+                '<br /><br />' +
+                '<span style="color:#9f1fac;font-weight:bold;">' + nextPromo + '</span>' +
               '</p>' +
             '</td></tr>' +
 
@@ -173,45 +193,48 @@ function renderPreview() {
   return fullHtml;
 }
 
-function addStoryField() {
+function addStoryField(title = "", link = "", img = "", desc = "") {
   const container = document.getElementById("storiesContainer");
   const storyCount = container.querySelectorAll(".story-entry").length + 1;
   const div = document.createElement("div");
   div.className = "story-entry";
   div.innerHTML = 
     '<label>Story ' + storyCount + ' Title <span class="req">*</span></label>' +
-    '<input type="text" class="story-title-input" placeholder="Story title" required />' +
+    '<input type="text" class="story-title-input" value="' + escapeHtml(title) + '" placeholder="Story title" required />' +
     '<label>Story ' + storyCount + ' Link <span class="req">*</span></label>' +
-    '<input type="text" class="story-link-input" placeholder="https://..." required />' +
+    '<input type="text" class="story-link-input" value="' + escapeHtml(link) + '" placeholder="https://..." required />' +
     '<label>Image URL or Device File</label>' +
     '<div class="image-input-group">' +
-      '<input type="text" class="story-img-input" placeholder="https://..." />' +
+      '<input type="text" class="story-img-input" value="' + escapeHtml(img) + '" placeholder="https://..." />' +
       '<label class="file-upload-btn"><i class="fa-solid fa-upload"></i> Upload<input type="file" class="story-file-input" accept="image/*" style="display:none;" /></label>' +
     '</div>' +
     '<label>Summary</label>' +
-    '<textarea class="story-desc-input" placeholder="Brief summary..."></textarea>';
-  
+    '<textarea class="story-desc-input" placeholder="Brief summary...">' + escapeHtml(desc) + '</textarea>';
   container.appendChild(div);
   attachFileInputListeners(div);
   renderPreview();
 }
 
-function addAdField() {
+function addAdField(link = "", img = "") {
   const container = document.getElementById("adsContainer");
   const adCount = container.querySelectorAll(".ad-entry").length + 1;
   const div = document.createElement("div");
   div.className = "ad-entry";
   div.innerHTML = 
     '<label>Ad ' + adCount + ' Destination Link</label>' +
-    '<input type="text" class="ad-link-input" placeholder="https://..." />' +
+    '<input type="text" class="ad-link-input" value="' + escapeHtml(link) + '" placeholder="https://..." />' +
     '<label>Ad ' + adCount + ' Banner Image URL or Device File</label>' +
     '<div class="image-input-group">' +
-      '<input type="text" class="ad-img-input" placeholder="https://..." />' +
+      '<input type="text" class="ad-img-input" value="' + escapeHtml(img) + '" placeholder="https://..." />' +
       '<label class="file-upload-btn"><i class="fa-solid fa-upload"></i> Upload<input type="file" class="ad-file-input" accept="image/*" style="display:none;" /></label>' +
     '</div>';
   container.appendChild(div);
   attachFileInputListeners(div);
   renderPreview();
+}
+
+function escapeHtml(text) {
+  return String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
 function attachFileInputListeners(scope = document) {
@@ -253,18 +276,6 @@ function populateDeleteDropdown(items) {
     items.map(item => `<option value="${item.folder}">${item.year} - ${item.monthName} (${item.folder})</option>`).join("");
 }
 
-async function loadLocalDeleteList() {
-  try {
-    const res = await fetch("data/newsletters.json?t=" + Date.now());
-    if (res.ok) {
-      const items = await res.json();
-      populateDeleteDropdown(items);
-    }
-  } catch (err) {
-    console.warn("Could not load local delete list:", err);
-  }
-}
-
 async function fetchExistingIssuesViaToken() {
   const tokenInput = document.getElementById("ghToken");
   const token = tokenInput.value.trim();
@@ -278,8 +289,10 @@ async function fetchExistingIssuesViaToken() {
     return;
   }
 
-  deleteLog.style.color = "#f36f21";
-  deleteLog.innerText = "Connecting to GitHub repository...";
+  if (deleteLog) {
+    deleteLog.style.color = "#f36f21";
+    deleteLog.innerText = "Connecting to GitHub repository...";
+  }
 
   try {
     const jsonPath = "data/newsletters.json";
@@ -299,11 +312,15 @@ async function fetchExistingIssuesViaToken() {
     const items = JSON.parse(safeDecodeBase64(jsonGetData.content));
     populateDeleteDropdown(items);
 
-    deleteLog.style.color = "#16a34a";
-    deleteLog.innerText = `Loaded ${items.length} issues directly from GitHub.`;
+    if (deleteLog) {
+      deleteLog.style.color = "#16a34a";
+      deleteLog.innerText = `Loaded ${items.length} issues directly from GitHub.`;
+    }
   } catch (err) {
-    deleteLog.style.color = "#dc2626";
-    deleteLog.innerText = "Error loading list: " + err.message;
+    if (deleteLog) {
+      deleteLog.style.color = "#dc2626";
+      deleteLog.innerText = "Error loading list: " + err.message;
+    }
     alert("Failed to load issues: " + err.message);
   }
 }
@@ -334,20 +351,20 @@ async function publishIssueToGithub() {
     return;
   }
 
-  tokenInput.value = "";
-  localStorage.removeItem("ct_gh_token");
+  const targetFolderPath = "issues/" + year + "/" + folderInput;
+  const targetFilePath = targetFolderPath + "/index.html";
 
   btn.disabled = true;
   btn.innerText = "Publishing to GitHub...";
-  log.style.color = "#f36f21";
-  log.innerText = "1/2 Creating issue file on GitHub...";
+  if (log) {
+    log.style.color = "#f36f21";
+    log.innerText = "1/2 Committing issue HTML file to GitHub...";
+  }
 
   try {
-    const folderPath = "issues/" + year + "/" + folderInput;
-    const filePath = folderPath + "/index.html";
     const content = renderPreview();
 
-    const fileRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${filePath}`, {
+    const fileRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${targetFilePath}`, {
       method: "PUT",
       headers: {
         "Authorization": "Bearer " + token,
@@ -361,10 +378,10 @@ async function publishIssueToGithub() {
 
     if (!fileRes.ok) {
       const errJson = await fileRes.json();
-      throw new Error(`Failed creating ${filePath}: ${errJson.message || fileRes.statusText}`);
+      throw new Error(`Failed saving ${targetFilePath}: ${errJson.message || fileRes.statusText}`);
     }
 
-    log.innerText = "2/2 Safely updating data/newsletters.json...";
+    if (log) log.innerText = "2/2 Safely updating data/newsletters.json registry...";
 
     const jsonPath = "data/newsletters.json";
     const jsonGet = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${jsonPath}?ref=main`, {
@@ -377,14 +394,14 @@ async function publishIssueToGithub() {
     const sha = jsonGetData.sha;
     let existingData = JSON.parse(safeDecodeBase64(jsonGetData.content));
 
-    existingData = existingData.filter(item => item.folder !== folderPath);
+    existingData = existingData.filter(item => item.folder !== targetFolderPath);
 
     const newEntry = {
       year: parseInt(year, 10),
       month: folderInput,
       monthName: monthName,
       title: headline,
-      folder: folderPath
+      folder: targetFolderPath
     };
     existingData.unshift(newEntry);
 
@@ -395,7 +412,7 @@ async function publishIssueToGithub() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        message: "Register issue: " + headline,
+        message: "Update registry entry: " + headline,
         content: safeEncodeBase64(JSON.stringify(existingData, null, 2)),
         sha: sha
       })
@@ -406,13 +423,17 @@ async function publishIssueToGithub() {
       throw new Error(`Failed updating newsletters.json: ${errJson.message || jsonPut.statusText}`);
     }
 
-    log.style.color = "#16a34a";
-    log.innerText = "Success! Issue published and registry updated.";
+    if (log) {
+      log.style.color = "#16a34a";
+      log.innerText = "Success! Issue saved and registry updated.";
+    }
     alert("Published successfully!");
     populateDeleteDropdown(existingData);
   } catch (err) {
-    log.style.color = "#dc2626";
-    log.innerText = "Error: " + err.message;
+    if (log) {
+      log.style.color = "#dc2626";
+      log.innerText = "Error: " + err.message;
+    }
     alert("Failed to publish: " + err.message);
   } finally {
     btn.disabled = false;
@@ -442,17 +463,15 @@ async function deleteIssueFromGithub() {
   const confirmDelete = confirm(`Are you sure you want to completely delete "${deleteFolder}" and its index.html file from GitHub?`);
   if (!confirmDelete) return;
 
-  tokenInput.value = "";
-  localStorage.removeItem("ct_gh_token");
-
   btn.disabled = true;
   btn.innerText = "Deleting issue & files...";
-  log.style.color = "#f36f21";
-  log.innerText = "1/2 Removing index.html from GitHub...";
+  if (log) {
+    log.style.color = "#f36f21";
+    log.innerText = "1/2 Removing index.html from GitHub...";
+  }
 
   try {
     const htmlFilePath = deleteFolder + "/index.html";
-    
     const fileGetRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${htmlFilePath}?ref=main`, {
       headers: { "Authorization": "Bearer " + token }
     });
@@ -472,7 +491,7 @@ async function deleteIssueFromGithub() {
       });
     }
 
-    log.innerText = "2/2 Updating newsletters.json registry...";
+    if (log) log.innerText = "2/2 Updating newsletters.json registry...";
 
     const jsonPath = "data/newsletters.json";
     const jsonGet = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${jsonPath}?ref=main`, {
@@ -483,7 +502,6 @@ async function deleteIssueFromGithub() {
 
     const jsonGetData = await jsonGet.json();
     const existingData = JSON.parse(safeDecodeBase64(jsonGetData.content));
-
     const updatedData = existingData.filter(item => item.folder !== deleteFolder);
 
     const jsonPut = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${jsonPath}`, {
@@ -501,13 +519,17 @@ async function deleteIssueFromGithub() {
 
     if (!jsonPut.ok) throw new Error("Failed to commit updated newsletters.json");
 
-    log.style.color = "#16a34a";
-    log.innerText = "Issue and its files successfully deleted from GitHub!";
+    if (log) {
+      log.style.color = "#16a34a";
+      log.innerText = "Issue and its files successfully deleted from GitHub!";
+    }
     alert("Issue deleted successfully!");
     populateDeleteDropdown(updatedData);
   } catch (err) {
-    log.style.color = "#dc2626";
-    log.innerText = "Error: " + err.message;
+    if (log) {
+      log.style.color = "#dc2626";
+      log.innerText = "Error: " + err.message;
+    }
     alert("Deletion failed: " + err.message);
   } finally {
     btn.disabled = false;
@@ -515,14 +537,42 @@ async function deleteIssueFromGithub() {
   }
 }
 
+async function loadLocalDeleteList() {
+  try {
+    const res = await fetch("data/newsletters.json?t=" + Date.now());
+    if (res.ok) {
+      const items = await res.json();
+      populateDeleteDropdown(items);
+    }
+  } catch (err) {
+    console.warn("Could not load local delete list:", err);
+  }
+}
+
 window.addEventListener("DOMContentLoaded", function() {
-  document.getElementById("formPanel").addEventListener("input", renderPreview);
-  document.getElementById("addStoryBtn").addEventListener("click", addStoryField);
-  document.getElementById("addAdBtn").addEventListener("click", addAdField);
-  document.getElementById("refreshPreviewBtn").addEventListener("click", renderPreview);
-  document.getElementById("publishBtn").addEventListener("click", publishIssueToGithub);
-  document.getElementById("fetchDeleteBtn").addEventListener("click", fetchExistingIssuesViaToken);
-  document.getElementById("deleteBtn").addEventListener("click", deleteIssueFromGithub);
+  const formPanel = document.getElementById("formPanel");
+  if (formPanel) {
+    formPanel.addEventListener("input", renderPreview);
+    formPanel.addEventListener("change", renderPreview);
+  }
+
+  const addStoryBtn = document.getElementById("addStoryBtn");
+  if (addStoryBtn) addStoryBtn.addEventListener("click", () => addStoryField());
+
+  const addAdBtn = document.getElementById("addAdBtn");
+  if (addAdBtn) addAdBtn.addEventListener("click", () => addAdField());
+
+  const refreshPreviewBtn = document.getElementById("refreshPreviewBtn");
+  if (refreshPreviewBtn) refreshPreviewBtn.addEventListener("click", renderPreview);
+
+  const publishBtn = document.getElementById("publishBtn");
+  if (publishBtn) publishBtn.addEventListener("click", publishIssueToGithub);
+
+  const fetchDeleteBtn = document.getElementById("fetchDeleteBtn");
+  if (fetchDeleteBtn) fetchDeleteBtn.addEventListener("click", fetchExistingIssuesViaToken);
+
+  const deleteBtn = document.getElementById("deleteBtn");
+  if (deleteBtn) deleteBtn.addEventListener("click", deleteIssueFromGithub);
 
   attachFileInputListeners();
   renderPreview();

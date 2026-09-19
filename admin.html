@@ -7,7 +7,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <script>
-    // Set your admin password key here
     const ADMIN_PASSWORD = "ct_admin_2026"; 
 
     if (sessionStorage.getItem("ct_authenticated") !== "true") {
@@ -126,29 +125,37 @@
         </div>
       </div>
 
-      <!-- 3. LEAD COVER STORY -->
+      <!-- 3. LEAD COVER STORY & RIGHT HERO PANEL -->
       <div class="section-box">
-        <div class="section-title"><i class="fa-solid fa-star"></i> 3. Lead Cover Story</div>
+        <div class="section-title"><i class="fa-solid fa-star"></i> 3. Lead Cover Story & Right Hero Panel</div>
         <label>Headline <span class="req">*</span></label>
         <input type="text" id="leadTitle" value="Next-Gen Electric Compactors & Automated Paving Solutions" required />
         <label>Article Link <span class="req">*</span></label>
         <input type="text" id="leadLink" value="https://www.constructiontechnology.in/news/Road_Construction_Equipments" required />
         
-        <label>Right Banner / Event Image URL or Device File <span class="req">*</span></label>
+        <label>Summary Description <span class="req">*</span></label>
+        <textarea id="leadDesc" required>Evaluating high-torque electric powertrain efficiency, zero-emission urban asphalt paving, and AI-enabled compaction telemetry across major expressways.</textarea>
+
+        <hr style="margin: 14px 0; border: 0; border-top: 1px solid var(--border);" />
+
+        <label>Right Panel Badge Text</label>
+        <input type="text" id="rightBadgeText" value="Special Report" />
+
+        <label>Right Panel Asset Image URL or Device File <span class="req">*</span></label>
         <div class="image-input-group">
           <input type="text" id="leadBannerImg" value="public/image/image4.png" required />
           <label for="leadBannerFile" class="file-upload-btn"><i class="fa-solid fa-upload"></i> Upload</label>
           <input type="file" id="leadBannerFile" accept="image/*" />
         </div>
 
-        <label>Summary Description <span class="req">*</span></label>
-        <textarea id="leadDesc" required>Evaluating high-torque electric powertrain efficiency, zero-emission urban asphalt paving, and AI-enabled compaction telemetry across major expressways.</textarea>
+        <label>Right Panel Destination Link</label>
+        <input type="text" id="rightBannerLink" value="https://www.constructiontechnology.in/contact" />
       </div>
 
       <!-- 4. NEWS STORIES -->
       <div class="section-box">
         <div class="section-title"><i class="fa-solid fa-list"></i> 4. News Stories</div>
-        <p style="font-size: 11px; color: #666; margin-bottom: 10px;">Stories are structured strictly as 2 stories $\rightarrow$ 1 ad banner $\rightarrow$ 2 stories $\rightarrow$ 1 ad banner.</p>
+        <p style="font-size: 11px; color: #666; margin-bottom: 10px;">Stories are structured strictly as 2 stories &rarr; 1 ad banner &rarr; 2 stories &rarr; 1 ad banner.</p>
         <div id="storiesContainer">
           <div class="story-entry">
             <label>Story 1 Title <span class="req">*</span></label>
@@ -197,6 +204,27 @@
         <button type="button" class="btn btn-secondary" id="addAdBtn"><i class="fa-solid fa-plus"></i> Add Another Ad Banner</button>
       </div>
 
+      <!-- 6. NEXT ISSUE FOCUS SECTION EDIT -->
+      <div class="section-box">
+        <div class="section-title"><i class="fa-solid fa-bullseye"></i> 6. Next Issue Focus Section</div>
+        <label>Issue Title <span class="req">*</span></label>
+        <input type="text" id="nextIssueTitle" value="CT Today Magazine – October 2026 Special Issue" required />
+        <label>Intro Text</label>
+        <textarea id="nextIssueIntro">Powering the next phase of construction, mining & aggregates with technologies built for productivity and performance.</textarea>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div><label>Cover Story</label><input type="text" id="nextIssueCoverStory" value="Crushing, Screening & Washing Equipment" /></div>
+          <div><label>Special Feature</label><input type="text" id="nextIssueSpecialFeature" value="Excavators" /></div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div><label>Industry Profile</label><input type="text" id="nextIssueIndustryProfile" value="Mobile Crushers" /></div>
+          <div><label>Product Highlights</label><input type="text" id="nextIssueProductHighlights" value="Cone Crushers" /></div>
+        </div>
+        <label>Special Coverage</label>
+        <input type="text" id="nextIssueSpecialCoverage" value="Post bauma CONEXPO INDIA 2026" />
+        <label>Promo Footer Line</label>
+        <input type="text" id="nextIssuePromoText" value="Showcase your brand • Highlight your innovations • Connect with the industry" />
+      </div>
+
       <!-- PUBLISH BUTTON -->
       <button class="btn btn-success" id="publishBtn">
         <i class="fa-solid fa-cloud-arrow-up"></i> Save & Publish Issue to GitHub
@@ -206,7 +234,7 @@
       <!-- 5. MANAGE / DELETE ISSUE -->
       <div class="section-box" style="border-color: #fca5a5; background: #fff5f5;">
         <div class="section-title" style="color: var(--danger);"><i class="fa-solid fa-trash"></i> 5. Manage / Delete Issue</div>
-        <p style="font-size: 11px; color: #64748b; margin-bottom: 12px;">Paste your token in Section 1 and click <strong>"Fetch Existing Issues"</strong> to load the archive list, then select an issue to delete.</p>
+        <p style="font-size: 11px; color: #64748b; margin-bottom: 12px;">Paste your token in Section 1 and click <strong>"Fetch Existing Issues"</strong> to load archive list.</p>
 
         <button type="button" class="btn btn-secondary" id="fetchDeleteBtn" style="margin-bottom: 12px; width: 100%; justify-content: center;">
           <i class="fa-solid fa-arrows-rotate"></i> Fetch Existing Issues via Token
