@@ -1,3 +1,6 @@
+let currentEditSha = null;
+let currentEditFilePath = null;
+
 function renderPreview() {
   const iframe = document.getElementById("livePreview");
   if (!iframe) return "";
@@ -10,6 +13,7 @@ function renderPreview() {
   const leadBannerImg = document.getElementById("leadBannerImg").value;
   const rightBadge = document.getElementById("rightBadgeText")?.value || "Special Report";
   const rightLink = document.getElementById("rightBannerLink")?.value || "https://www.constructiontechnology.in/contact";
+  const magazineLink = document.getElementById("issueMagazineLink")?.value || "https://www.constructiontechnology.in/";
 
   const titles = Array.from(document.querySelectorAll(".story-title-input")).map(el => el.value);
   const links = Array.from(document.querySelectorAll(".story-link-input")).map(el => el.value);
@@ -122,10 +126,13 @@ function renderPreview() {
             '<tr><td style="padding:0 26px 26px;">' +
               '<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' +
                 '<td width="48%" valign="top">' +
+                  '<div style="display:inline-block;background:#f36f21;color:#ffffff;font-size:11px;font-weight:bold;line-height:1;padding:6px 12px;border-radius:20px;margin-bottom:10px;">' + headline + '</div>' +
                   '<a href="' + leadLink + '" target="_blank" style="text-decoration:none;">' +
-                    '<div style="display:inline-block;background:#f36f21;color:#ffffff;font-size:11px;font-weight:bold;line-height:1;padding:6px 12px;border-radius:20px;margin-bottom:10px;">' + headline + '</div>' +
                     '<img src="' + coverImg + '" width="100%" alt="Cover Issue" style="width:100%;border-radius:8px;border:1px solid #dddddd;display:block;" />' +
                   '</a>' +
+                  '<div style="margin-top:10px;text-align:center;">' +
+                    '<a href="' + magazineLink + '" target="_blank" style="display:inline-block;background:#1e293b;color:#ffffff;font-size:11px;font-weight:bold;padding:8px 14px;border-radius:6px;text-decoration:none;">Read Full e-Magazine &rarr;</a>' +
+                  '</div>' +
                 '</td>' +
                 '<td width="4%"></td>' +
                 '<td width="48%" valign="top">' +
