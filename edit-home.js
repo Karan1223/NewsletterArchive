@@ -27,6 +27,141 @@ function attachFileUpload(fileInputId, textInputId) {
   });
 }
 
+async function loadCurrentHomepageData() {
+  const user = document.getElementById("ghUsername")?.value.trim() || "karan1223";
+  const repo = document.getElementById("ghRepo")?.value.trim() || "NewsletterArchive";
+  const tokenInput = document.getElementById("ghToken");
+  const token = tokenInput ? tokenInput.value.trim() : "";
+  const log = document.getElementById("publishLog");
+
+  if (log) {
+    log.style.color = "#f36f21";
+    log.innerText = "Loading current index.html from GitHub repository...";
+  }
+
+  try {
+    const headers = { "Accept": "application/vnd.github.v3+json" };
+    if (token) headers["Authorization"] = "Bearer " + token;
+
+    const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/index.html?ref=main`, { headers });
+    if (!res.ok) {
+      throw new Error(`Failed to fetch index.html (Status ${res.status})`);
+    }
+    const data = await res.json();
+    const rawHtml = safeDecodeBase64(data.content);
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(rawHtml, "text/html");
+
+    // 1. Digital Magazine Spotlight
+    const sImg = doc.querySelector(".magazine-spotlight img.spotlight-cover")?.getAttribute("src");
+    if (sImg) document.getElementById("spotlightImg").value = sImg;
+
+    const sLink = doc.querySelector(".magazine-spotlight > a")?.getAttribute("href") || doc.querySelector(".magazine-spotlight a.btn-digital-copy")?.getAttribute("href");
+    if (sLink) document.getElementById("spotlightLink").value = sLink;
+
+    const sDesc = doc.querySelector(".magazine-spotlight .spotlight-info p")?.textContent.trim();
+    if (sDesc) document.getElementById("spotlightDesc").value = sDesc;
+
+    // 2. Latest Issue Spotlight
+    const latestTitleEl = doc.querySelector("#latestIssueLabel, .latest-issue-label, .latest-issue-title");
+    if (latestTitleEl && latestTitleEl.textContent.trim()) {
+      document.getElementById("latestIssueLabel").value = latestTitleEl.textContent.trim();
+    }
+    const latestLinkEl = doc.querySelector("#latestIssueLink, .latest-issue-link");
+    if (latestLinkEl && latestLinkEl.getAttribute("href")) {
+      document.getElementById("latestIssueLink").value = latestLinkEl.getAttribute("href");
+    }
+
+    // 3. Technical Insight Cards
+    const techCards = doc.querySelectorAll(".tech-articles-grid .tech-card");
+    const topicInputs = document.querySelectorAll(".card-topic");
+    const titleInputs = document.querySelectorAll(".card-title");
+    const descInputs = document.querySelectorAll(".card-desc");
+    const linkInputs = document.querySelectorAll(".card-link");
+
+    techCards.forEach((card, idx) => {
+      if (topicInputs[idx]) topicInputs[idx].value = card.querySelector(".tech-topic")?.textContent.trim() || "";
+      if (titleInputs[idx]) titleInputs[idx].value = card.querySelector("h4")?.textContent.trim() || "";
+      if (descInputs[idx]) descInputs[idx].value = card.querySelector("p")?.textContent.trim() || "";
+      if (linkInputs[idx]) linkInputs[idx].value = card.querySelector(".card-footer-link")?.getAttribute("href") || "";
+    });
+
+    // 4. Upcoming Trade Shows
+    const eventBlocks = doc.querySelectorAll(".event-item-block");
+    const evDays = document.querySelectorAll(".ev-day");
+    const evMonths = document.querySelectorAll(".ev-month");
+    const evNames = document.querySelectorAll(".ev-name");
+    const evMetas = document.querySelectorAll(".ev-meta");
+    const evLinks = document.querySelectorAll(".ev-link");
+
+    eventBlocks.forEach((block, idx) => {
+      if (evDays[idx]) evDays[idx].value = block.querySelector(".cal-day")?.textContent.trim() || "";
+      if (evMonths[idx]) evMonths[idx].value = block.querySelector(".cal-month")?.textContent.trim() || "";
+      if (evNames[idx]) evNames[idx].value = block.querySelector("h5")?.textContent.trim() || "";
+      if (evMetas[idx]) evMetas[idx].value = block.querySelector("p")?.textContent.trim() || "";
+      if (evLinks[idx]) evLinks[idx].value = block.querySelector(".event-link-text")?.getAttribute("href") || "";
+    });
+
+    // 5. Sidebar Banner Ads
+    const adCards = doc.querySelectorAll(".sidebar-box.ad-card");
+    if (adCards.length >= 2) {
+      const ad1Img = adCards[0].querySelector("img")?.getAttribute("src");
+      const ad1Link = adCards[0].querySelector("a")?.getAttribute("href");
+      if (ad1Img) document.getElementById("adImg1").value = ad1Img;
+      if (ad1Link) document.getElementById("adLink1").value = ad1Link;
+
+      const ad2Img = adCards.querySelector("img")?.getAttribute("src");
+      const ad2Link = adCards.querySelector("a")?.getAttribute("href");
+      if (ad2Img) document.getElementById("adImg2").value = ad2Img;
+      if (ad2Link) document.getElementById("adLink2").value = ad2Link;
+    }
+
+    if (log) {
+      log.style.color = "#16a34a";
+      log.innerText = "Loaded current values from live index.html!";
+    }
+  } catch (err) {
+    console.warn("Could not load current index.html:", err);
+    if (log) {
+      log.style.color = "#dc2626";
+      log.innerText = "Load warning: " + err.message;
+    }
+  }
+}
+
+async function autoDetectLatestIssue() {
+  const user = document.getElementById("ghUsername")?.value.trim() || "karan1223";
+  const repo = document.getElementById("ghRepo")?.value.trim() || "NewsletterArchive";
+  
+  try {
+    const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data/newsletters.json?ref=main`, {
+      headers: { "Accept": "application/vnd.github.v3+json" }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const content = JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\s/g, '')))));
+      if (Array.isArray(content) && content.length > 0) {
+        const latest = content[content.length - 1]; 
+        const labelInput = document.getElementById("latestIssueLabel");
+        const linkInput = document.getElementById("latestIssueLink");
+        
+        if (labelInput && latest.title) labelInput.value = latest.title;
+        else if (labelInput && latest.monthName) labelInput.value = latest.monthName;
+
+        if (linkInput && latest.folder) {
+          linkInput.value = `https://${user}.github.io/${repo}/${latest.folder}/index.html`;
+        }
+        alert("Auto-detected latest issue: " + (latest.title || latest.folder));
+      }
+    } else {
+      alert("Could not load newsletters.json manifesto. Check repo path.");
+    }
+  } catch (err) {
+    console.warn("Auto-detect failed:", err);
+    alert("Auto-detect error: " + err.message);
+  }
+}
+
 async function publishHomeUpdates(e) {
   if (e) e.preventDefault();
 
@@ -48,10 +183,13 @@ async function publishHomeUpdates(e) {
     return;
   }
 
-  // 1. Gather form values
+  // Gather form values
   const sImg = document.getElementById("spotlightImg")?.value.trim() || "";
   const sLink = document.getElementById("spotlightLink")?.value.trim() || "";
   const sDesc = document.getElementById("spotlightDesc")?.value.trim() || "";
+
+  const latestLabel = document.getElementById("latestIssueLabel")?.value.trim() || "";
+  const latestLink = document.getElementById("latestIssueLink")?.value.trim() || "";
 
   const cardTopics = Array.from(document.querySelectorAll(".card-topic")).map(el => el.value.trim());
   const cardLinks = Array.from(document.querySelectorAll(".card-link")).map(el => el.value.trim());
@@ -70,7 +208,6 @@ async function publishHomeUpdates(e) {
   const adLink2 = document.getElementById("adLink2")?.value.trim() || "";
 
   tokenInput.value = "";
-  localStorage.removeItem("ct_gh_token");
 
   if (btn) {
     btn.disabled = true;
@@ -103,7 +240,7 @@ async function publishHomeUpdates(e) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(rawHtml, "text/html");
 
-    // ── 2. DIGITAL MAGAZINE SPOTLIGHT (FIXED & TARGETED) ──
+    // ── 2. DIGITAL MAGAZINE SPOTLIGHT ──
     const spotlightCoverImg = doc.querySelector(".magazine-spotlight img.spotlight-cover");
     if (spotlightCoverImg && sImg) {
       spotlightCoverImg.setAttribute("src", sImg);
@@ -114,16 +251,24 @@ async function publishHomeUpdates(e) {
       spotlightDescP.textContent = sDesc;
     }
 
-    // Target the cover image wrapper anchor specifically
     const spotlightImageAnchor = doc.querySelector(".magazine-spotlight > a");
     if (spotlightImageAnchor && sLink) {
       spotlightImageAnchor.setAttribute("href", sLink);
     }
 
-    // Target the "Read Full Magazine" button specifically
     const spotlightReadMagBtn = doc.querySelector(".magazine-spotlight a.btn-digital-copy");
     if (spotlightReadMagBtn && sLink) {
       spotlightReadMagBtn.setAttribute("href", sLink);
+    }
+
+    // ── LATEST ISSUE SPOTLIGHT SYNC ──
+    const latestTitleEl = doc.querySelector("#latestIssueLabel, .latest-issue-label, .latest-issue-title");
+    const latestLinkEl = doc.querySelector("#latestIssueLink, .latest-issue-link");
+    if (latestTitleEl && latestLabel) {
+      latestTitleEl.textContent = latestLabel;
+    }
+    if (latestLinkEl && latestLink) {
+      latestLinkEl.setAttribute("href", latestLink);
     }
 
     // ── 3. TECHNICAL INSIGHT CARDS ──
@@ -180,8 +325,8 @@ async function publishHomeUpdates(e) {
       if (ad1Anchor && adLink1) ad1Anchor.setAttribute("href", adLink1);
       if (ad1Img && adImg1) ad1Img.setAttribute("src", adImg1);
 
-      const ad2Anchor = adCards[1].querySelector("a");
-      const ad2Img = adCards[1].querySelector("img");
+      const ad2Anchor = adCards.querySelector("a");
+      const ad2Img = adCards.querySelector("img");
       if (ad2Anchor && adLink2) ad2Anchor.setAttribute("href", adLink2);
       if (ad2Img && adImg2) ad2Img.setAttribute("src", adImg2);
     }
@@ -196,7 +341,7 @@ async function publishHomeUpdates(e) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        message: "Update portal spotlight cover, descriptions, links, and banners via Homepage Editor",
+        message: "Update portal spotlight cover, latest issue, descriptions, links, and banners via Homepage Editor",
         content: safeEncodeBase64(updatedHtml),
         sha: indexData.sha
       })
@@ -211,7 +356,7 @@ async function publishHomeUpdates(e) {
       log.style.color = "#16a34a";
       log.innerText = "Success! Portal homepage updated on GitHub.";
     }
-    alert("Homepage updated successfully! Spotlight cover image and description are now live.");
+    alert("Homepage updated successfully! Latest issue, spotlight cover, and description are now live.");
   } catch (err) {
     console.error("Publish error:", err);
     if (log) {
@@ -231,6 +376,25 @@ window.addEventListener("DOMContentLoaded", function() {
   attachFileUpload('spotlightImgFile', 'spotlightImg');
   attachFileUpload('adImg1File', 'adImg1');
   attachFileUpload('adImg2File', 'adImg2');
+
+  // Insert a quick-pull sync button dynamically before the form panel content
+  const loadCurrentBtn = document.createElement("button");
+  loadCurrentBtn.type = "button";
+  loadCurrentBtn.className = "btn btn-secondary";
+  loadCurrentBtn.style.marginBottom = "16px";
+  loadCurrentBtn.style.width = "100%";
+  loadCurrentBtn.innerHTML = '<i class="fa-solid fa-download"></i> Load Current Homepage Values from GitHub';
+  loadCurrentBtn.addEventListener("click", loadCurrentHomepageData);
+
+  const panel = document.querySelector(".form-panel");
+  if (panel) {
+    panel.insertBefore(loadCurrentBtn, panel.firstChild);
+  }
+
+  const autoDetectBtn = document.getElementById("autoDetectLatestBtn");
+  if (autoDetectBtn) {
+    autoDetectBtn.addEventListener("click", autoDetectLatestIssue);
+  }
 
   const publishBtn = document.getElementById("publishHomeBtn");
   if (publishBtn) {

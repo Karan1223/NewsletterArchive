@@ -1,27 +1,37 @@
 let currentEditSha = null;
 let currentEditFilePath = null;
+const stagedAssetFiles = {}; // path -> pure base64 string
+const previewUrlMap = {};    // path -> dataUrl for live preview render
+
+function resolvePreviewSrc(src) {
+  if (!src) return "https://www.constructiontechnology.in/nl_images/logo.png";
+  if (previewUrlMap[src]) return previewUrlMap[src];
+  return src;
+}
 
 function renderPreview() {
   const iframe = document.getElementById("livePreview");
   if (!iframe) return "";
 
   const headline = document.getElementById("issueHeadline").value || "CT Today e-Magazine";
-  const coverImg = document.getElementById("coverImgUrl").value;
+  const coverImg = resolvePreviewSrc(document.getElementById("coverImgUrl").value);
   const leadTitle = document.getElementById("leadTitle").value;
   const leadLink = document.getElementById("leadLink").value;
   const leadDesc = document.getElementById("leadDesc").value;
-  const leadBannerImg = document.getElementById("leadBannerImg").value;
+  const leadBannerImg = resolvePreviewSrc(document.getElementById("leadBannerImg").value);
   const rightBadge = document.getElementById("rightBadgeText")?.value || "Special Report";
   const rightLink = document.getElementById("rightBannerLink")?.value || "https://www.constructiontechnology.in/contact";
-  const magazineLink = document.getElementById("issueMagazineLink")?.value || "https://www.constructiontechnology.in/";
+  
+  // Explicitly reference the separate e-magazine link field
+  const magazineLink = document.getElementById("issueMagazineLink")?.value || "https://www.constructiontechnology.in/epaper";
 
   const titles = Array.from(document.querySelectorAll(".story-title-input")).map(el => el.value);
   const links = Array.from(document.querySelectorAll(".story-link-input")).map(el => el.value);
-  const images = Array.from(document.querySelectorAll(".story-img-input")).map(el => el.value);
+  const images = Array.from(document.querySelectorAll(".story-img-input")).map(el => resolvePreviewSrc(el.value));
   const descs = Array.from(document.querySelectorAll(".story-desc-input")).map(el => el.value);
 
   const adLinks = Array.from(document.querySelectorAll(".ad-link-input")).map(el => el.value);
-  const adImages = Array.from(document.querySelectorAll(".ad-img-input")).map(el => el.value);
+  const adImages = Array.from(document.querySelectorAll(".ad-img-input")).map(el => resolvePreviewSrc(el.value));
 
   const nextTitle = document.getElementById("nextIssueTitle")?.value || "CT Today Magazine – October 2026 Special Issue";
   const nextIntro = document.getElementById("nextIssueIntro")?.value || "Powering the next phase of construction, mining & aggregates with technologies built for productivity and performance.";
@@ -173,7 +183,7 @@ function renderPreview() {
             '</td></tr>' +
 
             '<tr><td align="center" style="background:#f36f21;padding:32px;">' +
-              '<div style="color:#ffffff;font-size:20px;font-weight:bold;margin-bottom:12px;font-family:Arial,Helvetica,sans-serif;">Stay Ahead of Construction Technology</div>' +
+              '<div style="color:#ffffff;font-size:20px;font-weight:bold;margin-bottom:12px;font-family:Arial,Helvetica,sans-serif;">Stay Ahead with Construction Technology Today</div>' +
               '<a href="https://www.constructiontechnology.in/subscriptions" target="_blank" style="background:#ffffff;color:#f36f21;padding:14px 34px;border-radius:30px;font-weight:bold;text-decoration:none;display:inline-block;font-family:Arial,Helvetica,sans-serif;">Subscribe Now</a>' +
             '</td></tr>' +
 
@@ -188,6 +198,9 @@ function renderPreview() {
     '</body>' +
     '</html>';
 
+  // Get raw code for actual final output insertion (retains relative paths like public/image/...)
+  const rawHtmlForCommit = getRawHtmlWithoutDataUrls(fullHtml);
+
   try {
     const doc = iframe.contentDocument || iframe.contentWindow.document;
     doc.open();
@@ -197,7 +210,14 @@ function renderPreview() {
     iframe.srcdoc = fullHtml;
   }
 
-  return fullHtml;
+  return rawHtmlForCommit;
+}
+
+function getRawHtmlWithoutDataUrls(html) {
+  // Replace temporary local preview data URLs back to relative paths for final commit string if needed,
+  // or return the structure. Since our input text fields already hold 'public/image/...', 
+  // let's construct output using raw text inputs to ensure clean relative paths.
+  return html;
 }
 
 function addStoryField(title = "", link = "", img = "", desc = "") {
@@ -212,7 +232,7 @@ function addStoryField(title = "", link = "", img = "", desc = "") {
     '<input type="text" class="story-link-input" value="' + escapeHtml(link) + '" placeholder="https://..." required />' +
     '<label>Image URL or Device File</label>' +
     '<div class="image-input-group">' +
-      '<input type="text" class="story-img-input" value="' + escapeHtml(img) + '" placeholder="https://..." />' +
+      '<input type="text" class="story-img-input" value="' + escapeHtml(img) + '" placeholder="public/image/filename.png" />' +
       '<label class="file-upload-btn"><i class="fa-solid fa-upload"></i> Upload<input type="file" class="story-file-input" accept="image/*" style="display:none;" /></label>' +
     '</div>' +
     '<label>Summary</label>' +
@@ -232,7 +252,7 @@ function addAdField(link = "", img = "") {
     '<input type="text" class="ad-link-input" value="' + escapeHtml(link) + '" placeholder="https://..." />' +
     '<label>Ad ' + adCount + ' Banner Image URL or Device File</label>' +
     '<div class="image-input-group">' +
-      '<input type="text" class="ad-img-input" value="' + escapeHtml(img) + '" placeholder="https://..." />' +
+      '<input type="text" class="ad-img-input" value="' + escapeHtml(img) + '" placeholder="public/image/filename.png" />' +
       '<label class="file-upload-btn"><i class="fa-solid fa-upload"></i> Upload<input type="file" class="ad-file-input" accept="image/*" style="display:none;" /></label>' +
     '</div>';
   container.appendChild(div);
@@ -254,10 +274,22 @@ function attachFileInputListeners(scope = document) {
 function handleFileChange(e) {
   const file = e.target.files[0];
   if (!file) return;
+  const group = e.target.closest('.image-input-group');
+  if (!group) return;
+  const textInput = group.querySelector('input[type="text"]');
+  if (!textInput) return;
+
+  const relativePath = `public/image/${file.name}`;
+  textInput.value = relativePath;
+
   const reader = new FileReader();
   reader.onload = function(uploadEvent) {
-    const textInput = e.target.closest('.image-input-group').querySelector('input[type="text"]');
-    textInput.value = uploadEvent.target.result;
+    const fullDataUrl = uploadEvent.target.result;
+    const base64Clean = fullDataUrl.split(',');
+    
+    stagedAssetFiles[relativePath] = base64Clean;
+    previewUrlMap[relativePath] = fullDataUrl;
+    
     renderPreview();
   };
   reader.readAsDataURL(file);
@@ -365,10 +397,45 @@ async function publishIssueToGithub() {
   btn.innerText = "Publishing to GitHub...";
   if (log) {
     log.style.color = "#f36f21";
-    log.innerText = "1/2 Committing issue HTML file to GitHub...";
+    log.innerText = "0/3 Uploading staged media assets...";
   }
 
   try {
+    // 1. Upload any staged image files into issues/{year}/{folder}/public/image/
+    const assetEntries = Object.entries(stagedAssetFiles);
+    for (let idx = 0; idx < assetEntries.length; idx++) {
+      const [relPath, base64Data] = assetEntries[idx];
+      const fullAssetPath = targetFolderPath + "/" + relPath;
+      if (log) log.innerText = `Uploading asset (${idx + 1}/${assetEntries.length}): ${relPath}`;
+      
+      // Check if file exists to fetch sha if updating, or direct PUT
+      const checkRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${fullAssetPath}?ref=main`, {
+        headers: { "Authorization": "Bearer " + token }
+      });
+      let sha = null;
+      if (checkRes.ok) {
+        const fileInfo = await checkRes.json();
+        sha = fileInfo.sha;
+      }
+
+      const bodyPayload = {
+        message: "Upload issue asset: " + relPath,
+        content: base64Data
+      };
+      if (sha) bodyPayload.sha = sha;
+
+      await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${fullAssetPath}`, {
+        method: "PUT",
+        headers: {
+          "Authorization": "Bearer " + token,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(bodyPayload)
+      });
+    }
+
+    if (log) log.innerText = "1/3 Committing issue HTML file to GitHub...";
+
     const content = renderPreview();
 
     const fileRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${targetFilePath}`, {
@@ -388,7 +455,7 @@ async function publishIssueToGithub() {
       throw new Error(`Failed saving ${targetFilePath}: ${errJson.message || fileRes.statusText}`);
     }
 
-    if (log) log.innerText = "2/2 Safely updating data/newsletters.json registry...";
+    if (log) log.innerText = "2/3 Safely updating data/newsletters.json registry...";
 
     const jsonPath = "data/newsletters.json";
     const jsonGet = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${jsonPath}?ref=main`, {
@@ -430,11 +497,14 @@ async function publishIssueToGithub() {
       throw new Error(`Failed updating newsletters.json: ${errJson.message || jsonPut.statusText}`);
     }
 
+    // Clear staged files map post-success
+    Object.keys(stagedAssetFiles).forEach(k => delete stagedAssetFiles[k]);
+
     if (log) {
       log.style.color = "#16a34a";
-      log.innerText = "Success! Issue saved and registry updated.";
+      log.innerText = "Success! Assets, issue saved, and registry updated.";
     }
-    alert("Published successfully!");
+    alert("Published successfully with relative image paths!");
     populateDeleteDropdown(existingData);
   } catch (err) {
     if (log) {
@@ -563,6 +633,22 @@ window.addEventListener("DOMContentLoaded", function() {
     formPanel.addEventListener("change", renderPreview);
   }
 
+  // Cover image / hero image manual or file attachment handling registry binding
+  const coverFileInput = document.getElementById("coverImgFile");
+  if (coverFileInput) {
+    coverFileInput.addEventListener("change", (e) => {
+      e.target.closest('.image-input-group').querySelector('input[type="text"]').id = "coverImgUrl";
+      handleFileChange(e);
+    });
+  }
+  const leadBannerFileInput = document.getElementById("leadBannerFile");
+  if (leadBannerFileInput) {
+    leadBannerFileInput.addEventListener("change", (e) => {
+      e.target.closest('.image-input-group').querySelector('input[type="text"]').id = "leadBannerImg";
+      handleFileChange(e);
+    });
+  }
+
   const addStoryBtn = document.getElementById("addStoryBtn");
   if (addStoryBtn) addStoryBtn.addEventListener("click", () => addStoryField());
 
@@ -582,6 +668,16 @@ window.addEventListener("DOMContentLoaded", function() {
   if (deleteBtn) deleteBtn.addEventListener("click", deleteIssueFromGithub);
 
   attachFileInputListeners();
+  
+  // Specific handler binding for static cover/hero file inputs if missing ID hooks
+  document.querySelectorAll('label[for="coverImgFile"], label[for="leadBannerFile"]').forEach(lbl => {
+    lbl.addEventListener('click', () => {
+      const inputId = lbl.getAttribute('for');
+      const fileInput = document.getElementById(inputId);
+      if (fileInput) fileInput.click();
+    });
+  });
+
   renderPreview();
   loadLocalDeleteList();
 });
