@@ -182,6 +182,47 @@ function renderPreview() {
               '</p>' +
             '</td></tr>' +
 
+            // START: Social Media / Connect Section (Positioned directly below Next Issue Focus & above Subscribe Now)
+            '<tr><td>' +
+              '<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">' +
+                '<tr>' +
+                  '<td align="center" style="padding: 16px 20px;">' +
+                    '<table cellpadding="0" cellspacing="0" border="0">' +
+                      '<tr>' +
+                        '<td align="center" style="font-size: 11px; font-weight: bold; color: #475569; text-transform: uppercase; letter-spacing: 0.8px; font-family: Arial, Helvetica, sans-serif; padding-bottom: 10px;">' +
+                          'Connect With Us Online' +
+                        '</td>' +
+                      '</tr>' +
+                      '<tr>' +
+                        '<td align="center">' +
+                          '<table cellpadding="0" cellspacing="0" border="0">' +
+                            '<tr>' +
+                              '<td style="padding: 0 8px;">' +
+                                '<a href="https://www.linkedin.com/company/81808194/admin/page-posts/published/" target="_blank" style="font-size: 11px; color: #f36f21; text-decoration: none; font-weight: bold; font-family: Arial, Helvetica, sans-serif;">LinkedIn</a>' +
+                              '</td>' +
+                              '<td style="color: #cbd5e1; font-size: 11px;">|</td>' +
+                              '<td style="padding: 0 8px;">' +
+                                '<a href="https://x.com/ConstTechMedia" target="_blank" style="font-size: 11px; color: #f36f21; text-decoration: none; font-weight: bold; font-family: Arial, Helvetica, sans-serif;">X (Twitter)</a>' +
+                              '</td>' +
+                              '<td style="color: #cbd5e1; font-size: 11px;">|</td>' +
+                              '<td style="padding: 0 8px;">' +
+                                '<a href="https://www.instagram.com/constructiontechnologytoday/" target="_blank" style="font-size: 11px; color: #f36f21; text-decoration: none; font-weight: bold; font-family: Arial, Helvetica, sans-serif;">Instagram</a>' +
+                              '</td>' +
+                              '<td style="color: #cbd5e1; font-size: 11px;">|</td>' +
+                              '<td style="padding: 0 8px;">' +
+                                '<a href="https://www.facebook.com/ConstructionTechnology/?ref=page_internal" target="_blank" style="font-size: 11px; color: #f36f21; text-decoration: none; font-weight: bold; font-family: Arial, Helvetica, sans-serif;">Facebook</a>' +
+                              '</td>' +
+                            '</tr>' +
+                          '</table>' +
+                        '</td>' +
+                      '</tr>' +
+                    '</table>' +
+                  '</td>' +
+                '</tr>' +
+              '</table>' +
+            '</td></tr>' +
+            // END: Social Media / Connect Section
+
             '<tr><td align="center" style="background:#f36f21;padding:32px;">' +
               '<div style="color:#ffffff;font-size:20px;font-weight:bold;margin-bottom:12px;font-family:Arial,Helvetica,sans-serif;">Stay Ahead with Construction Technology Today</div>' +
               '<a href="https://www.constructiontechnology.in/subscriptions" target="_blank" style="background:#ffffff;color:#f36f21;padding:14px 34px;border-radius:30px;font-weight:bold;text-decoration:none;display:inline-block;font-family:Arial,Helvetica,sans-serif;">Subscribe Now</a>' +
@@ -214,9 +255,6 @@ function renderPreview() {
 }
 
 function getRawHtmlWithoutDataUrls(html) {
-  // Replace temporary local preview data URLs back to relative paths for final commit string if needed,
-  // or return the structure. Since our input text fields already hold 'public/image/...', 
-  // let's construct output using raw text inputs to ensure clean relative paths.
   return html;
 }
 
@@ -401,14 +439,12 @@ async function publishIssueToGithub() {
   }
 
   try {
-    // 1. Upload any staged image files into issues/{year}/{folder}/public/image/
     const assetEntries = Object.entries(stagedAssetFiles);
     for (let idx = 0; idx < assetEntries.length; idx++) {
       const [relPath, base64Data] = assetEntries[idx];
       const fullAssetPath = targetFolderPath + "/" + relPath;
       if (log) log.innerText = `Uploading asset (${idx + 1}/${assetEntries.length}): ${relPath}`;
       
-      // Check if file exists to fetch sha if updating, or direct PUT
       const checkRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${fullAssetPath}?ref=main`, {
         headers: { "Authorization": "Bearer " + token }
       });
@@ -497,7 +533,6 @@ async function publishIssueToGithub() {
       throw new Error(`Failed updating newsletters.json: ${errJson.message || jsonPut.statusText}`);
     }
 
-    // Clear staged files map post-success
     Object.keys(stagedAssetFiles).forEach(k => delete stagedAssetFiles[k]);
 
     if (log) {
@@ -633,7 +668,6 @@ window.addEventListener("DOMContentLoaded", function() {
     formPanel.addEventListener("change", renderPreview);
   }
 
-  // Cover image / hero image manual or file attachment handling registry binding
   const coverFileInput = document.getElementById("coverImgFile");
   if (coverFileInput) {
     coverFileInput.addEventListener("change", (e) => {
@@ -669,7 +703,6 @@ window.addEventListener("DOMContentLoaded", function() {
 
   attachFileInputListeners();
   
-  // Specific handler binding for static cover/hero file inputs if missing ID hooks
   document.querySelectorAll('label[for="coverImgFile"], label[for="leadBannerFile"]').forEach(lbl => {
     lbl.addEventListener('click', () => {
       const inputId = lbl.getAttribute('for');
