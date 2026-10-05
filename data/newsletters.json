@@ -1,6 +1,13 @@
 [
   {
     "year": 2026,
+    "month": "October_5_26_eMagazine",
+    "monthName": "October 26(Monthly e-Magazine)",
+    "title": "Monthly eMagazine Newsletter - October 2026",
+    "folder": "issues/2026/October_5_26_eMagazine"
+  },
+  {
+    "year": 2026,
     "month": "October_26_eMagazine",
     "monthName": "October 26(e-Magazine)",
     "title": "October e-Magazine Newsletter",
