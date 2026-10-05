@@ -388,8 +388,7 @@
     &copy; 2026 Construction Technology Today. All rights reserved.
   </footer>
 
-  <!-- ARCHIVE JAVASCRIPT LOGIC -->
-  <script>
+ <script>
     let allIssues = [];
 
     async function loadNewslettersRegistry() {
@@ -398,6 +397,19 @@
         if (!res.ok) throw new Error("Failed to load newsletters.json");
         allIssues = await res.json();
         populateYearDropdown();
+        
+        // Check if URL has a pre-selected issue on load (e.g. ?issue=issues/2026/Sept_26_Mailer)
+        const params = new URLSearchParams(window.location.search);
+        const folderParam = params.get("issue");
+        if (folderParam) {
+          const match = allIssues.find(i => i.folder === folderParam);
+          if (match) {
+            document.getElementById("yearSelect").value = match.year;
+            onYearChange();
+            document.getElementById("monthSelect").value = match.folder;
+            loadIssueFolder(match.folder, false);
+          }
+        }
       } catch (err) {
         console.warn("Could not load archive registry:", err);
       }
@@ -430,10 +442,10 @@
     function onMonthChange() {
       const folderVal = document.getElementById("monthSelect").value;
       if (!folderVal) return;
-      loadIssueFolder(folderVal);
+      loadIssueFolder(folderVal, true);
     }
 
-    function loadIssueFolder(folderPath) {
+    function loadIssueFolder(folderPath, updateHistory = true) {
       const iframe = document.getElementById("mailer-frame");
       const defaultHomeView = document.getElementById("defaultHomeView");
       const viewerView = document.getElementById("viewerView");
@@ -447,6 +459,12 @@
       viewerView.style.display = "block";
       openNewTabBtn.style.display = "inline-flex";
       openNewTabBtn.href = targetUrl;
+
+      // Appends query parameter to the URL bar without reloading the page
+      if (updateHistory) {
+        const newUrl = `${window.location.pathname}?issue=${encodeURIComponent(folderPath)}`;
+        window.history.pushState({ path: newUrl }, "", newUrl);
+      }
 
       const issueObj = allIssues.find(i => i.folder === folderPath);
       if (issueObj && statusIndicator) {
@@ -472,19 +490,14 @@
       yearSelect.value = "";
       monthSelect.value = "";
       monthSelect.disabled = true;
+
+      // Clean up URL parameters
+      window.history.pushState({}, "", window.location.pathname);
     }
 
     function triggerQuickLoad(year, folderName) {
       const targetFolder = `issues/${year}/${folderName}`;
-      const found = allIssues.find(i => i.folder === targetFolder);
-      if (found) {
-        document.getElementById("yearSelect").value = year;
-        onYearChange();
-        document.getElementById("monthSelect").value = targetFolder;
-        loadIssueFolder(targetFolder);
-      } else {
-        loadIssueFolder(targetFolder);
-      }
+      loadIssueFolder(targetFolder, true);
     }
 
     window.addEventListener("DOMContentLoaded", () => {
@@ -497,7 +510,7 @@
       if (latestBtn) {
         latestBtn.addEventListener("click", () => {
           if (allIssues.length > 0) {
-            loadIssueFolder(allIssues[0].folder);
+            loadIssueFolder(allIssues[0].folder, true);
           } else {
             triggerQuickLoad(2026, 'September_21_26_NewsMailer');
           }
