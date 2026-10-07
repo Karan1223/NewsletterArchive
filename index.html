@@ -411,18 +411,24 @@
         allIssues = await res.json();
         populateYearDropdown();
         
-        // Check if URL has a pre-selected issue on load (e.g. ?issue=issues/2026/Sept_26_Mailer)
-        const params = new URLSearchParams(window.location.search);
-        const folderParam = params.get("issue");
-        if (folderParam) {
-          const match = allIssues.find(i => i.folder === folderParam);
-          if (match) {
-            document.getElementById("yearSelect").value = match.year;
-            onYearChange();
-            document.getElementById("monthSelect").value = match.folder;
-            loadIssueFolder(match.folder, false);
-          }
-        }
+        // Check if URL has a pre-selected issue (?year=2026&month=September_28_26_NewsMailer)
+const params = new URLSearchParams(window.location.search);
+const yearParam = params.get("year");
+const monthParam = params.get("month");
+
+if (yearParam && monthParam) {
+  const match = allIssues.find(i =>
+    String(i.year) === String(yearParam) &&
+    i.folder.split("/").pop() === monthParam
+  );
+
+  if (match) {
+    document.getElementById("yearSelect").value = match.year;
+    onYearChange();
+    document.getElementById("monthSelect").value = match.folder;
+    loadIssueFolder(match.folder, false);
+  }
+}
       } catch (err) {
         console.warn("Could not load archive registry:", err);
       }
@@ -474,10 +480,18 @@
       openNewTabBtn.href = targetUrl;
 
       // Appends query parameter to the URL bar without reloading the page
-      if (updateHistory) {
-        const newUrl = `${window.location.pathname}?issue=${encodeURIComponent(folderPath)}`;
-        window.history.pushState({ path: newUrl }, "", newUrl);
-      }
+      // Generate clean URL: ?year=2026&month=September_28_26_NewsMailer
+if (updateHistory) {
+  const issueObj = allIssues.find(i => i.folder === folderPath);
+
+  if (issueObj) {
+    const monthFolder = folderPath.split("/").pop();
+    const newUrl =
+      `${window.location.pathname}?year=${encodeURIComponent(issueObj.year)}&month=${encodeURIComponent(monthFolder)}`;
+
+    window.history.pushState({ path: newUrl }, "", newUrl);
+  }
+}
 
       const issueObj = allIssues.find(i => i.folder === folderPath);
       if (issueObj && statusIndicator) {
