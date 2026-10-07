@@ -1,6 +1,13 @@
 [
   {
     "year": 2026,
+    "month": "October_Case_NewsLetter",
+    "monthName": "October Case NewsLetter",
+    "title": "Case - October 2026",
+    "folder": "issues/2026/October_Case_NewsMailer"
+  },
+  {
+    "year": 2026,
     "month": "October_BKT_NewsLetter",
     "monthName": "October BKT NewsLetter",
     "title": "BKT - October 2026",
