@@ -1,6 +1,13 @@
 [
   {
     "year": 2026,
+    "month": "October_Propel_NewsLetter",
+    "monthName": "October Propel NewsLetter",
+    "title": "Propel - October 2026",
+    "folder": "issues/2026/October_Propel_NewsMailer"
+  },
+  {
+    "year": 2026,
     "month": "October_RBIRepo_NewsLetter",
     "monthName": "October RBI Repo NewsLetter",
     "title": "RBI Repo - October 2026",
