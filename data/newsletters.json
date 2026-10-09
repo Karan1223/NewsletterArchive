@@ -1,6 +1,13 @@
 [
   {
     "year": 2026,
+    "month": "October_Rollcon_NewsLetter",
+    "monthName": "October Rollcon NewsLetter",
+    "title": "Rollcon - October 2026",
+    "folder": "issues/2026/October_Rollcon_NewsMailer"
+  },
+  {
+    "year": 2026,
     "month": "October_Maestro_NewsLetter",
     "monthName": "October Maestro NewsLetter",
     "title": "Maestro - October 2026",
