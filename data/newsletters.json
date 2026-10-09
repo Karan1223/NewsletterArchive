@@ -1,6 +1,13 @@
 [
   {
     "year": 2026,
+    "month": "October_ACSSystems_NewsLetter",
+    "monthName": "October ACSSystems NewsLetter",
+    "title": "ACSSystems - October 2026",
+    "folder": "issues/2026/October_ACSSystems_NewsMailer"
+  },
+  {
+    "year": 2026,
     "month": "October_Rollcon_NewsLetter",
     "monthName": "October Rollcon NewsLetter",
     "title": "Rollcon - October 2026",
