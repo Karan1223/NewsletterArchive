@@ -1,6 +1,13 @@
 [
   {
     "year": 2026,
+    "month": "October_PECPL_NewsLetter",
+    "monthName": "October PECPL NewsLetter",
+    "title": "PECPL - October 2026",
+    "folder": "issues/2026/October_PECPL_NewsMailer"
+  },
+  {
+    "year": 2026,
     "month": "October_SNE_NewsLetter",
     "monthName": "October SNE NewsLetter",
     "title": "SNE - October 2026",
