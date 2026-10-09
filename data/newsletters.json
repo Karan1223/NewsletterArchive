@@ -1,6 +1,13 @@
 [
   {
     "year": 2026,
+    "month": "October_QGreen_NewsLetter",
+    "monthName": "October QGreen NewsLetter",
+    "title": "QGreen - October 2026",
+    "folder": "issues/2026/October_QGreen_NewsMailer"
+  },
+  {
+    "year": 2026,
     "month": "October_L&T_NewsLetter",
     "monthName": "October L&T NewsLetter",
     "title": "L&T - October 2026",
