@@ -1,6 +1,13 @@
 [
   {
     "year": 2026,
+    "month": "October_Rhino_NewsLetter",
+    "monthName": "October Rhino NewsLetter",
+    "title": "Rhino - October 2026",
+    "folder": "issues/2026/October_Rhino_NewsMailer"
+  },
+  {
+    "year": 2026,
     "month": "October_Vibrant_NewsLetter",
     "monthName": "October Vibrant NewsLetter",
     "title": "Vibrant - October 2026",
