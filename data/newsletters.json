@@ -1,6 +1,13 @@
 [
   {
     "year": 2026,
+    "month": "October_Revomac_NewsLetter",
+    "monthName": "October Revomac NewsLetter",
+    "title": "Revomac - October 2026",
+    "folder": "issues/2026/October_Revomac_NewsMailer"
+  },
+  {
+    "year": 2026,
     "month": "October_Ramcoat_NewsLetter",
     "monthName": "October Ramcoat NewsLetter",
     "title": "Ramcoat - October 2026",
