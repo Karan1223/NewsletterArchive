@@ -1,6 +1,13 @@
 [
   {
     "year": 2026,
+    "month": "October_Pledge_NewsLetter",
+    "monthName": "October Pledge NewsLetter",
+    "title": "Pledge - October 2026",
+    "folder": "issues/2026/October_Pledge_NewsMailer"
+  },
+  {
+    "year": 2026,
     "month": "October_Revomac_NewsLetter",
     "monthName": "October Revomac NewsLetter",
     "title": "Revomac - October 2026",
