@@ -1,6 +1,20 @@
 [
   {
     "year": 2026,
+    "month": "October_26_News_NewsLetter",
+    "monthName": "October 26 Weekly NewsLetter",
+    "title": "October 26 Weekly NewsLetter",
+    "folder": "issues/2026/October_26_News_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "October_SMME_NewsLetter",
+    "monthName": "October SMME NewsLetter",
+    "title": "SMME - October 2026",
+    "folder": "issues/2026/October_SMME_NewsMailer"
+  },
+  {
+    "year": 2026,
     "month": "October_Pledge_NewsLetter",
     "monthName": "October Pledge NewsLetter",
     "title": "Pledge - October 2026",
