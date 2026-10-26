@@ -1,6 +1,27 @@
 [
   {
     "year": 2026,
+    "month": "October_SharpPly_NewsLetter",
+    "monthName": "October SharpPly NewsLetter",
+    "title": "SharpPly - October 2026",
+    "folder": "issues/2026/October_SharpPly_NewsMailer"
+  },
+  {
+    "year": 2026,
+    "month": "October_HardicEngineering_NewsLetter",
+    "monthName": "October Hardic Engineering NewsLetter",
+    "title": "Hardic Engineering - October 2026",
+    "folder": "issues/2026/October_HardicEngineering_NewsMailer"
+  },
+   {
+    "year": 2026,
+    "month": "October_GreenRSK_NewsLetter",
+    "monthName": "October GreenRSK NewsLetter",
+    "title": "GreenRSK - October 2026",
+    "folder": "issues/2026/October_GreenRSK_NewsMailer"
+  },
+  {
+    "year": 2026,
     "month": "October_26_News_NewsLetter",
     "monthName": "October 26 Weekly NewsLetter",
     "title": "October 26 Weekly NewsLetter",
