@@ -1,6 +1,13 @@
 [
   {
     "year": 2026,
+    "month": "November_26_eMagazine",
+    "monthName": "November 26 eMagazine",
+    "title": "November 26 eMagazine",
+    "folder": "issues/2026/November_26_eMagazine"
+  },
+  {
+    "year": 2026,
     "month": "October_SharpPly_NewsLetter",
     "monthName": "October SharpPly NewsLetter",
     "title": "SharpPly - October 2026",
