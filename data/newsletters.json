@@ -1,6 +1,13 @@
 [
   {
     "year": 2026,
+    "month": "November_23_News_NewsLetter",
+    "monthName": "November 23 Weekly NewsLetter",
+    "title": "November 23 Weekly NewsLetter",
+    "folder": "issues/2026/November_23_News_NewsMailer"
+  },
+  {
+    "year": 2026,
     "month": "November_26_eMagazine",
     "monthName": "November 26 eMagazine",
     "title": "November 26 eMagazine",
